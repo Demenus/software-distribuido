@@ -1,4 +1,4 @@
-package statemachine.core;
+package statemachine;
 
 /**
  * Created by aaron on 24/02/2015.
