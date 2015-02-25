@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *
  * Created by aaron on 24/02/2015.
  */
 public abstract class StateMachine {

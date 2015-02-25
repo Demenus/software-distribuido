@@ -33,7 +33,7 @@ public class StartNode implements StateNode {
 
     @Override
     public boolean checkPreviousState(String previousState) {
-        return previousState.equalsIgnoreCase(States.VOID_STATE);
+        return previousState.equalsIgnoreCase(States.VOID_STATE) || previousState.equalsIgnoreCase(States.START_STATE);
     }
 
     @Override
