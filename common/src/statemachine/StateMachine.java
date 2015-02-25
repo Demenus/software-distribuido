@@ -1,11 +1,12 @@
 package statemachine;
 
-import statemachine.comutils.ComUtils;
-import statemachine.connectionexceptions.ReadException;
-import statemachine.protocolexceptions.CommandException;
-import statemachine.applicationexceptions.ApplicationException;
-import statemachine.protocolexceptions.ParseException;
-import statemachine.protocolexceptions.StateException;
+import comutils.ComUtils;
+import exceptions.ErrType;
+import exceptions.connectionexceptions.ReadException;
+import exceptions.protocolexceptions.CommandException;
+import exceptions.applicationexceptions.ApplicationException;
+import exceptions.protocolexceptions.ParseException;
+import exceptions.protocolexceptions.StateException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,19 +23,19 @@ public abstract class StateMachine {
     private String mCurrentState;
     private String mPreviousState;
     private HashMap<String, String> mCommands;
-    private HashMap<String, StateNode> mStates;
+    private HashMap<String, StateNode> mStateNodes;
     private HashMap<String, Object> mControllers;
 
     protected StateMachine(String initialState) {
         mCurrentState = initialState;
         mPreviousState = null;
         mCurrentStateNode = null;
-        mStates = new HashMap<String, StateNode>();
+        mStateNodes = new HashMap<String, StateNode>();
         mCommands = new HashMap<String, String>();
         mControllers = new HashMap<String, Object>();
         mapCommands(mCommands);
         initializeControllers(mControllers);
-        initializeStates(mStates);
+        initializeStates(mStateNodes);
     }
 
     protected abstract void initializeControllers(final Map<String, Object> controllers);
@@ -50,7 +51,7 @@ public abstract class StateMachine {
     }
 
     public StateNode getStateNode(String state) {
-        return mStates.get(state);
+        return mStateNodes.get(state);
     }
 
     public String getCommandOf(String state) {
@@ -58,55 +59,82 @@ public abstract class StateMachine {
     }
 
 
-
-
-    private String readCommand(InputStream stream) throws ReadException {
+    public StateNode getNextStateNode(InputStream stream) throws ReadException, CommandException, StateException {
+        //We read the command
         ComUtils.Reader reader = new ComUtils.Reader(stream);
+        String command;
         try {
-            return reader.read_string(4);
+            command = reader.read_string(4);
         } catch (IOException e) {
             e.printStackTrace();
             throw new ReadException();
         }
-    }
-
-    private String detectState(String command) throws CommandException {
+        //Check if the command is in the available command list
+        String state = null;
         for (Map.Entry<String, String> stateCommandPair : mCommands.entrySet()) {
             if (command.equalsIgnoreCase(stateCommandPair.getValue())) {
-                return stateCommandPair.getKey();
+                state = stateCommandPair.getKey();
             }
         }
-        throw new CommandException(command);
-    }
+        if (state == null)
+            throw new CommandException(command);
 
-    private StateNode getNextState(InputStream stream) throws CommandException, ReadException {
-        String command = readCommand(stream);
-        String state = detectState(command);
+        //We get the current state-node from state
         mPreviousState = mCurrentState;
         mCurrentState = state;
-        return getStateNode(state);
-    }
+        StateNode nodeCandidate = getStateNode(state);
 
-    private Object processNextState(InputStream inputStream, StateNode node) throws StateException, ParseException, ApplicationException {
-        if (!node.checkPreviousState(mPreviousState)) {
+        //Check if the candidate node is a valid state
+        if (!nodeCandidate.checkPreviousState(mPreviousState)) {
             throw new StateException(mPreviousState, mCurrentState);
         }
-        Object parsed = node.parseRequestBody(inputStream);
+        //Parse the data from the node
+        mCurrentStateNode = nodeCandidate;
+        return mCurrentStateNode;
+    }
+
+    public Object getResponseData(InputStream stream) throws ParseException, ApplicationException, ReadException {
+        //Parse the data from the node
+        Object parsed = mCurrentStateNode.parseRequestBody(stream);
         Object controller = getControllerOf(mCurrentState);
-        return node.process(mPreviousState, controller, parsed);
+        return mCurrentStateNode.process(mPreviousState, controller, parsed);
     }
 
-    public Object stepAndProcessState(InputStream stream) throws CommandException, StateException, ParseException, ApplicationException, ReadException {
-        mCurrentStateNode = getNextState(stream);
-        Object response = processNextState(stream, mCurrentStateNode);
-        return response;
+
+    public Object stepState(InputStream stream) throws ReadException, CommandException, StateException, ParseException, ApplicationException {
+        //We read the command
+        ComUtils.Reader reader = new ComUtils.Reader(stream);
+        String command;
+        try {
+            command = reader.read_string(4);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ReadException();
+        }
+        //Check if the command is in the available command list
+        String state = null;
+        for (Map.Entry<String, String> stateCommandPair : mCommands.entrySet()) {
+            if (command.equalsIgnoreCase(stateCommandPair.getValue())) {
+                state = stateCommandPair.getKey();
+            }
+        }
+        if (state == null)
+            throw new CommandException(command);
+
+        //We get the current state-node from state
+        mPreviousState = mCurrentState;
+        mCurrentState = state;
+        StateNode nodeCandidate = getStateNode(state);
+
+        //Check if the candidate node is a valid state
+        if (!nodeCandidate.checkPreviousState(mPreviousState)) {
+            throw new StateException(mPreviousState, mCurrentState);
+        }
+        //Parse the data from the node
+        mCurrentStateNode = nodeCandidate;
+        Object parsed = mCurrentStateNode.parseRequestBody(stream);
+        Object controller = getControllerOf(mCurrentState);
+        return mCurrentStateNode.process(mPreviousState, controller, parsed);
     }
 
-    public void sendSuccessResponse(OutputStream outputStream, Object response) throws IOException {
-        mCurrentStateNode.onSuccess(outputStream, response);
-    }
-
-    public void sendErrorResponse(OutputStream outputStream, int errCode, String message) throws IOException {
-        mCurrentStateNode.onError(outputStream, errCode, message);
-    }
 }

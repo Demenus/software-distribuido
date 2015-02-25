@@ -1,8 +1,10 @@
 package game;
 
-import statemachine.Context;
+import context.Context;
+import exceptions.ErrType;
 import statemachine.StateMachine;
 
+import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -12,5 +14,10 @@ public class GameContext extends Context {
 
     public GameContext(Socket socket, StateMachine stateMachine) {
         super(socket, stateMachine);
+    }
+
+    @Override
+    public void onError(OutputStream stream, ErrType errType, String message) {
+
     }
 }

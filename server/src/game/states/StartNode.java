@@ -1,10 +1,12 @@
 package game.states;
 
+import exceptions.ErrType;
+import exceptions.connectionexceptions.WriteException;
 import game.Commands;
 import statemachine.StateNode;
-import statemachine.comutils.ComUtils;
-import statemachine.applicationexceptions.ApplicationException;
-import statemachine.protocolexceptions.ParseException;
+import comutils.ComUtils;
+import exceptions.applicationexceptions.ApplicationException;
+import exceptions.protocolexceptions.ParseException;
 import game.States;
 
 import java.io.IOException;
@@ -20,6 +22,11 @@ public class StartNode implements StateNode {
     private static final int ERR_PARSE = 1;
 
     @Override
+    public String getState() {
+        return States.START_STATE;
+    }
+
+    @Override
     public Object parseRequestBody(InputStream messageStream) throws ParseException {
         return null;
     }
@@ -30,29 +37,28 @@ public class StartNode implements StateNode {
     }
 
     @Override
-    public Object process(String previousState, Object controller, Object parsedMessage) throws ApplicationException {
+    public Object process(String previousState, Object controller, Object request) throws ApplicationException {
         return 100;
     }
 
     @Override
-    public void onSuccess(OutputStream responseStream, Object response) throws IOException {
+    public void onSuccess(OutputStream responseStream, Object response) throws WriteException {
         Integer i = (Integer)response;
         ComUtils.Writer writer = new ComUtils.Writer(responseStream);
-        writer.write_string(Commands.START_BET);
-        writer.write_char(' ');
+        try {
+            writer.write_string(Commands.START_BET);
+            writer.write_char(' ');
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new WriteException();
+        }
+
         //writer.write_int32(i);
     }
 
     @Override
-    public void onError(OutputStream responseStream, int errCode, String message) throws IOException {
+    public void onError(OutputStream responseStream, ErrType errCode, String message)  {
         ComUtils.Writer writer = new ComUtils.Writer(responseStream);
-        switch (errCode) {
-            case ERR_IO:
-                writer.write_string(Commands.ERROR);
-                writer.write_string_variable(message.length(), message);
-                break;
-            case ERR_PARSE:
-                break;
-        }
+
     }
 }
