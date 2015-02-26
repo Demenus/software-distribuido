@@ -1,13 +1,9 @@
-import game.GameContext;
-import game.GameStateMachine;
-import game.States;
-import game.Commands;
-import statemachine.StateNode;
+package server;
+
 import comutils.ComUtils;
-import exceptions.protocolexceptions.CommandException;
-import exceptions.applicationexceptions.ApplicationException;
-import exceptions.protocolexceptions.ParseException;
-import exceptions.protocolexceptions.StateException;
+import connectionlayer.GameContext;
+import connectionlayer.GameStateMachine;
+import connectionlayer.States;
 
 import java.io.*;
 
@@ -17,13 +13,13 @@ import java.io.*;
 public class Server {
     public static void main(String[] args) {
 
-        GameStateMachine s = new GameStateMachine(States.START_STATE);
+        GameStateMachine s = new GameStateMachine(States.VOID_STATE);
         File f = new File("./prueba.dat");
         File f2 = new File("./res.dat");
         GameContext context = new GameContext(null, s);
         try {
             ComUtils.Writer writer = new ComUtils.Writer(new FileOutputStream(f));
-            writer.write_string(Commands.START);
+            writer.write_string("sTrt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

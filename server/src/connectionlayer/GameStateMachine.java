@@ -1,6 +1,7 @@
-package game;
+package connectionlayer;
 
-import game.states.StartNode;
+import connectionlayer.states.StartNode;
+import server.ServerProtocolParser;
 import statemachine.StateMachine;
 import statemachine.StateNode;
 
@@ -11,7 +12,7 @@ import java.util.Map;
  */
 public class GameStateMachine extends StateMachine{
     public GameStateMachine(String initialState) {
-        super(initialState);
+        super(initialState, new ServerProtocolParser());
     }
 
     @Override
@@ -28,14 +29,4 @@ public class GameStateMachine extends StateMachine{
     protected void mapCommands(Map<String, String> commands) {
         commands.put(States.START_STATE, Commands.START);
     }
-
-
-    /*protected void initializeStates(Map<String, StateNode> states) {
-        states.put(States.START_STATE, new StartNode());
-
-    }
-
-    protected void mapCommands(Map<String, String> commands) {
-        commands.put(States.START_STATE, Commands.START);
-    }*/
 }

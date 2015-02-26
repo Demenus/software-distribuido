@@ -3,7 +3,7 @@ package exceptions;
 /**
  * Created by aaron on 24/02/2015.
  */
-public class BaseException extends Exception {
+public abstract class BaseException extends Exception {
 
     private ErrType mErrType;
 

@@ -1,4 +1,4 @@
-package game;
+package connectionlayer;
 
 import context.Context;
 import exceptions.ErrType;
@@ -10,7 +10,7 @@ import java.net.Socket;
 /**
  * Created by aaron on 24/02/2015.
  */
-public class GameContext extends Context {
+    public class GameContext extends Context {
 
     public GameContext(Socket socket, StateMachine stateMachine) {
         super(socket, stateMachine);
@@ -18,6 +18,6 @@ public class GameContext extends Context {
 
     @Override
     public void onError(OutputStream stream, ErrType errType, String message) {
-
+        //TODO: Fill this
     }
 }

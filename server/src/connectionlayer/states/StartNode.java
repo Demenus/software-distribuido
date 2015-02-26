@@ -1,15 +1,14 @@
-package game.states;
+package connectionlayer.states;
 
-import exceptions.ErrType;
-import exceptions.connectionexceptions.WriteException;
-import game.Commands;
-import statemachine.StateNode;
 import comutils.ComUtils;
+import connectionlayer.States;
+import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
+import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
-import game.States;
+import server.ServerProtocolParser;
+import statemachine.StateNode;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -17,9 +16,6 @@ import java.io.OutputStream;
  * Created by aaron on 24/02/2015.
  */
 public class StartNode implements StateNode {
-
-    private static final int ERR_IO = 0;
-    private static final int ERR_PARSE = 1;
 
     @Override
     public String getState() {
@@ -43,17 +39,9 @@ public class StartNode implements StateNode {
 
     @Override
     public void onSuccess(OutputStream responseStream, Object response) throws WriteException {
+        ServerProtocolParser parser = new ServerProtocolParser();
         Integer i = (Integer)response;
-        ComUtils.Writer writer = new ComUtils.Writer(responseStream);
-        try {
-            writer.write_string(Commands.START_BET);
-            writer.write_char(' ');
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new WriteException();
-        }
-
-        //writer.write_int32(i);
+        parser.writeStartBet(responseStream, i);
     }
 
     @Override

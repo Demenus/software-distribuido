@@ -1,4 +1,4 @@
-package game.states;
+package connectionlayer.states;
 
 import statemachine.StateNode;
 

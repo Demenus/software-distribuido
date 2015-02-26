@@ -7,7 +7,6 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -16,6 +15,7 @@ import java.io.OutputStream;
  */
 public interface StateNode {
     public String getState();
+
     /**
      * Method to get the information of each request.
      * @param messageStream
@@ -24,6 +24,7 @@ public interface StateNode {
      * @throws ReadException 
      */
     Object parseRequestBody(InputStream messageStream) throws ParseException, ReadException;
+
     /**
      * Method to check if the previous state is correct.
      * @param previousState
@@ -31,6 +32,7 @@ public interface StateNode {
      * @throws StateException 
      */
     boolean checkPreviousState(String previousState) throws StateException;
+
     /**
      * Method to verify the functionality of the game.
      * @param previousState
@@ -40,6 +42,7 @@ public interface StateNode {
      * @throws ApplicationException 
      */
     Object process(String previousState, Object controller, Object parsedMessage) throws ApplicationException;
+
     /**
      * Method to response the request if everyting is ok.
      * @param responseStream
@@ -47,6 +50,7 @@ public interface StateNode {
      * @throws WriteException 
      */
     void onSuccess(OutputStream responseStream, Object response) throws WriteException;
+
     /**
      * Method to notify to user if the game has error.
      * @param responseStream

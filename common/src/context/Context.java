@@ -53,7 +53,6 @@ public abstract class Context {
             inputStream = mSocket.getInputStream();
             outputStream = mSocket.getOutputStream();
         } catch (IOException e) {
-            e.printStackTrace();
             onConnectionError();
         }
         innerProcessInputData(inputStream, outputStream);
@@ -63,28 +62,22 @@ public abstract class Context {
         StateNode node = null;
         ArrayList<BaseException> exceptions = new ArrayList<BaseException>();
         try {
-            //Object response = mStateMachine.stepState(mSocket.getInputStream());
-            //mStateMachine.sendSuccessResponse(mSocket.getOutputStream(), response);
             node = mStateMachine.getNextStateNode(inputStream);
             Object responseData = mStateMachine.getResponseData(inputStream);
             node.onSuccess(outputStream, responseData);
         } catch (CommandException e) {
-            e.printStackTrace();
             exceptions.add(e);
         } catch (ApplicationException e) {
-            e.printStackTrace();
             exceptions.add(e);
         } catch (StateException e) {
-            e.printStackTrace();
             exceptions.add(e);
         } catch (ParseException e) {
-            e.printStackTrace();
             exceptions.add(e);
+
+
         } catch (ReadException e) {
-            e.printStackTrace();
             onError(outputStream, e.getErrType(), e.getMessage());
         } catch (WriteException e) {
-            e.printStackTrace();
             onError(outputStream, e.getErrType(), e.getMessage());
         }
 
@@ -94,7 +87,7 @@ public abstract class Context {
                     node.onError(outputStream, e.getErrType(), e.getMessage());
                 }
             } catch (WriteException e1) {
-                e1.printStackTrace();
+                //e1.printStackTrace();
             }
         }
     }
