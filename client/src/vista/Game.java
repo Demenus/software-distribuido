@@ -4,18 +4,34 @@
  */
 package vista;
 
+import comutils.ComUtils;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Card;
+import model.Card.Palo;
+
 /**
  *
  * @author Huang
  */
 public class Game extends javax.swing.JFrame {
-
+    Socket socket;
+    ComUtils comUtils;
+    int minim_bet_amount;
     /**
      * Creates new form Game
      */
-    public Game() {
+   public Game(Socket socket,ComUtils comUtils, int minim_bet_amount) {
         initComponents();
+        this.socket=socket;
+        this.comUtils=comUtils;
+        this.tx_currentbet.setText(""+minim_bet_amount);
     }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,10 +48,9 @@ public class Game extends javax.swing.JFrame {
         bt_exit = new javax.swing.JButton();
         pn_listcard = new javax.swing.JScrollPane();
         ls_card = new javax.swing.JList();
-        pn_listbet = new javax.swing.JScrollPane();
-        ls_bet = new javax.swing.JList();
         lb_listcard = new javax.swing.JLabel();
         lb_currentbet = new javax.swing.JLabel();
+        tx_currentbet = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,6 +66,11 @@ public class Game extends javax.swing.JFrame {
         bt_pass.setText("Pass");
 
         bt_exit.setText("Exit");
+        bt_exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_exitActionPerformed(evt);
+            }
+        });
 
         ls_card.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -59,22 +79,21 @@ public class Game extends javax.swing.JFrame {
         });
         pn_listcard.setViewportView(ls_card);
 
-        ls_bet.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        pn_listbet.setViewportView(ls_bet);
-
         lb_listcard.setText("List of cards");
 
         lb_currentbet.setText("Current bet");
+
+        tx_currentbet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tx_currentbetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
@@ -98,20 +117,20 @@ public class Game extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(lb_currentbet)
                                 .addGap(97, 97, 97))
-                            .addComponent(pn_listbet, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tx_currentbet, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 46, Short.MAX_VALUE)
+                .addContainerGap(46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lb_currentbet, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lb_listcard, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pn_listcard, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                    .addComponent(pn_listbet))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pn_listcard, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tx_currentbet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_newcard)
@@ -127,42 +146,46 @@ public class Game extends javax.swing.JFrame {
 
     private void bt_newcardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_newcardActionPerformed
         // TODO add your handling code here:
+            String card;
+            String [] answer;
+            Card carta;
+            int value;
+            Palo palo;
+            comUtils.sendMessage("DRAW");
+
+            /* Read an answer from the server */
+            card = comUtils.receiveMessage(40);
+            System.out.println("He enviat un 10, la resposta del servidor es " + card);
+
+            answer=(card.toLowerCase()).split(" ");
+            if (!answer[0].equals("card")){
+                 System.out.println("No he rebut una bona resposta, sino un " + answer[0]);
+            }else{
+                value=Integer.parseInt(answer[1]);
+                palo=(Card.Palo)answer[2];
+                carta=new Card(value,palo);
+
+            }
+        
     }//GEN-LAST:event_bt_newcardActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void bt_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_exitActionPerformed
+        // TODO add your handling code here:
+         if(this.socket.isConnected()){
+            try {
+                this.socket.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        this.dispose();
+    }//GEN-LAST:event_bt_exitActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Game().setVisible(true);
-            }
-        });
-    }
+    private void tx_currentbetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tx_currentbetActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tx_currentbetActionPerformed
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_betup;
     private javax.swing.JButton bt_exit;
@@ -170,9 +193,8 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JButton bt_pass;
     private javax.swing.JLabel lb_currentbet;
     private javax.swing.JLabel lb_listcard;
-    private javax.swing.JList ls_bet;
     private javax.swing.JList ls_card;
-    private javax.swing.JScrollPane pn_listbet;
     private javax.swing.JScrollPane pn_listcard;
+    private javax.swing.JTextField tx_currentbet;
     // End of variables declaration//GEN-END:variables
 }

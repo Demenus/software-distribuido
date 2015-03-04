@@ -1,12 +1,17 @@
 package comutils;
 
 import java.io.*;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by aaron on 24/02/2015.
  */
 public class ComUtils {
     /* Passar d'enters a bytes */
+    private Reader reader;
+    private Writer writer;
     private static int int32ToBytes(int number,byte bytes[], String endianess)
     {
         if("be".equals(endianess.toLowerCase()))
@@ -44,6 +49,28 @@ public class ComUtils {
         return number;
     }
 
+    public ComUtils(Socket socket) {
+        try {
+            reader=new Reader(socket.getInputStream());
+            writer=new Writer(socket.getOutputStream());
+        } catch (IOException ex) {
+            Logger.getLogger(ComUtils.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    public void sendMessage(String message){
+        try {
+            this.writer.write_string(message);
+        } catch (IOException ex) {
+            Logger.getLogger(ComUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public String receiveMessage(int strLen){
+        try {
+            return this.reader.read_string(strLen);
+        } catch (IOException ex) {
+            return "ERROR";
+        }
+    }
     public static class Reader {
         private DataInputStream dis;
 
