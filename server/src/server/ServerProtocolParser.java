@@ -1,6 +1,8 @@
 package server;
 
 import comutils.ComUtils;
+import connectionlayer.Commands;
+import exceptions.ErrType;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
@@ -41,11 +43,25 @@ public class ServerProtocolParser extends ProtocolParser {
     }
 
     public void writeStartBet(OutputStream outputStream, final int bet) throws WriteException {
-        runWriteOperation(outputStream, new ProtocolParser.WriteOperation() {
+        runWriteOperation(outputStream, new Writer() {
             @Override
             public void write(ComUtils.Writer writer) throws IOException{
-                writer.write_string("stbt ");
+                writer.write_string(Commands.START_BET);
+                writer.write_char(' ');
                 writer.write_int32(bet);
+            }
+        });
+    }
+
+    public void writeError(OutputStream outputStream, final ErrType errCode, final String message) throws WriteException {
+        runWriteOperation(outputStream, new Writer() {
+            @Override
+            public void write(ComUtils.Writer writer) throws IOException {
+                writer.write_string(Commands.ERROR);
+                writer.write_char(' ');
+                writer.write_string(errCode.toString());
+                writer.write_char(' ');
+                writer.write_string(message);
             }
         });
     }

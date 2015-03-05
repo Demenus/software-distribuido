@@ -18,7 +18,7 @@ public abstract class ProtocolParser {
     public ProtocolParser() {
     }
 
-    protected void runWriteOperation(OutputStream outputStream, WriteOperation operation) throws WriteException {
+    protected void runWriteOperation(OutputStream outputStream, Writer operation) throws WriteException {
         try {
             ComUtils.Writer writer = new ComUtils.Writer(outputStream);
             operation.write(writer);
@@ -29,7 +29,7 @@ public abstract class ProtocolParser {
         }
     }
 
-    protected Object runReadOperation(InputStream inputStream, ReadOperation operation) throws ReadException {
+    protected Object runReadOperation(InputStream inputStream, Reader operation) throws ReadException {
         try {
             ComUtils.Reader reader = new ComUtils.Reader(inputStream);
             return operation.read(reader);
@@ -42,11 +42,11 @@ public abstract class ProtocolParser {
 
     public abstract String getStateFromCommand(InputStream stream, Map<String, String> mapCommands) throws CommandException, ReadException;
 
-    public interface ReadOperation {
+    public interface Reader {
         public Object read(ComUtils.Reader reader) throws IOException, IndexOutOfBoundsException;
     }
 
-    public interface WriteOperation {
+    public interface Writer {
         public void write(ComUtils.Writer writer) throws IOException;
     }
 }

@@ -46,23 +46,34 @@ public abstract class Context {
         mSocket = socket;
     }
 
+    public InputStream getSocketInputStream() throws IOException {
+        return mSocket.getInputStream();
+    }
+
+    public OutputStream getSocketOutputStream() throws IOException {
+        return mSocket.getOutputStream();
+    }
+
     public void processInputData() {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {
-            inputStream = mSocket.getInputStream();
-            outputStream = mSocket.getOutputStream();
+            inputStream = getSocketInputStream();
+            outputStream = getSocketOutputStream();
         } catch (IOException e) {
             onConnectionError();
         }
         innerProcessInputData(inputStream, outputStream);
     }
 
-    public void innerProcessInputData(InputStream inputStream, OutputStream outputStream) {
+    private void innerProcessInputData(InputStream inputStream, OutputStream outputStream) {
         StateNode node = null;
+        String candateState;
         ArrayList<BaseException> exceptions = new ArrayList<BaseException>();
         try {
-            node = mStateMachine.getNextStateNode(inputStream);
+            candateState = mStateMachine.getNextCandidateState(inputStream);
+            node = mStateMachine.getNextCandidateStateNode(candateState);
+            mStateMachine.checkNextCandidateNode(node,candateState);
             Object responseData = mStateMachine.getResponseData(inputStream);
             node.onSuccess(outputStream, responseData);
         } catch (CommandException e) {

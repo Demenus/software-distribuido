@@ -7,4 +7,5 @@ public class Commands {
     public static final String ERROR = "ERRO";
     public static final String START = "STRT";
     public static final String START_BET = "STBT";
+    public static final String DRAW = "DRAW";
 }

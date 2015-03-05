@@ -52,14 +52,19 @@ public abstract class StateMachine {
         return mStateNodes.get(state);
     }
 
+    public String getNextCandidateState(InputStream stream) throws CommandException, ReadException {
+        return mParser.getStateFromCommand(stream, mCommands);
+    }
 
-    public StateNode getNextStateNode(InputStream stream) throws ReadException, CommandException, StateException {
-        String candidateState = mParser.getStateFromCommand(stream, mCommands);
+    public StateNode getNextCandidateStateNode(String candidateState) throws ReadException, CommandException {
+        //Checks the command
         StateNode nodeCandidate = getStateNode(candidateState);
-        //Check if the candidate node is a valid state
-        if (!nodeCandidate.checkPreviousState(mCurrentState)) {
-            throw new StateException(mCurrentState, candidateState);
-        }
+        return nodeCandidate;
+    }
+
+    public StateNode checkNextCandidateNode(StateNode nodeCandidate, String candidateState) throws StateException {
+        //Checks the previous state, if it is incorrect throws an exception
+        nodeCandidate.checkPreviousState(mCurrentState);
         //Parse the data from the node
         mCurrentStateNode = nodeCandidate;
         mPreviousState = mCurrentState;

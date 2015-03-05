@@ -28,10 +28,9 @@ public interface StateNode {
     /**
      * Method to check if the previous state is correct.
      * @param previousState
-     * @return
      * @throws StateException 
      */
-    boolean checkPreviousState(String previousState) throws StateException;
+    void checkPreviousState(String previousState) throws StateException;
 
     /**
      * Method to verify the functionality of the game.

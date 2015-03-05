@@ -27,8 +27,10 @@ public class DrawState implements StateNode {
     }
 
     @Override
-    public boolean checkPreviousState(String previousState) throws StateException {
-        return previousState.equalsIgnoreCase(States.START_STATE) || previousState.equalsIgnoreCase(States.ANTE_STATE);
+    public void checkPreviousState(String previousState) throws StateException {
+        if (!(previousState.equalsIgnoreCase(States.START_STATE) || previousState.equalsIgnoreCase(States.ANTE_STATE))) {
+            throw new StateException(previousState, getState());
+        }
     }
 
     @Override

@@ -1,11 +1,11 @@
 package connectionlayer.states;
 
-import comutils.ComUtils;
 import connectionlayer.States;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
+import exceptions.protocolexceptions.StateException;
 import server.ServerProtocolParser;
 import statemachine.StateNode;
 
@@ -28,8 +28,10 @@ public class StartNode implements StateNode {
     }
 
     @Override
-    public boolean checkPreviousState(String previousState) {
-        return previousState.equalsIgnoreCase(States.VOID_STATE) || previousState.equalsIgnoreCase(States.START_STATE);
+    public void checkPreviousState(String previousState) throws StateException {
+        if (!(previousState.equalsIgnoreCase(States.VOID_STATE))) {
+            throw new StateException(previousState, getState());
+        }
     }
 
     @Override
@@ -45,8 +47,8 @@ public class StartNode implements StateNode {
     }
 
     @Override
-    public void onError(OutputStream responseStream, ErrType errCode, String message)  {
-        ComUtils.Writer writer = new ComUtils.Writer(responseStream);
-
+    public void onError(OutputStream responseStream, ErrType errCode, String message) throws WriteException {
+        ServerProtocolParser parser = new ServerProtocolParser();
+        parser.writeError(responseStream, errCode, message);
     }
 }
