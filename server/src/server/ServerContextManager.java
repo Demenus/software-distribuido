@@ -29,11 +29,17 @@ public class ServerContextManager implements ContextManager {
         }
     }
 
+    public static void main(String[] args) {
+        ServerContextManager manager = new ServerContextManager();
+        manager.runServer();
+    }
+
     @Override
     public void runServer() {
         while (mRun) {
             try {
                 Socket socket = mServerSocket.accept();
+                socket.setSoTimeout(500);
                 bindContextToSocket(socket);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -42,11 +48,8 @@ public class ServerContextManager implements ContextManager {
     }
 
     private void bindContextToSocket(Socket socket) {
-        mConnections.put(socket, new GameContext(socket, new GameStateMachine()));
-    }
-
-    public static void main(String[] args) {
-        ServerContextManager manager = new ServerContextManager();
-        manager.runServer();
+        GameContext context = new GameContext(socket, new GameStateMachine());
+        context.processInputData();
+        mConnections.put(socket, context);
     }
 }

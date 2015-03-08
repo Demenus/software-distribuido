@@ -22,6 +22,11 @@ public class VoidNode implements StateNode {
     }
 
     @Override
+    public boolean isFinalState() {
+        return false;
+    }
+
+    @Override
     public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException {
         return null;
     }

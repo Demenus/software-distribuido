@@ -15,6 +15,8 @@ import io.WriterManager;
 public interface StateNode {
     public String getState();
 
+    public boolean isFinalState();
+
     Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException;
 
     void checkPreviousState(String previousState) throws StateException;

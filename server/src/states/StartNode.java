@@ -1,12 +1,12 @@
 package states;
 
-import io.ComUtilsWriterManager;
 import constants.States;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
+import io.ComUtilsWriterManager;
 import io.ReaderManager;
 import io.WriterManager;
 import statemachine.StateNode;
@@ -19,6 +19,11 @@ public class StartNode implements StateNode {
     @Override
     public String getState() {
         return States.START_STATE;
+    }
+
+    @Override
+    public boolean isFinalState() {
+        return false;
     }
 
     @Override

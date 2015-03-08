@@ -1,8 +1,6 @@
 package server;
 
 import comutils.ComUtils;
-import io.ComUtilsReaderManager;
-import io.ComUtilsWriterManager;
 import context.Context;
 import exceptions.BaseException;
 import exceptions.ErrType;
@@ -12,6 +10,8 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
+import io.ComUtilsReaderManager;
+import io.ComUtilsWriterManager;
 import io.ReaderManager;
 import io.WriterManager;
 import statemachine.StateMachine;
@@ -83,16 +83,16 @@ public class GameContext implements Context {
             mStateMachine.checkNextCandidateNode(node,candateState);
             Object responseData = mStateMachine.getResponseData(readerManager);
             node.onSuccess(writerManager, responseData);
-        } catch (CommandException e) {
-            exceptions.add(e);
-        } catch (ApplicationException e) {
+        }  catch (ApplicationException e) {
             exceptions.add(e);
         } catch (StateException e) {
             exceptions.add(e);
         } catch (ParseException e) {
             exceptions.add(e);
+        }
 
-
+        catch (CommandException e) {
+            onError(writerManager, e.getErrType(), e.getMessage());
         } catch (ReadException e) {
             onError(writerManager, e.getErrType(), e.getMessage());
         } catch (WriteException e) {
@@ -130,7 +130,12 @@ public class GameContext implements Context {
 
     @Override
     public void onError(WriterManager writerManager, ErrType errType, String message) {
-
+        ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
+        try {
+            w.writeError(errType, message);
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

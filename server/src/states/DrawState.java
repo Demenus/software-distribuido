@@ -1,6 +1,5 @@
 package states;
 
-import io.ComUtilsWriterManager;
 import constants.States;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
@@ -9,6 +8,7 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
 import gamelayer.GameController;
+import io.ComUtilsWriterManager;
 import io.ReaderManager;
 import io.WriterManager;
 import statemachine.StateNode;
@@ -20,6 +20,11 @@ public class DrawState implements StateNode {
     @Override
     public String getState() {
         return States.DRAW_STATE;
+    }
+
+    @Override
+    public boolean isFinalState() {
+        return false;
     }
 
     @Override
