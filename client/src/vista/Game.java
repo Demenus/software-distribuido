@@ -5,13 +5,17 @@
 package vista;
 
 import comutils.ComUtils;
+import controlador.Controlador;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Card;
 import model.Card.Palo;
+import model.Listcard;
 
 /**
  *
@@ -20,15 +24,27 @@ import model.Card.Palo;
 public class Game extends javax.swing.JFrame {
     Socket socket;
     ComUtils comUtils;
+    String [] answer;
     int minim_bet_amount;
+    int item=0;
+    int current_card_value;
+    Controlador controller;
+    Listcard listcard;
+    Scanner sc;
     /**
      * Creates new form Game
      */
-   public Game(Socket socket,ComUtils comUtils, int minim_bet_amount) {
+   public Game(Socket socket,ComUtils comUtils, int minim_bet_amount, Controlador controller) {
+        
         initComponents();
         this.socket=socket;
         this.comUtils=comUtils;
         this.tx_currentbet.setText(""+minim_bet_amount);
+        this.answer[0]="";
+        this.current_card_value=0;
+        this.controller=controller;
+        listcard=this.controller.getListCard();
+        this.sc=new Scanner(System.in);
     }
 
 
@@ -62,8 +78,18 @@ public class Game extends javax.swing.JFrame {
         });
 
         bt_betup.setText("Bet up");
+        bt_betup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_betupActionPerformed(evt);
+            }
+        });
 
         bt_pass.setText("Pass");
+        bt_pass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_passActionPerformed(evt);
+            }
+        });
 
         bt_exit.setText("Exit");
         bt_exit.addActionListener(new java.awt.event.ActionListener() {
@@ -146,25 +172,37 @@ public class Game extends javax.swing.JFrame {
 
     private void bt_newcardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_newcardActionPerformed
         // TODO add your handling code here:
-            String card;
-            String [] answer;
-            Card carta;
-            int value;
+            String ans;
+            Card carta=null;
+            boolean estate;
             Palo palo;
             comUtils.sendMessage("DRAW");
 
             /* Read an answer from the server */
-            card = comUtils.receiveMessage(40);
-            System.out.println("He enviat un 10, la resposta del servidor es " + card);
+            ans = comUtils.receiveMessage(7);
+            System.out.println("He enviat un 10, la resposta del servidor es " + ans);
 
-            answer=(card.toLowerCase()).split(" ");
-            if (!answer[0].equals("card")){
-                 System.out.println("No he rebut una bona resposta, sino un " + answer[0]);
+            this.answer=(ans.toLowerCase()).split(" ");
+            if (!this.answer[0].equals("card")){
+                 System.out.println("No he rebut una bona resposta, sino un " + this.answer[0]);
             }else{
-                value=Integer.parseInt(answer[1]);
-                palo=(Card.Palo)answer[2];
-                carta=new Card(value,palo);
-
+                carta=Card.parseCard(this.answer[1]);
+            }
+            if(carta!=null){//We verify the estate of the game, we have to see if the sum of all the value passes over 7.5 o no.
+                estate=controller.verify_estate(this.listcard);
+                if(estate){
+                    //In case not passing over 7.5, we add this new card to the card list.
+                    controller.addNewCard(listcard, carta);
+                }else{
+                    //In case it passes over 7.5, we have to receive the message 'BUSTING' from the server.
+                   ans = comUtils.receiveMessage(40);
+                   this.answer=(ans.toLowerCase()).split(" ");
+                   if (!this.answer[0].equals("bstg")){
+                        System.out.println("¡ERROR!Something has gone wrong. We are expecting the answer 'BUSTING'!");
+                   }else{
+                       this.bt_passActionPerformed(evt);
+                   }
+                }
             }
         
     }//GEN-LAST:event_bt_newcardActionPerformed
@@ -184,6 +222,39 @@ public class Game extends javax.swing.JFrame {
     private void tx_currentbetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tx_currentbetActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tx_currentbetActionPerformed
+
+    private void bt_betupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_betupActionPerformed
+        // TODO add your handling code here:
+        String ans=this.answer[0].toLowerCase();
+        if(!ans.equals("card")){
+            System.out.println("This option is not enable now. Please try it after asking for new card.");
+        }else{
+            String inputValue = JOptionPane.showInputDialog("Please input a value of bet:");
+            while(Integer.parseInt(inputValue)<=0){
+                inputValue = JOptionPane.showInputDialog("Please input a value of bet:");
+            }
+            this.controller.betUp(inputValue);
+            int currentbet=Integer.parseInt(this.tx_currentbet.getText());
+            inputValue=""+(Integer.parseInt(inputValue)+currentbet);
+            this.tx_currentbet.setText(inputValue);
+        }
+    }//GEN-LAST:event_bt_betupActionPerformed
+
+    private void bt_passActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_passActionPerformed
+        // TODO add your handling code here:
+        System.out.println("Are you sure to pass the card and finish the game?");
+        System.out.println("Enter the character 'Y' to pass the card. Otherwise enter the 'N'.");
+        String ans=sc.next(); 
+        ans=ans.toLowerCase();
+        while(!ans.equals("y") && !ans.equals("n")){
+            System.out.println("Enter the character 'Y' to pass the card. Otherwise enter the 'N'.");
+            ans=sc.next(); 
+            ans=ans.toLowerCase();
+        }
+        this.controller.passCard(ans);
+        
+        
+    }//GEN-LAST:event_bt_passActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

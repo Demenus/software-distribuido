@@ -5,6 +5,7 @@
 package vista;
 
 import comutils.ComUtils;
+import controlador.Controlador;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -18,6 +19,8 @@ import java.util.logging.Logger;
 public class Client extends javax.swing.JFrame {
     Socket socket;
     ComUtils comUtils;
+    String [] args;
+    Controlador controller;
     /**
      * Creates new form Client
      */
@@ -25,9 +28,10 @@ public class Client extends javax.swing.JFrame {
         initComponents();
     }
 
-    private Client(String[] args) {
+    public Client(String[] args) {
         initComponents();
-        this.conect(args);
+        this.args=args;
+        this.controller=new Controlador(this.socket);
     }
 
     /**
@@ -88,6 +92,7 @@ public class Client extends javax.swing.JFrame {
         String [] answer;
         int minim_bet_amount;
         boolean error=true;
+        this.conect(this.args);
         if(this.socket.isConnected()){
             /* Ask new card from server*/
             comUtils.sendMessage("STRT");
@@ -103,7 +108,7 @@ public class Client extends javax.swing.JFrame {
             }else{
                 minim_bet_amount=Integer.parseInt(answer[1]);
                 System.out.println("El minim aposta es, " + minim_bet_amount);
-                Game newgame=new Game(socket,comUtils,minim_bet_amount);
+                Game newgame=new Game(socket,comUtils,minim_bet_amount,controller);
                 newgame.setVisible(true); 
             }
         }
@@ -137,6 +142,7 @@ public class Client extends javax.swing.JFrame {
                         nomMaquina = args[0];//get IP
                         break;
                     case "-p":
+                        System.out.println("this args 1 es:"+ args[1]);
                         numPort  = Integer.parseInt(args[1]); //get port
                         break;
             }     

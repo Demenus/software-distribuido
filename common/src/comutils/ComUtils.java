@@ -57,6 +57,8 @@ public class ComUtils {
             Logger.getLogger(ComUtils.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
+
+
     public void sendMessage(String message){
         try {
             this.writer.write_string(message);
