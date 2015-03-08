@@ -1,6 +1,5 @@
 package connectionlayer;
 
-import context.Context;
 import exceptions.ErrType;
 import statemachine.StateMachine;
 

@@ -5,8 +5,8 @@ import exceptions.connectionexceptions.ReadException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
+import io.Reader;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +52,7 @@ public abstract class StateMachine {
         return mStateNodes.get(state);
     }
 
-    public String getNextCandidateState(InputStream stream) throws CommandException, ReadException {
+    public String getNextCandidateState(Reader stream) throws CommandException, ReadException {
         return mParser.getStateFromCommand(stream, mCommands);
     }
 
@@ -72,9 +72,9 @@ public abstract class StateMachine {
         return mCurrentStateNode;
     }
 
-    public Object getResponseData(InputStream stream) throws ParseException, ApplicationException, ReadException {
+    public Object getResponseData(Reader reader) throws ParseException, ApplicationException, ReadException {
         //Parse the data from the node
-        Object parsed = mCurrentStateNode.parseRequestBody(stream);
+        Object parsed = mCurrentStateNode.parseRequestBody(reader);
         Object controller = getControllerOf(mCurrentState);
         return mCurrentStateNode.process(mPreviousState, controller, parsed);
     }
