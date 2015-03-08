@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Created by aaron on 08/03/2015.
  */
-public interface Reader<R> {
+public interface ReaderManager<R> {
     public Object runReadOperation(ReadOperation<R> operation) throws ReadException;
 
     public static interface ReadOperation<R> {

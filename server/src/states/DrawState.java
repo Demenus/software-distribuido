@@ -1,16 +1,17 @@
-package connectionlayer.states;
+package states;
 
-import connectionlayer.States;
+import io.ComUtilsWriterManager;
+import constants.States;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
+import gamelayer.GameController;
+import io.ReaderManager;
+import io.WriterManager;
 import statemachine.StateNode;
-
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Created by aaron on 26/02/2015.
@@ -22,7 +23,7 @@ public class DrawState implements StateNode {
     }
 
     @Override
-    public Object parseRequestBody(InputStream messageStream) throws ParseException, ReadException {
+    public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException {
         return null;
     }
 
@@ -35,16 +36,19 @@ public class DrawState implements StateNode {
 
     @Override
     public Object process(String previousState, Object controller, Object parsedMessage) throws ApplicationException {
-        return null;
+        GameController ctr = (GameController) controller;
+        return ctr.getNextCard();
     }
 
     @Override
-    public void onSuccess(OutputStream responseStream, Object response) throws WriteException {
-
+    public void onSuccess(WriterManager writerManager, Object response) throws WriteException {
+        ComUtilsWriterManager w = (ComUtilsWriterManager)writerManager;
+        w.writeCard((String) response);
     }
 
     @Override
-    public void onError(OutputStream responseStream, ErrType errCode, String message) throws WriteException {
-
+    public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException {
+        ComUtilsWriterManager w = (ComUtilsWriterManager)writerManager;
+        w.writeError(errCode, message);
     }
 }

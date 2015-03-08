@@ -1,8 +1,9 @@
-package connectionlayer;
+package server;
 
-import connectionlayer.states.DrawState;
-import connectionlayer.states.StartNode;
-import server.ServerProtocolParser;
+import gamelayer.GameController;
+import states.DrawState;
+import states.StartNode;
+import constants.States;
 import statemachine.StateMachine;
 import statemachine.StateNode;
 
@@ -12,14 +13,14 @@ import java.util.Map;
  * Created by aaron on 24/02/2015.
  */
 public class GameStateMachine extends StateMachine{
-    public GameStateMachine(String initialState) {
-        super(initialState, new ServerProtocolParser());
+    public GameStateMachine() {
+        super(States.VOID_STATE, new GameProtocolParser());
     }
 
     @Override
     protected void initializeControllers(Map<String, Object> controllers) {
         controllers.put(States.START_STATE, null);
-        controllers.put(States.DRAW_STATE, null);
+        controllers.put(States.DRAW_STATE, new GameController());
     }
 
     @Override
@@ -28,9 +29,4 @@ public class GameStateMachine extends StateMachine{
         states.put(States.DRAW_STATE, new DrawState());
     }
 
-    @Override
-    protected void mapCommands(Map<String, String> commands) {
-        commands.put(States.START_STATE, Commands.START);
-        commands.put(States.DRAW_STATE, Commands.DRAW);
-    }
 }

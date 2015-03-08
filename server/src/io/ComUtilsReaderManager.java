@@ -1,19 +1,19 @@
-package connectionlayer.io;
+package io;
 
 import comutils.ComUtils;
 import exceptions.connectionexceptions.ReadException;
-import io.Reader;
+import io.ReaderManager;
 
 import java.io.IOException;
 
 /**
  * Created by aaron on 08/03/2015.
  */
-public class ComutilsReader implements Reader<ComUtils.Reader> {
+public class ComUtilsReaderManager implements ReaderManager<ComUtils.Reader> {
 
     private ComUtils.Reader mReader;
 
-    public ComutilsReader(ComUtils.Reader reader) {
+    public ComUtilsReaderManager(ComUtils.Reader reader) {
         mReader = reader;
     }
 

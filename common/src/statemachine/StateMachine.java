@@ -5,7 +5,7 @@ import exceptions.connectionexceptions.ReadException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import io.Reader;
+import io.ReaderManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,6 @@ public abstract class StateMachine {
     private String mCurrentState;
     private String mPreviousState;
     private ProtocolParser mParser;
-    private HashMap<String, String> mCommands;
     private HashMap<String, StateNode> mStateNodes;
     private HashMap<String, Object> mControllers;
 
@@ -30,9 +29,7 @@ public abstract class StateMachine {
         mPreviousState = null;
         mCurrentStateNode = null;
         mStateNodes = new HashMap<String, StateNode>();
-        mCommands = new HashMap<String, String>();
         mControllers = new HashMap<String, Object>();
-        mapCommands(mCommands);
         initializeControllers(mControllers);
         initializeStates(mStateNodes);
     }
@@ -40,8 +37,6 @@ public abstract class StateMachine {
     protected abstract void initializeControllers(final Map<String, Object> controllers);
 
     protected abstract void initializeStates(final Map<String, StateNode> states);
-
-    protected abstract void mapCommands(final Map<String, String> commands);
 
 
     public Object getControllerOf(String state) {
@@ -52,14 +47,13 @@ public abstract class StateMachine {
         return mStateNodes.get(state);
     }
 
-    public String getNextCandidateState(Reader stream) throws CommandException, ReadException {
-        return mParser.getStateFromCommand(stream, mCommands);
+    public String getNextCandidateState(ReaderManager readerManager) throws CommandException, ReadException {
+        return mParser.getStateFromCommand(readerManager);
     }
 
     public StateNode getNextCandidateStateNode(String candidateState) throws ReadException, CommandException {
         //Checks the command
-        StateNode nodeCandidate = getStateNode(candidateState);
-        return nodeCandidate;
+        return getStateNode(candidateState);
     }
 
     public StateNode checkNextCandidateNode(StateNode nodeCandidate, String candidateState) throws StateException {
@@ -72,9 +66,9 @@ public abstract class StateMachine {
         return mCurrentStateNode;
     }
 
-    public Object getResponseData(Reader reader) throws ParseException, ApplicationException, ReadException {
+    public Object getResponseData(ReaderManager readerManager) throws ParseException, ApplicationException, ReadException {
         //Parse the data from the node
-        Object parsed = mCurrentStateNode.parseRequestBody(reader);
+        Object parsed = mCurrentStateNode.parseRequestBody(readerManager);
         Object controller = getControllerOf(mCurrentState);
         return mCurrentStateNode.process(mPreviousState, controller, parsed);
     }

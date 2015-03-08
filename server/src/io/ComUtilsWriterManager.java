@@ -1,21 +1,21 @@
-package connectionlayer.io;
+package io;
 
 import comutils.ComUtils;
-import connectionlayer.Commands;
+import constants.Commands;
 import exceptions.ErrType;
 import exceptions.connectionexceptions.WriteException;
-import io.Writer;
+import io.WriterManager;
 
 import java.io.IOException;
 
 /**
  * Created by aaron on 08/03/2015.
  */
-public class ComutilsWriter implements Writer<ComUtils.Writer> {
+public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
 
     private ComUtils.Writer mWriter;
 
-    public ComutilsWriter(ComUtils.Writer writer) {
+    public ComUtilsWriterManager(ComUtils.Writer writer) {
         mWriter = writer;
     }
 
@@ -50,6 +50,17 @@ public class ComutilsWriter implements Writer<ComUtils.Writer> {
                 writer.write_string(errCode.toString());
                 writer.write_char(' ');
                 writer.write_string(message);
+            }
+        });
+    }
+
+    public void writeCard(final String card) throws WriteException {
+        runWriteOperation(new WriteOperation<ComUtils.Writer>() {
+            @Override
+            public void write(ComUtils.Writer writer) throws IOException {
+                writer.write_string(Commands.CARD);
+                writer.write_char(' ');
+                writer.write_string(card);
             }
         });
     }

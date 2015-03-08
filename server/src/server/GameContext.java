@@ -1,8 +1,9 @@
-package connectionlayer;
+package server;
 
 import comutils.ComUtils;
-import connectionlayer.io.ComutilsReader;
-import connectionlayer.io.ComutilsWriter;
+import io.ComUtilsReaderManager;
+import io.ComUtilsWriterManager;
+import context.Context;
 import exceptions.BaseException;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
@@ -11,8 +12,8 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import io.Reader;
-import io.Writer;
+import io.ReaderManager;
+import io.WriterManager;
 import statemachine.StateMachine;
 import statemachine.StateNode;
 
@@ -25,22 +26,19 @@ import java.util.ArrayList;
 /**
  * Created by aaron on 24/02/2015.
  */
-public abstract class Context {
+public class GameContext implements Context {
 
     private Socket mSocket;
     private StateMachine mStateMachine;
 
-    public Context(Socket socket, StateMachine stateMachine) {
+    public GameContext(Socket socket, StateMachine stateMachine) {
         mSocket = socket;
         mStateMachine = stateMachine;
     }
 
+    @Override
     public StateMachine getStateMachine() {
         return mStateMachine;
-    }
-
-    public void setStateMachine(StateMachine stateMachine) {
-        mStateMachine = stateMachine;
     }
 
     public Socket getSocket() {
@@ -51,38 +49,40 @@ public abstract class Context {
         mSocket = socket;
     }
 
-    public InputStream getSocketInputStream() throws IOException {
-        return mSocket.getInputStream();
+    @Override
+    public ReaderManager getReader() throws IOException {
+        InputStream stream = mSocket.getInputStream();
+        ComUtils.Reader reader = new ComUtils.Reader(stream);
+        return new ComUtilsReaderManager(reader);
     }
 
-    public OutputStream getSocketOutputStream() throws IOException {
-        return mSocket.getOutputStream();
+    @Override
+    public WriterManager getWriter() throws IOException {
+        OutputStream stream = mSocket.getOutputStream();
+        ComUtils.Writer writer = new ComUtils.Writer(stream);
+        return new ComUtilsWriterManager(writer);
     }
 
+
+    @Override
     public void processInputData() {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
         try {
-            inputStream = getSocketInputStream();
-            outputStream = getSocketOutputStream();
+            innerProcessInputData(getReader(), getWriter());
         } catch (IOException e) {
             onConnectionError();
         }
-        ComutilsReader reader = new ComutilsReader(new ComUtils.Reader(inputStream));
-        ComutilsWriter writer = new ComutilsWriter(new ComUtils.Writer(outputStream));
-        innerProcessInputData(reader, writer);
     }
 
-    private void innerProcessInputData(Reader reader, Writer writer) {
+    private void innerProcessInputData(ReaderManager readerManager, WriterManager writerManager) {
         StateNode node = null;
         String candateState;
         ArrayList<BaseException> exceptions = new ArrayList<BaseException>();
         try {
-            candateState = mStateMachine.getNextCandidateState(reader);
+            candateState = mStateMachine.getNextCandidateState(readerManager);
             node = mStateMachine.getNextCandidateStateNode(candateState);
             mStateMachine.checkNextCandidateNode(node,candateState);
-            Object responseData = mStateMachine.getResponseData(reader);
-            node.onSuccess(writer, responseData);
+            Object responseData = mStateMachine.getResponseData(readerManager);
+            node.onSuccess(writerManager, responseData);
         } catch (CommandException e) {
             exceptions.add(e);
         } catch (ApplicationException e) {
@@ -94,15 +94,15 @@ public abstract class Context {
 
 
         } catch (ReadException e) {
-            onError(writer, e.getErrType(), e.getMessage());
+            onError(writerManager, e.getErrType(), e.getMessage());
         } catch (WriteException e) {
-            onError(writer, e.getErrType(), e.getMessage());
+            onError(writerManager, e.getErrType(), e.getMessage());
         }
 
         for (BaseException e : exceptions) {
             try {
                 if (node != null) {
-                    node.onError(writer, e.getErrType(), e.getMessage());
+                    node.onError(writerManager, e.getErrType(), e.getMessage());
                 }
             } catch (WriteException e1) {
                 //e1.printStackTrace();
@@ -110,6 +110,7 @@ public abstract class Context {
         }
     }
 
+    @Override
     public void closeConnection() {
         try {
             mSocket.close();
@@ -118,6 +119,7 @@ public abstract class Context {
         }
     }
 
+    @Override
     public void onConnectionError() {
         try {
             mSocket.close();
@@ -126,8 +128,12 @@ public abstract class Context {
         }
     }
 
-    public abstract void onError(Writer writer, ErrType errType, String message);
+    @Override
+    public void onError(WriterManager writerManager, ErrType errType, String message) {
 
+    }
+
+    @Override
     public void onTimeOut() {
         try {
             mSocket.close();

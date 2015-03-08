@@ -1,4 +1,4 @@
-package connectionlayer;
+package constants;
 
 /**
  * Created by aaron on 24/02/2015.
