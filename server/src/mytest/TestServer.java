@@ -1,7 +1,6 @@
 package mytest;
 
 import comutils.ComUtils;
-import constants.States;
 import server.GameStateMachine;
 
 import java.io.File;
@@ -29,7 +28,7 @@ public class TestServer {
             e.printStackTrace();
         }
 
-        TestGameContext context = new TestGameContext(f, f2, s);
+        TestGameContext context = new TestGameContext(null, "deck.txt", 100, f, f2);
         context.processInputData();
         context.processInputData();
 

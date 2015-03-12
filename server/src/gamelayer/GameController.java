@@ -1,5 +1,6 @@
 package gamelayer;
 
+import gamelayer.model.Card;
 import gamelayer.model.Deck;
 
 /**
@@ -7,18 +8,24 @@ import gamelayer.model.Deck;
  */
 public class GameController {
 
+    private int mBet;
     private Deck mDeck;
 
-    public GameController() {
-
+    public GameController(String fileDeck, int bet) {
+        mDeck = Deck.parseDeckFile(fileDeck);
+        mBet = bet;
     }
 
-    public GameController(Deck deck) {
-        mDeck = deck;
+    //TODO: Check overflow
+    public void increaseBet(int bet) {
+        mBet += bet;
     }
 
-    public String getNextCard() {
-        return "7o";
-        //return mDeck.getNextCard();
+    public int getBet() {
+        return mBet;
+    }
+
+    public Card getNextCard() {
+        return mDeck.getNextCard();
     }
 }

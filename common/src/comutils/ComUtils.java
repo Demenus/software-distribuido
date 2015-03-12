@@ -78,10 +78,20 @@ public class ComUtils {
 
         //llegir bytes.
         private byte[] read_bytes(int numBytes) throws IOException{
-            int len=0 ;
+            /*int len=0 ;
             byte bStr[] = new byte[numBytes];
             do {
                 len += dis.read(bStr, len, numBytes-len);
+            } while (len < numBytes);
+            return bStr;*/
+            int len=0 ;
+            byte bStr[] = new byte[numBytes];
+            int bytesread=0;
+            do {
+                bytesread= dis.read(bStr, len, numBytes-len);
+                if (bytesread == -1)
+                    throw new IOException("Broken Pipe");
+                len += bytesread;
             } while (len < numBytes);
             return bStr;
         }

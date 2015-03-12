@@ -30,14 +30,21 @@ public abstract class StateMachine {
         mCurrentStateNode = null;
         mStateNodes = new HashMap<String, StateNode>();
         mControllers = new HashMap<String, Object>();
-        initializeControllers(mControllers);
-        initializeStates(mStateNodes);
     }
 
     protected abstract void initializeControllers(final Map<String, Object> controllers);
 
     protected abstract void initializeStates(final Map<String, StateNode> states);
 
+    public void initialize() {
+        initializeControllers(mControllers);
+        initializeStates(mStateNodes);
+        mCurrentStateNode = getStateNode(mCurrentState);
+    }
+
+    public boolean isInFinalState() {
+        return mCurrentStateNode.isFinalState();
+    }
 
     public Object getControllerOf(String state) {
         return mControllers.get(state);
@@ -45,6 +52,10 @@ public abstract class StateMachine {
 
     public StateNode getStateNode(String state) {
         return mStateNodes.get(state);
+    }
+
+    public StateNode getCurrentStateNode() {
+        return mCurrentStateNode;
     }
 
     public String getNextCandidateState(ReaderManager readerManager) throws CommandException, ReadException {

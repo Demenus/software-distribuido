@@ -8,6 +8,7 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
 import gamelayer.GameController;
+import gamelayer.model.Card;
 import io.ComUtilsWriterManager;
 import io.ReaderManager;
 import io.WriterManager;
@@ -34,7 +35,7 @@ public class DrawState implements StateNode {
 
     @Override
     public void checkPreviousState(String previousState) throws StateException {
-        if (!(previousState.equalsIgnoreCase(States.START_STATE) || previousState.equalsIgnoreCase(States.ANTE_STATE))) {
+        if (!(previousState.equalsIgnoreCase(States.START_STATE) || previousState.equalsIgnoreCase(States.ANTE_STATE) || previousState.equalsIgnoreCase(States.DRAW_STATE))) {
             throw new StateException(previousState, getState());
         }
     }
@@ -48,7 +49,7 @@ public class DrawState implements StateNode {
     @Override
     public void onSuccess(WriterManager writerManager, Object response) throws WriteException {
         ComUtilsWriterManager w = (ComUtilsWriterManager)writerManager;
-        w.writeCard((String) response);
+        w.writeCard((Card) response);
     }
 
     @Override

@@ -2,7 +2,6 @@ package server;
 
 import comutils.ComUtils;
 import context.Context;
-import exceptions.BaseException;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
@@ -10,6 +9,7 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
+import gamelayer.GameController;
 import io.ComUtilsReaderManager;
 import io.ComUtilsWriterManager;
 import io.ReaderManager;
@@ -21,19 +21,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.net.SocketException;
 
 /**
  * Created by aaron on 24/02/2015.
  */
 public class GameContext implements Context {
 
+    private static final int sTimeOut = 500;
+    private static final int sMaxConnectionErrors = 5;
+    private static final int sMaxErrors = 15;
     private Socket mSocket;
-    private StateMachine mStateMachine;
+    private GameStateMachine mStateMachine;
+    private GameController mGameController;
+    private int mConnectionErrCount = 0;
+    private int mErrCount = 0;
 
-    public GameContext(Socket socket, StateMachine stateMachine) {
+    public GameContext(Socket socket, String fileDeck, int bet) {
         mSocket = socket;
-        mStateMachine = stateMachine;
+        mStateMachine = new GameStateMachine();
+        mGameController = new GameController(fileDeck, bet);
+        mStateMachine.setGameController(mGameController);
+        mStateMachine.initialize();
+    }
+
+    @Override
+    public void initContext() throws SocketException {
+        mSocket.setSoTimeout(sTimeOut);
     }
 
     @Override
@@ -41,13 +55,6 @@ public class GameContext implements Context {
         return mStateMachine;
     }
 
-    public Socket getSocket() {
-        return mSocket;
-    }
-
-    public void setSocket(Socket socket) {
-        mSocket = socket;
-    }
 
     @Override
     public ReaderManager getReader() throws IOException {
@@ -76,38 +83,37 @@ public class GameContext implements Context {
     private void innerProcessInputData(ReaderManager readerManager, WriterManager writerManager) {
         StateNode node = null;
         String candateState;
-        ArrayList<BaseException> exceptions = new ArrayList<BaseException>();
-        try {
-            candateState = mStateMachine.getNextCandidateState(readerManager);
-            node = mStateMachine.getNextCandidateStateNode(candateState);
-            mStateMachine.checkNextCandidateNode(node,candateState);
-            Object responseData = mStateMachine.getResponseData(readerManager);
-            node.onSuccess(writerManager, responseData);
-        }  catch (ApplicationException e) {
-            exceptions.add(e);
-        } catch (StateException e) {
-            exceptions.add(e);
-        } catch (ParseException e) {
-            exceptions.add(e);
-        }
-
-        catch (CommandException e) {
-            onError(writerManager, e.getErrType(), e.getMessage());
-        } catch (ReadException e) {
-            onError(writerManager, e.getErrType(), e.getMessage());
-        } catch (WriteException e) {
-            onError(writerManager, e.getErrType(), e.getMessage());
-        }
-
-        for (BaseException e : exceptions) {
+        //ArrayList<BaseException> exceptions = new ArrayList<BaseException>();
+        //TODO: Ojo!! si hay un fallo de escritura no vuelves a intentarlo o que majete?!
+        while (!mStateMachine.isInFinalState() && isValidContext()) {
             try {
-                if (node != null) {
-                    node.onError(writerManager, e.getErrType(), e.getMessage());
-                }
-            } catch (WriteException e1) {
-                //e1.printStackTrace();
+                candateState = mStateMachine.getNextCandidateState(readerManager);
+                node = mStateMachine.getNextCandidateStateNode(candateState);
+                mStateMachine.checkNextCandidateNode(node,candateState);
+                Object responseData = mStateMachine.getResponseData(readerManager);
+                node.onSuccess(writerManager, responseData);
+                mErrCount = 0;
+                mConnectionErrCount = 0;
+            }  catch (ApplicationException e) {
+                onError(writerManager, e.getErrType(), e.getMessage());
+            } catch (StateException e) {
+                onError(writerManager, e.getErrType(), e.getMessage());
+            } catch (ParseException e) {
+                onError(writerManager, e.getErrType(), e.getMessage());
+            }
+
+            catch (CommandException e) {
+                onError(writerManager, e.getErrType(), e.getMessage());
+            }
+
+            //Connection error
+            catch (ReadException e) {
+                onError(writerManager, e.getErrType(), e.getMessage());
+            } catch (WriteException e) {
+                onError(writerManager, e.getErrType(), e.getMessage());
             }
         }
+        closeConnection();
     }
 
     @Override
@@ -129,21 +135,44 @@ public class GameContext implements Context {
     }
 
     @Override
+    public boolean isValidContext() {
+        return mSocket.isConnected() && mConnectionErrCount <= sMaxConnectionErrors && mErrCount <= sMaxErrors;
+    }
+
+    @Override
     public void onError(WriterManager writerManager, ErrType errType, String message) {
-        ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
         try {
-            w.writeError(errType, message);
+            ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
+            if (errType == ErrType.WRITE_ERROR || errType == ErrType.READ_ERROR) {
+                if (!isValidContext()) {
+                    closeConnection();
+                }
+                mConnectionErrCount++;
+            } else if (errType == ErrType.COMMAND_ERROR) {
+                if (isValidContext()) {
+                    w.writeError(errType, message);
+                    mErrCount++;
+                } else {
+                    w.writeExceededErrors();
+                    closeConnection();
+                }
+            } else {
+                if (isValidContext()) {
+                    mStateMachine.getCurrentStateNode().onError(writerManager, errType, message);
+                    mErrCount++;
+                } else {
+                    w.writeExceededErrors();
+                    closeConnection();
+                }
+            }
         } catch (WriteException e) {
-            e.printStackTrace();
+            closeConnection();
         }
     }
 
     @Override
-    public void onTimeOut() {
-        try {
-            mSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void disposeContext() {
+        closeConnection();
+        //TODO: Dispose controller and state machine
     }
 }

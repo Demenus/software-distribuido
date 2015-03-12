@@ -6,6 +6,7 @@ import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
+import gamelayer.GameController;
 import io.ComUtilsWriterManager;
 import io.ReaderManager;
 import io.WriterManager;
@@ -40,7 +41,8 @@ public class StartNode implements StateNode {
 
     @Override
     public Object process(String previousState, Object controller, Object request) throws ApplicationException {
-        return 101;
+        GameController gameController = (GameController) controller;
+        return gameController.getBet();
     }
 
     @Override

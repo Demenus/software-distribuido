@@ -4,7 +4,7 @@ import comutils.ComUtils;
 import constants.Commands;
 import exceptions.ErrType;
 import exceptions.connectionexceptions.WriteException;
-import io.WriterManager;
+import gamelayer.model.Card;
 
 import java.io.IOException;
 
@@ -47,20 +47,43 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
             public void write(ComUtils.Writer writer) throws IOException {
                 writer.write_string(Commands.ERROR);
                 writer.write_char(' ');
-                writer.write_string(errCode.toString());
-                writer.write_char(' ');
-                writer.write_string(message);
+                String error = errCode.toString() + ' ' + message;
+                if (error.length() < 10) {
+                    writer.write_char('0');
+                    writer.write_string(String.valueOf(error.length()));
+                } else {
+                    writer.write_string(String.valueOf(error.length()));
+                }
+                writer.write_string(error);
             }
         });
     }
 
-    public void writeCard(final String card) throws WriteException {
+    public void writeExceededErrors() throws WriteException {
+        runWriteOperation(new WriteOperation<ComUtils.Writer>() {
+            @Override
+            public void write(ComUtils.Writer writer) throws IOException {
+                writer.write_string(Commands.ERROR);
+                writer.write_char(' ');
+                String error = "Sorry your IQ is too low to play with me, GTFO!";
+                if (error.length() < 10) {
+                    writer.write_char('0');
+                    writer.write_string(String.valueOf(error.length()));
+                } else {
+                    writer.write_string(String.valueOf(error.length()));
+                }
+                writer.write_string(error);
+            }
+        });
+    }
+
+    public void writeCard(final Card card) throws WriteException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
             public void write(ComUtils.Writer writer) throws IOException {
                 writer.write_string(Commands.CARD);
                 writer.write_char(' ');
-                writer.write_string(card);
+                writer.write_string(card.toString());
             }
         });
     }

@@ -1,10 +1,12 @@
 package server;
 
+import context.Context;
 import context.ContextManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashMap;
 
 /**
@@ -13,11 +15,13 @@ import java.util.HashMap;
 //TODO: Check exceptions
 public class ServerContextManager implements ContextManager {
 
-    public static final int PORT = 8000;
-
+    public static int PORT = 8000;
+    public static int STARTING_BET = 100;
+    public static String DECK_FILE = "deck.txt";
+    private final HashMap<Socket, GameContext> mConnections;
     private boolean mRun;
     private ServerSocket mServerSocket;
-    private HashMap<Socket, GameContext> mConnections;
+
 
     public ServerContextManager() {
         mRun = true;
@@ -30,26 +34,49 @@ public class ServerContextManager implements ContextManager {
     }
 
     public static void main(String[] args) {
+        //-p <port> -b <starting_bet> -f <deckfile>
         ServerContextManager manager = new ServerContextManager();
         manager.runServer();
     }
 
     @Override
     public void runServer() {
-        while (mRun) {
-            try {
-                Socket socket = mServerSocket.accept();
-                socket.setSoTimeout(500);
-                bindContextToSocket(socket);
-            } catch (IOException e) {
-                e.printStackTrace();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (mRun) {
+                    try {
+                        Socket socket = mServerSocket.accept();
+                        bindContextToSocket(socket);
+                    } catch (SocketException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+        });
+        thread.start();
+    }
+
+    @Override
+    public synchronized void stopServer() {
+        mRun = false;
+        for (Context context : mConnections.values()) {
+            context.disposeContext();
         }
     }
 
-    private void bindContextToSocket(Socket socket) {
-        GameContext context = new GameContext(socket, new GameStateMachine());
-        context.processInputData();
-        mConnections.put(socket, context);
+    private void bindContextToSocket(Socket socket) throws SocketException {
+        final GameContext context = new GameContext(socket, DECK_FILE, STARTING_BET);
+        context.initContext();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                context.processInputData();
+            }
+        });
+        thread.start();
+        System.out.println(Thread.activeCount());
     }
 }

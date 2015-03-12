@@ -5,4 +5,5 @@ package context;
  */
 public interface ContextManager {
     void runServer();
+    void stopServer();
 }
