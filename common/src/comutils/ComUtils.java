@@ -59,18 +59,46 @@ public class ComUtils {
     }
 
 
-    public void sendMessage(String message){
+    public void sendMessageChar(char message){
+        try {
+            this.writer.write_char(message);
+        } catch (IOException ex) {
+            Logger.getLogger(ComUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void sendMessageString(String message){
         try {
             this.writer.write_string(message);
         } catch (IOException ex) {
             Logger.getLogger(ComUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public String receiveMessage(int strLen){
+    public void sendMessageInt(int message){
+        try {
+            this.writer.write_int32(message);
+        } catch (IOException ex) {
+            Logger.getLogger(ComUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public int receiveMessageInt( ){
+        try {
+            return this.reader.read_int32();
+        } catch (IOException ex) {
+            return -1;
+        }
+    }
+    public char receiveMessageChar( ){
+        try {
+            return this.reader.read_char();
+        } catch (IOException ex) {
+            return 'e';
+        }
+    }
+    public String receiveMessageString(int strLen){
         try {
             return this.reader.read_string(strLen);
         } catch (IOException ex) {
-            return "ERROR";
+            return "Error";
         }
     }
     public static class Reader {
