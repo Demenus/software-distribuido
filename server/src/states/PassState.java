@@ -40,13 +40,7 @@ public class PassState implements StateNode {
     }
 
     @Override
-    public Object process(String previousState, Object controller, Object parsedMessage) throws ApplicationException {
-        return null;
-    }
-
-    @Override
-    public void onSuccess(WriterManager writerManager, Object response) throws WriteException, TimeOutException {
-
+    public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
     }
 
     @Override

@@ -22,9 +22,7 @@ public interface StateNode {
 
     void checkPreviousState(String previousState) throws StateException;
 
-    Object process(String previousState, Object controller, Object parsedMessage) throws ApplicationException;
-
-    void onSuccess(WriterManager writerManager, Object response) throws WriteException, TimeOutException;
+    void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException;
 
     public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException, TimeOutException;
 }

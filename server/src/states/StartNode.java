@@ -41,15 +41,11 @@ public class StartNode implements StateNode {
     }
 
     @Override
-    public Object process(String previousState, Object controller, Object request) throws ApplicationException {
+    public void process(WriterManager writerManager, Object controller, Object request) throws ApplicationException, WriteException, TimeOutException {
         GameController gameController = (GameController) controller;
-        return gameController.getBet();
-    }
-
-    @Override
-    public void onSuccess(WriterManager writerManager, Object response) throws WriteException, TimeOutException {
+        int bet = gameController.getBet();
         ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
-        w.writeStartBet((Integer) response);
+        w.writeStartBet(bet);
     }
 
     @Override

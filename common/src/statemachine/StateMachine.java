@@ -3,10 +3,12 @@ package statemachine;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
+import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
 import io.ReaderManager;
+import io.WriterManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,11 +80,11 @@ public abstract class StateMachine {
         return mCurrentStateNode;
     }
 
-    public Object getResponseData(ReaderManager readerManager) throws ParseException, ApplicationException, ReadException, TimeOutException {
+    public void processCurrentNode(ReaderManager readerManager, WriterManager writerManager) throws ParseException, ApplicationException, ReadException, TimeOutException, WriteException {
         //Parse the data from the node
         Object parsed = mCurrentStateNode.parseRequestBody(readerManager);
         Object controller = getControllerOf(mCurrentState);
-        return mCurrentStateNode.process(mPreviousState, controller, parsed);
+        mCurrentStateNode.process(writerManager, controller, parsed);
     }
 
 }

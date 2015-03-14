@@ -42,15 +42,11 @@ public class DrawState implements StateNode {
     }
 
     @Override
-    public Object process(String previousState, Object controller, Object parsedMessage) throws ApplicationException {
+    public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
         GameController ctr = (GameController) controller;
-        return ctr.getUserNextCard();
-    }
-
-    @Override
-    public void onSuccess(WriterManager writerManager, Object response) throws WriteException, TimeOutException {
+        Card card = ctr.getUserNextCard();
         ComUtilsWriterManager w = (ComUtilsWriterManager)writerManager;
-        w.writeCard((Card) response);
+        w.writeCard(card);
     }
 
     @Override

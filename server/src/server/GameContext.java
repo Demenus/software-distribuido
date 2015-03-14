@@ -91,8 +91,7 @@ public class GameContext implements Context {
                 candateState = mStateMachine.getNextCandidateState(readerManager);
                 node = mStateMachine.getNextCandidateStateNode(candateState);
                 mStateMachine.checkNextCandidateNode(node,candateState);
-                Object responseData = mStateMachine.getResponseData(readerManager);
-                node.onSuccess(writerManager, responseData);
+                mStateMachine.processCurrentNode(readerManager, writerManager);
                 mErrCount = 0;
                 mConnectionErrCount = 0;
             }  catch (ApplicationException e) {

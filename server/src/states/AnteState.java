@@ -43,16 +43,10 @@ public class AnteState implements StateNode {
     }
 
     @Override
-    public Object process(String previousState, Object controller, Object parsedMessage) throws ApplicationException {
+    public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
         Integer bet = (Integer) parsedMessage;
         GameController ctr = (GameController) controller;
         ctr.increaseBet(bet);
-        return null;
-    }
-
-    @Override
-    public void onSuccess(WriterManager writerManager, Object response) throws WriteException, TimeOutException {
-
     }
 
     @Override
