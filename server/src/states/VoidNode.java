@@ -42,12 +42,12 @@ public class VoidNode implements StateNode {
     }
 
     @Override
-    public void onSuccess(WriterManager responseStream, Object response) throws WriteException {
+    public void onSuccess(WriterManager writerManager, Object response) throws WriteException {
 
     }
 
     @Override
-    public void onError(WriterManager responseStream, ErrType errCode, String message) throws WriteException {
+    public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException {
 
     }
 }

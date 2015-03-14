@@ -3,6 +3,7 @@ package states;
 import constants.States;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
+import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
@@ -46,13 +47,13 @@ public class StartNode implements StateNode {
     }
 
     @Override
-    public void onSuccess(WriterManager writerManager, Object response) throws WriteException {
+    public void onSuccess(WriterManager writerManager, Object response) throws WriteException, TimeOutException {
         ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
         w.writeStartBet((Integer) response);
     }
 
     @Override
-    public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException {
+    public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException, TimeOutException {
         ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
         w.writeError(errCode, message);
     }

@@ -3,10 +3,12 @@ package io;
 import comutils.ComUtils;
 import constants.Commands;
 import exceptions.ErrType;
+import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
 import gamelayer.model.Card;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 /**
  * Created by aaron on 08/03/2015.
@@ -20,9 +22,11 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
     }
 
     @Override
-    public void runWriteOperation(WriteOperation<ComUtils.Writer> operation) throws WriteException {
+    public void runWriteOperation(WriteOperation<ComUtils.Writer> operation) throws WriteException, TimeOutException {
         try {
             operation.write(mWriter);
+        } catch (SocketTimeoutException e) {
+            throw new TimeOutException();
         } catch (IOException e) {
             throw new WriteException();
         } catch (RuntimeException e) {
@@ -30,7 +34,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         }
     }
 
-    public void writeStartBet(final int bet) throws WriteException {
+    public void writeStartBet(final int bet) throws WriteException, TimeOutException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
             public void write(ComUtils.Writer writer) throws IOException {
@@ -41,7 +45,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
-    public void writeError(final ErrType errCode, final String message) throws WriteException {
+    public void writeError(final ErrType errCode, final String message) throws WriteException, TimeOutException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
             public void write(ComUtils.Writer writer) throws IOException {
@@ -59,7 +63,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
-    public void writeExceededErrors() throws WriteException {
+    public void writeExceededErrors() throws WriteException, TimeOutException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
             public void write(ComUtils.Writer writer) throws IOException {
@@ -77,7 +81,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
-    public void writeCard(final Card card) throws WriteException {
+    public void writeCard(final Card card) throws WriteException, TimeOutException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
             public void write(ComUtils.Writer writer) throws IOException {

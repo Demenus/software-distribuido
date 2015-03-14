@@ -9,5 +9,6 @@ public enum ErrType {
     WRITE_ERROR,
     COMMAND_ERROR,
     PARSE_ERROR,
-    STATE_ERROR
+    STATE_ERROR,
+    TIMEOUT_ERROR
 }

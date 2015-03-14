@@ -2,6 +2,7 @@ package statemachine;
 
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
+import exceptions.connectionexceptions.TimeOutException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
@@ -58,7 +59,7 @@ public abstract class StateMachine {
         return mCurrentStateNode;
     }
 
-    public String getNextCandidateState(ReaderManager readerManager) throws CommandException, ReadException {
+    public String getNextCandidateState(ReaderManager readerManager) throws CommandException, ReadException, TimeOutException {
         return mParser.getStateFromCommand(readerManager);
     }
 
@@ -77,7 +78,7 @@ public abstract class StateMachine {
         return mCurrentStateNode;
     }
 
-    public Object getResponseData(ReaderManager readerManager) throws ParseException, ApplicationException, ReadException {
+    public Object getResponseData(ReaderManager readerManager) throws ParseException, ApplicationException, ReadException, TimeOutException {
         //Parse the data from the node
         Object parsed = mCurrentStateNode.parseRequestBody(readerManager);
         Object controller = getControllerOf(mCurrentState);

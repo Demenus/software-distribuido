@@ -5,6 +5,7 @@ import context.Context;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
+import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
@@ -111,6 +112,8 @@ public class GameContext implements Context {
                 onError(writerManager, e.getErrType(), e.getMessage());
             } catch (WriteException e) {
                 onError(writerManager, e.getErrType(), e.getMessage());
+            } catch (TimeOutException e) {
+                onError(writerManager, e.getErrType(), e.getMessage());
             }
         }
         closeConnection();
@@ -136,14 +139,18 @@ public class GameContext implements Context {
 
     @Override
     public boolean isValidContext() {
-        return mSocket.isConnected() && mConnectionErrCount <= sMaxConnectionErrors && mErrCount <= sMaxErrors;
+        return !mSocket.isClosed() && mConnectionErrCount <= sMaxConnectionErrors && mErrCount <= sMaxErrors;
     }
 
     @Override
     public void onError(WriterManager writerManager, ErrType errType, String message) {
         try {
             ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
-            if (errType == ErrType.WRITE_ERROR || errType == ErrType.READ_ERROR) {
+            if (errType == ErrType.TIMEOUT_ERROR) {
+                //w.writeError(errType, message);
+                //closeConnection();
+            }
+            else if (errType == ErrType.WRITE_ERROR || errType == ErrType.READ_ERROR) {
                 if (!isValidContext()) {
                     closeConnection();
                 }
@@ -166,6 +173,8 @@ public class GameContext implements Context {
                 }
             }
         } catch (WriteException e) {
+            closeConnection();
+        } catch (TimeOutException e) {
             closeConnection();
         }
     }

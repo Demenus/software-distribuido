@@ -2,9 +2,10 @@ package io;
 
 import comutils.ComUtils;
 import exceptions.connectionexceptions.ReadException;
-import io.ReaderManager;
+import exceptions.connectionexceptions.TimeOutException;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 /**
  * Created by aaron on 08/03/2015.
@@ -18,9 +19,11 @@ public class ComUtilsReaderManager implements ReaderManager<ComUtils.Reader> {
     }
 
     @Override
-    public Object runReadOperation(ReadOperation<ComUtils.Reader> operation) throws ReadException {
+    public Object runReadOperation(ReadOperation<ComUtils.Reader> operation) throws ReadException, TimeOutException {
         try {
             return operation.read(mReader);
+        } catch (SocketTimeoutException e) {
+            throw new TimeOutException();
         } catch (IOException e) {
             throw new ReadException();
         } catch (IndexOutOfBoundsException e) {
@@ -28,7 +31,7 @@ public class ComUtilsReaderManager implements ReaderManager<ComUtils.Reader> {
         }
     }
 
-    public String readCommand() throws ReadException {
+    public String readCommand() throws ReadException, TimeOutException {
         Object command = runReadOperation(new ReadOperation<ComUtils.Reader>() {
             @Override
             public Object read(ComUtils.Reader reader) throws IOException, IndexOutOfBoundsException {
@@ -36,5 +39,16 @@ public class ComUtilsReaderManager implements ReaderManager<ComUtils.Reader> {
             }
         });
         return (String) command;
+    }
+
+    public int readBet() throws ReadException, TimeOutException {
+        Object bet = runReadOperation(new ReadOperation<ComUtils.Reader>() {
+            @Override
+            public Object read(ComUtils.Reader reader) throws IOException, IndexOutOfBoundsException {
+                reader.read_char();
+                return reader.read_int32();
+            }
+        });
+        return (Integer) bet;
     }
 }

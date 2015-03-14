@@ -8,4 +8,5 @@ public class States {
     public static final String START_STATE = "START";
     public static final String ANTE_STATE = "ANTE";
     public static final String DRAW_STATE = "DRAW";
+    public static final String PASS_STATE = "PASS";
 }

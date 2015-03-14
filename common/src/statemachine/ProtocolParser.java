@@ -1,6 +1,7 @@
 package statemachine;
 
 import exceptions.connectionexceptions.ReadException;
+import exceptions.connectionexceptions.TimeOutException;
 import exceptions.protocolexceptions.CommandException;
 import io.ReaderManager;
 
@@ -9,6 +10,6 @@ import io.ReaderManager;
  */
 public interface ProtocolParser {
 
-    public String getStateFromCommand(ReaderManager readerManager) throws CommandException, ReadException;
+    public String getStateFromCommand(ReaderManager readerManager) throws CommandException, ReadException, TimeOutException;
 
 }

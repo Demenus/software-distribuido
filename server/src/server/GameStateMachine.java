@@ -4,6 +4,7 @@ import constants.States;
 import gamelayer.GameController;
 import statemachine.StateMachine;
 import statemachine.StateNode;
+import states.AnteState;
 import states.DrawState;
 import states.StartNode;
 import states.VoidNode;
@@ -30,6 +31,7 @@ public class GameStateMachine extends StateMachine{
         controllers.put(States.VOID_STATE, mGameController);
         controllers.put(States.START_STATE, mGameController);
         controllers.put(States.DRAW_STATE, mGameController);
+        controllers.put(States.ANTE_STATE, mGameController);
     }
 
     @Override
@@ -37,6 +39,7 @@ public class GameStateMachine extends StateMachine{
         states.put(States.VOID_STATE, new VoidNode());
         states.put(States.START_STATE, new StartNode());
         states.put(States.DRAW_STATE, new DrawState());
+        states.put(States.ANTE_STATE, new AnteState());
     }
 
 }

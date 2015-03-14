@@ -1,10 +1,11 @@
 package server;
 
-import io.ComUtilsReaderManager;
 import constants.Commands;
 import constants.States;
 import exceptions.connectionexceptions.ReadException;
+import exceptions.connectionexceptions.TimeOutException;
 import exceptions.protocolexceptions.CommandException;
+import io.ComUtilsReaderManager;
 import io.ReaderManager;
 import statemachine.ProtocolParser;
 
@@ -13,7 +14,7 @@ import statemachine.ProtocolParser;
  */
 public class GameProtocolParser implements ProtocolParser {
     @Override
-    public String getStateFromCommand(ReaderManager readerManager) throws CommandException, ReadException {
+    public String getStateFromCommand(ReaderManager readerManager) throws CommandException, ReadException, TimeOutException {
         //We read the command
         ComUtilsReaderManager re = (ComUtilsReaderManager) readerManager;
         String command = re.readCommand();
