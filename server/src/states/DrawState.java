@@ -15,10 +15,12 @@ import io.ReaderManager;
 import io.WriterManager;
 import statemachine.StateNode;
 
-/**
- * Created by aaron on 26/02/2015.
- */
+import java.util.List;
+
 public class DrawState implements StateNode {
+
+    private boolean mFinalState = false;
+
     @Override
     public String getState() {
         return States.DRAW_STATE;
@@ -26,7 +28,7 @@ public class DrawState implements StateNode {
 
     @Override
     public boolean isFinalState() {
-        return false;
+        return mFinalState;
     }
 
     @Override
@@ -43,10 +45,21 @@ public class DrawState implements StateNode {
 
     @Override
     public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
+        ComUtilsWriterManager w = (ComUtilsWriterManager)writerManager;
         GameController ctr = (GameController) controller;
         Card card = ctr.getUserNextCard();
-        ComUtilsWriterManager w = (ComUtilsWriterManager)writerManager;
-        w.writeCard(card);
+        if (ctr.userHasLost()) {
+            mFinalState = true;
+            ctr.playServer();
+            List<Card> cards = ctr.getServerCards();
+            float score = ctr.getServerScore();
+            int gain = ctr.getGain();
+            w.writeBusting();
+            w.writeBankScore(cards, score);
+            w.writeGain(gain);
+        } else {
+            w.writeCard(card);
+        }
     }
 
     @Override

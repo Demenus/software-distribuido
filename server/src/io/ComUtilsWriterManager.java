@@ -9,10 +9,10 @@ import gamelayer.model.Card;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.List;
+import java.util.Locale;
 
-/**
- * Created by aaron on 08/03/2015.
- */
+
 public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
 
     private ComUtils.Writer mWriter;
@@ -88,6 +88,49 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
                 writer.write_string(Commands.CARD);
                 writer.write_char(' ');
                 writer.write_string(card.toString());
+            }
+        });
+    }
+
+    public void writeBusting() throws TimeOutException, WriteException {
+        runWriteOperation(new WriteOperation<ComUtils.Writer>() {
+            @Override
+            public void write(ComUtils.Writer writer) throws IOException {
+                writer.write_string(Commands.BUSTING);
+            }
+        });
+    }
+
+    public void writeBankScore(final List<Card> cards, final float score) throws TimeOutException, WriteException {
+        runWriteOperation(new WriteOperation<ComUtils.Writer>() {
+            @Override
+            public void write(ComUtils.Writer writer) throws IOException {
+                writer.write_string(Commands.BANK_SCORE);
+                writer.write_char(' ');
+                writer.write_int32(cards.size());
+                for (Card card : cards) {
+                    writer.write_string(card.toString());
+                }
+                writer.write_char(' ');
+                //String scoreStr = String.format("%.1f", score);
+                String scoreStr;
+                if (score < 10) {
+                    scoreStr = "0"+String.format(Locale.ENGLISH, "%.1f", score);
+                } else {
+                    scoreStr = String.format(Locale.ENGLISH, "%.1f", score);
+                }
+                writer.write_string(scoreStr);
+            }
+        });
+    }
+
+    public void writeGain(final int gain) throws TimeOutException, WriteException {
+        runWriteOperation(new WriteOperation<ComUtils.Writer>() {
+            @Override
+            public void write(ComUtils.Writer writer) throws IOException {
+                writer.write_string(Commands.GAINS);
+                writer.write_char(' ');
+                writer.write_int32(gain);
             }
         });
     }

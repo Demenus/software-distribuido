@@ -8,9 +8,6 @@ import gamelayer.model.UserGame;
 
 import java.util.List;
 
-/**
- * Created by aaron on 08/03/2015.
- */
 public class GameController {
 
     private int mBet;
@@ -41,16 +38,42 @@ public class GameController {
         return mBet;
     }
 
-    public int getGain() {
-        float userScore = mUserGame.getScore();
-        float serverScore = mServerGame.getScore();
-        if (userScore < serverScore) {
-            return -mBet;
-        } else if (userScore > serverScore) {
-            return mBet;
-        } else {
+    public int getGain() throws ApplicationException {
+        //Empate 0 OK
+        //Ambos pierden OK
+        //Si usuario gana con 7.5 y server pierde +2*bet OK
+        //Si usuario gana y server pierde +bet OK
+        //Si usuario pierde -bet OK
+        if (mUserGame.hasLost() && mServerGame.hasLost()) {
             return 0;
         }
+        if (mUserGame.hasLost() && !mServerGame.hasLost()) {
+            return -mBet;
+        }
+        float userScore = mUserGame.getScore();
+        float serverScore = mServerGame.getScore();
+        if (!mUserGame.hasLost() && mServerGame.hasLost()) {
+            if (Math.abs(userScore-7.5f) < 0.0001) {
+                return 2*mBet;
+            } else {
+                return mBet;
+            }
+        }
+        if (Math.abs(userScore-serverScore) < 0.0001) {
+            return 0;
+        }
+        if (!mUserGame.hasLost() && !mServerGame.hasLost()) {
+            if (userScore > serverScore) {
+                return mBet;
+            }
+            if (userScore < serverScore) {
+                return -mBet;
+            }
+            if (Math.abs(userScore-serverScore) < 0.0001) {
+                return 0;
+            }
+        }
+        throw new ApplicationException("Error getting the gain");
     }
 
 

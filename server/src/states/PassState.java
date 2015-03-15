@@ -8,14 +8,12 @@ import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
+import gamelayer.GameController;
 import io.ComUtilsWriterManager;
 import io.ReaderManager;
 import io.WriterManager;
 import statemachine.StateNode;
 
-/**
- * Created by aaron on 13/03/2015.
- */
 public class PassState implements StateNode {
     @Override
     public String getState() {
@@ -41,6 +39,11 @@ public class PassState implements StateNode {
 
     @Override
     public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
+        ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
+        GameController ctr = (GameController) controller;
+        ctr.playServer();
+        w.writeBankScore(ctr.getServerCards(), ctr.getServerScore());
+        w.writeGain(ctr.getGain());
     }
 
     @Override

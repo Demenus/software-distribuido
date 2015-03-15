@@ -2,9 +2,6 @@ package comutils;
 
 import java.io.*;
 
-/**
- * Created by aaron on 24/02/2015.
- */
 public class ComUtils {
     /* Passar d'enters a bytes */
     private static int int32ToBytes(int number,byte bytes[], String endianess)
@@ -73,7 +70,7 @@ public class ComUtils {
 
             str = String.valueOf(cStr);
 
-            return str.trim();
+            return str;
         }
 
         //llegir bytes.
@@ -154,7 +151,7 @@ public class ComUtils {
         }
 
         public void write_char(char c) throws IOException {
-            dos.write(c);
+            dos.write((byte)c);
         }
 
         /* Escriure un string mida variable, size = nombre de bytes especifica la longitud  */

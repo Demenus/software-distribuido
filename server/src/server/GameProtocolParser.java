@@ -9,9 +9,7 @@ import io.ComUtilsReaderManager;
 import io.ReaderManager;
 import statemachine.ProtocolParser;
 
-/**
- * Created by aaron on 26/02/2015.
- */
+
 public class GameProtocolParser implements ProtocolParser {
     @Override
     public String getStateFromCommand(ReaderManager readerManager) throws CommandException, ReadException, TimeOutException {
@@ -25,6 +23,8 @@ public class GameProtocolParser implements ProtocolParser {
             return States.DRAW_STATE;
         } else if (command.equalsIgnoreCase(Commands.ANTE)) {
             return States.ANTE_STATE;
+        } else if (command.equalsIgnoreCase(Commands.PASS)) {
+            return States.PASS_STATE;
         } else {
             throw new CommandException(command);
         }

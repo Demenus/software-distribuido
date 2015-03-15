@@ -4,16 +4,11 @@ import constants.States;
 import gamelayer.GameController;
 import statemachine.StateMachine;
 import statemachine.StateNode;
-import states.AnteState;
-import states.DrawState;
-import states.StartNode;
-import states.VoidNode;
+import states.*;
 
 import java.util.Map;
 
-/**
- * Created by aaron on 24/02/2015.
- */
+
 public class GameStateMachine extends StateMachine{
 
     private GameController mGameController;
@@ -32,6 +27,7 @@ public class GameStateMachine extends StateMachine{
         controllers.put(States.START_STATE, mGameController);
         controllers.put(States.DRAW_STATE, mGameController);
         controllers.put(States.ANTE_STATE, mGameController);
+        controllers.put(States.PASS_STATE, mGameController);
     }
 
     @Override
@@ -40,6 +36,7 @@ public class GameStateMachine extends StateMachine{
         states.put(States.START_STATE, new StartNode());
         states.put(States.DRAW_STATE, new DrawState());
         states.put(States.ANTE_STATE, new AnteState());
+        states.put(States.PASS_STATE, new PassState());
     }
 
 }
