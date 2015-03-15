@@ -6,13 +6,7 @@ package vista;
 
 import comutils.ComUtils;
 import controlador.Controlador;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -20,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class Client_con {
     ComUtils comUtils;
-    private static void menu(){
+    private static void menuGame(){
         System.out.println("Menu");
         System.out.println("---------------------------------------------------");
         System.out.println("1.Player mode - Start new game");
@@ -29,34 +23,54 @@ public class Client_con {
         System.out.println("---------------------------------------------------");
         System.out.println("Please enter a integer number to choosse one of the above options:");
     }
+    private static void menuStartNewGame(){
+        System.out.println("Menu");
+        System.out.println("---------------------------------------------------");
+        System.out.println("1.Start new game");
+        System.out.println("2.Exit");
+        System.out.println("---------------------------------------------------");
+        System.out.println("Please enter a integer number to choosse one of the above options:");
+    }
+    
     public static void main(String args[]) {
-        int op;
-        Socket socket =null;
-        Controlador controller=new Controlador(socket);
-        try {
-            socket = new Socket("127.0.0.1", 1212);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(Client_con.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Client_con.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        ComUtils comUtils=new ComUtils(socket);
+        String op;
         Scanner sc = new Scanner(System.in);
-        menu();
-        op=sc.nextInt();
-        while(op<1 || op>3){
+        menuStartNewGame();
+        op=sc.next();
+        while(!op.equals("1") && !op.equals("2")){
             System.out.println("Input ERROR! ");
-            menu();
-        }
+            menuStartNewGame();
+            op=sc.next();
+        }        
         switch(op){
-            case 1:
-                Game game=new Game(socket,comUtils,50,controller);
+            case "1":
+               
+                Controlador controller=new Controlador("10.111.42.",1234);
+                if(controller.isConnected()){
+                    System.out.println("We have just connected to the server.");
+                    menuGame();
+                    while(!op.equals("1") && !op.equals("2") && !op.equals("3")){
+                        System.out.println("Input ERROR! ");
+                        menuGame();
+                        op=sc.next();
+                    }      
+                    if(op.equals("3")){
+                        controller.disconnect();
+                    }else{
+                        if(op.equals("1")){
+                            Game_con game=new Game_con(controller,1,sc);
+                        }else{
+                            Game_con game=new Game_con(controller,2,sc);
+                        }
+                    }
+                }else{
+                    System.out.println("It is not possible to connect to the server!");
+                }
                 break;
-            case 2:
-                break;
-            case 3:
+            case "2":
                 break;
         }
+        
       
         
         
