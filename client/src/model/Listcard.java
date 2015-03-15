@@ -1,0 +1,58 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ *
+ * @author Huang
+ */
+public class Listcard {
+    private ArrayList<Card> cards;
+
+    public Listcard( ) {
+        this.cards = new ArrayList();
+    }
+    public void addCard(Card newcard){
+        this.cards.add(newcard);
+    }
+    public void removeCard(Card card){
+        this.cards.remove(card);
+    }
+    public void setdeck(){
+        Card card;
+        int i;
+        for(i=1; i<=10; i++){
+            card=new Card(i,Card.Palo.O);
+            this.cards.add(card);
+            card=new Card(i,Card.Palo.B);
+            this.cards.add(card);
+            card=new Card(i,Card.Palo.E);
+            this.cards.add(card);
+            card=new Card(i,Card.Palo.C);
+            this.cards.add(card);
+        }
+    }
+
+    public boolean verify_estate() {
+        Iterator it=this.cards.iterator();
+        Card card;
+        int value=0;
+        boolean estate=true;
+        while(it.hasNext()){
+            card=(Card) it.next();
+            value=value+card.getValue();
+        }
+        if(value>=7.5){
+            estate=false;
+        }
+        return estate;
+    }
+    
+    
+    
+}
