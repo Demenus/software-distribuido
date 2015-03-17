@@ -17,34 +17,29 @@ public class Card {
         E, 
         C
     }
-    private int value;
+    private double value;
     private Palo palo;
 
-    public Card(int value, Palo palo) {
-        this.value = value;
+    public Card(double value, Palo palo) {
+        if(value>7){
+            this.value=0.5;
+        }else{
+            this.value = value;  
+        }
+        
         this.palo = palo;
     }
     public void setValue(String v){
         if(v!="s" && v!="c" && v!="r"){
-            this.value=Integer.parseInt(v);
+            this.value=(double)Integer.parseInt(v);
         }else{
-            switch (v){
-                case "s":
-                    this.value=8;
-                    break;
-                case "c":
-                    this.value=9;
-                    break;
-                case "r":
-                    this.value=10;
-                    break;
-            }
+            this.value=0.5;
         }
     }
     public void setPalo(Palo p){
         this.palo=p;
     }
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 

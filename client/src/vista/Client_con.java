@@ -45,7 +45,7 @@ public class Client_con {
         switch(op){
             case "1":
                
-                Controlador controller=new Controlador("10.111.42.",1234);
+                Controlador controller=new Controlador("127.0.0.1",8000);
                 if(controller.isConnected()){
                     System.out.println("We have just connected to the server.");
                     menuGame();

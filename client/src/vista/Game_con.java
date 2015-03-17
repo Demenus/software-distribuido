@@ -54,7 +54,7 @@ public class Game_con {
                         op="4";
                         break;
             }
-            
+           op=sc.next(); 
         }
     }
 

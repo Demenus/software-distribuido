@@ -41,7 +41,7 @@ public class Listcard {
     public boolean verify_estate() {
         Iterator it=this.cards.iterator();
         Card card;
-        int value=0;
+        double value=0;
         boolean estate=true;
         while(it.hasNext()){
             card=(Card) it.next();

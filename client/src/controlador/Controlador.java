@@ -54,7 +54,7 @@ public class Controlador {
     public void removeCard(Listcard listcard,Card card){
         listcard.removeCard(card);
     }
-    public int getCardValue(Card card){
+    public double getCardValue(Card card){
         return card.getValue();
     }
 
@@ -135,7 +135,7 @@ public class Controlador {
         String cards="";
         String score="";
         char point;
-        int scr;
+        String scr;
         int gain;
         this.comUtils.sendMessageString("PASS");
         answer = comUtils.receiveMessageString(4);
@@ -143,19 +143,14 @@ public class Controlador {
         cardnumber=comUtils.receiveMessageInt();
         cards=comUtils.receiveMessageString(cardnumber*2);
         charact=comUtils.receiveMessageChar();
-        scr=comUtils.receiveMessageInt();
-        score+=scr;
-        scr=comUtils.receiveMessageInt();
-        score+=scr;
-        point=comUtils.receiveMessageChar();
-        score+=point;
-        scr=comUtils.receiveMessageInt();
-        score+=scr;
+        score=comUtils.receiveMessageString(4);
+        
+        
         this.answer=answer.toLowerCase();
         if(!answer.equals("bksc") || this.answer.equals("erro") || this.charact!=' '){
             System.out.println("Error! The server hasn't sent to us a correct protocol.");
         }else{
-            res=res+"You've got "+cardnumber+" cards which are: "+cards+".\n Your score is: "+score+"\n";
+            res=res+"The server has got "+cardnumber+" cards which are: "+cards+".\n The server score is: "+score+"\n";
             answer=comUtils.receiveMessageString(4);
             this.answer=answer.toLowerCase();
             charact=comUtils.receiveMessageChar();
