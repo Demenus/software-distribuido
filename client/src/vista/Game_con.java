@@ -26,27 +26,29 @@ public class Game_con {
     }
 
     private void player_mode() {
-        int minim_bet;
+        int current_bet;
         Card card;
         String op;
         double betupAmount=0.0;
         double aux=0.0;
-        minim_bet=this.controller.startNewGame_client();
-        menu(minim_bet);
+        this.controller.startNewGame_client();
+        current_bet=this.controller.getCurrentBet();
+        menu(current_bet);
         op=sc.next();
         while(!op.equals("4")){
             switch(op){
                 case "1":
                         card=this.controller.newCard_client();
                         System.out.println(card.toString());
-                        menu(betupAmount);
+                        current_bet=this.controller.getCurrentBet();
+                        menu(current_bet);
                         break;
                 case "2":
-                        System.out.println("Introduce the amount of bet:");
-                        aux=sc.nextDouble();
+                        System.out.println("Introduce the amount of bet(Integer Value):");
+                        aux=sc.nextInt();
                         this.controller.betUp_client(aux);
-                        betupAmount+=aux;
-                        menu(betupAmount);
+                        current_bet=this.controller.getCurrentBet();
+                        menu(current_bet);
                         break;
                 case "3":
                         String result=this.controller.pass();
@@ -54,12 +56,12 @@ public class Game_con {
                         op="4";
                         break;
             }
+            
            op=sc.next(); 
         }
     }
 
     private void automatic_mode() {
-        int mini_bet;
         this.controller.startNewGame_client();
     }
 

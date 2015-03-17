@@ -50,7 +50,7 @@ public class Card {
     
     public static Card parseCard(String cardStr) {
         Card car=null;
-        int va=0;
+        double va=0;
         char value = cardStr.charAt(0);
         char palo = cardStr.toLowerCase().charAt(1);
         switch(value){
@@ -76,16 +76,16 @@ public class Card {
                 va=7;
                 break;
             case 's':
-                va=8;
+                va=0.5;
                 break;
             case 'c':
-                va=9;
+                va=0.5;
                 break;
             case 'r':
-                va=10;
+                va=0.5;
                 break;  
         }
-        if(va>=1 && va<=10){
+        if(va>=0.5 && va<=7.0){
             switch (palo){
                 case 'o':
                     car=new Card(va,Palo.O);

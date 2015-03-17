@@ -24,6 +24,7 @@ public class Controlador {
     String answer;
     Listcard listcard;
     char charact;
+    int current_bet;
  
 
     public Controlador(String ip, int port) {
@@ -38,6 +39,7 @@ public class Controlador {
         this.answer="";
         this.charact=' ';
         this.listcard=new Listcard();
+        current_bet=0;
         
     }
     public boolean isConnected(){
@@ -75,20 +77,20 @@ public class Controlador {
         }
     }
 
-    public int startNewGame_client() {
-        int minim_bet_amount;
+    public void startNewGame_client() {
+
         comUtils.sendMessageString("STRT");
 
         /* Read an answer from the server */
         answer = comUtils.receiveMessageString(4);
         charact=comUtils.receiveMessageChar();
-        minim_bet_amount=comUtils.receiveMessageInt();
+        this.current_bet=comUtils.receiveMessageInt();
+        
         answer=answer.toLowerCase();
         if (!answer.equals("stbt") || this.answer.equals("erro") || charact!=' '){
              System.out.println("No he rebut una bona resposta, sino un " + answer);
              System.exit(1);
         }
-        return minim_bet_amount;
     }
     
 
@@ -176,7 +178,11 @@ public class Controlador {
             System.out.println("This option is not enable now. Please try it after asking for new card.");
         }else{
             this.comUtils.sendMessageString("ANTE"+" "+betupAmount);
+            this.current_bet+=betupAmount;
         }
+    }
+    public int getCurrentBet(){     
+        return this.current_bet;
     }
 
    

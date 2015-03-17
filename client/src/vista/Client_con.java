@@ -49,6 +49,7 @@ public class Client_con {
                 if(controller.isConnected()){
                     System.out.println("We have just connected to the server.");
                     menuGame();
+                    op=sc.next();
                     while(!op.equals("1") && !op.equals("2") && !op.equals("3")){
                         System.out.println("Input ERROR! ");
                         menuGame();
