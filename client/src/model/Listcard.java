@@ -23,6 +23,7 @@ public class Listcard {
     public void removeCard(Card card){
         this.cards.remove(card);
     }
+    /*
     public void setdeck(){
         Card card;
         int i;
@@ -37,7 +38,7 @@ public class Listcard {
             this.cards.add(card);
         }
     }
-
+*/
     public boolean verify_estate() {
         Iterator it=this.cards.iterator();
         Card card;

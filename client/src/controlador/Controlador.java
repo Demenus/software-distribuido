@@ -45,11 +45,11 @@ public class Controlador {
     public boolean isConnected(){
         return this.socket.isConnected();
     }
-    public Listcard getDeck(){
+    /*public Listcard getDeck(){
         Listcard listcards=new Listcard();
         listcards.setdeck();
         return listcards;
-    }
+    }*/
     public void addNewCard(Card card){
         this.listcard.addCard(card);
     } 
@@ -102,12 +102,12 @@ public class Controlador {
         String p;
         comUtils.sendMessageString("DRAW");
 
-        answer = comUtils.receiveMessageString(4);
+        answer = comUtils.receiveMessageString(4); 
         charact=comUtils.receiveMessageChar();
         d=comUtils.receiveMessageString(1);
         p=comUtils.receiveMessageString(1);
         this.answer=answer.toLowerCase();
-        if (!this.answer.equals("card") || charact!=' '){
+        if (!this.answer.equals("card") || charact!=' ' || this.answer.equals("erro")){
              System.out.println("No he rebut una bona resposta, sino un " + this.answer);
         }else{
             carta=Card.parseCard(d+""+p);
@@ -122,6 +122,7 @@ public class Controlador {
                answer = comUtils.receiveMessageString(4);
                this.answer=answer.toLowerCase();
                if (!this.answer.equals("bstg")){
+                    System.out.println("This answer is: "+this.answer);
                     System.out.println("¡ERROR!Something has gone wrong. We are expecting the answer 'BUSTING'!");
                }else{
                    System.out.print(pass());
@@ -157,6 +158,7 @@ public class Controlador {
             this.answer=answer.toLowerCase();
             charact=comUtils.receiveMessageChar();
             gain=comUtils.receiveMessageInt();
+            //IMPRIMER THIS.LISTCARD TOSTRING
             if(!this.answer.equals("gain") || this.answer.equals("erro") || charact!=' '){
                 System.out.println("Error! The server hasn't sent to us a correct protocol.");
             }else{

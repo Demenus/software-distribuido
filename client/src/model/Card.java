@@ -18,23 +18,29 @@ public class Card {
         C
     }
     private double value;
+    private String figure;
     private Palo palo;
 
-    public Card(double value, Palo palo) {
-        if(value>7){
-            this.value=0.5;
+    public Card(String figure, Palo palo) {
+        this.figure=figure;
+        if(!figure.equals("s") && !figure.equals("c") && !figure.equals("r")){
+            this.value=Integer.parseInt(figure);
         }else{
-            this.value = value;  
+            this.value=0.5;
         }
         
         this.palo = palo;
     }
-    public void setValue(String v){
-        if(v!="s" && v!="c" && v!="r"){
+    public void setFigureValue(String v){
+        this.figure=v;
+        if(!v.equals("s") && !v.equals("c") && !v.equals("r")){
             this.value=(double)Integer.parseInt(v);
         }else{
             this.value=0.5;
         }
+    }
+    public String getFigure(){
+        return this.figure;
     }
     public void setPalo(Palo p){
         this.palo=p;
@@ -85,19 +91,20 @@ public class Card {
                 va=0.5;
                 break;  
         }
+        
         if(va>=0.5 && va<=7.0){
             switch (palo){
                 case 'o':
-                    car=new Card(va,Palo.O);
+                    car=new Card(Character.toString(value),Palo.O);
                     break;
                 case 'b':
-                    car=new Card(va,Palo.B);
+                    car=new Card(Character.toString(value),Palo.B);
                     break;
                 case 'e':
-                    car=new Card(va,Palo.E);
+                    car=new Card(Character.toString(value),Palo.E);
                     break;
                 case 'c':
-                    car=new Card(va,Palo.C);
+                    car=new Card(Character.toString(value),Palo.C);
                     break;
             }          
         }
@@ -106,7 +113,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" + "value=" + value + ", palo=" + palo + '}';
+        return "Card{" + "value=" + figure + ", palo=" + palo + '}';
     }
     
     
