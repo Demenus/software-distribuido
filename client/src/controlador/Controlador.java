@@ -151,14 +151,14 @@ public class Controlador {
         
         this.answer=answer.toLowerCase();
         if(!answer.equals("bksc") || this.answer.equals("erro") || this.charact!=' '){
-            System.out.println("Error! The server hasn't sent to us a correct protocol.");
+            System.out.println("Error! The server hasn't sent us a correct protocol.");
         }else{
+            res=res+this.listcard.getGamenInformation()+"\n";
             res=res+"The server has got "+cardnumber+" cards which are: "+cards+".\n The server score is: "+score+"\n";
             answer=comUtils.receiveMessageString(4);
             this.answer=answer.toLowerCase();
             charact=comUtils.receiveMessageChar();
             gain=comUtils.receiveMessageInt();
-            //IMPRIMER THIS.LISTCARD TOSTRING
             if(!this.answer.equals("gain") || this.answer.equals("erro") || charact!=' '){
                 System.out.println("Error! The server hasn't sent to us a correct protocol.");
             }else{
@@ -185,6 +185,9 @@ public class Controlador {
     }
     public int getCurrentBet(){     
         return this.current_bet;
+    }
+    public double getCurrentPoints(){
+        return this.listcard.getCurrentPoints();
     }
 
    

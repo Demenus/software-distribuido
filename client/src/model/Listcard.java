@@ -53,6 +53,32 @@ public class Listcard {
         }
         return estate;
     }
+    public double getCurrentPoints(){
+        Iterator it=this.cards.iterator();
+        Card card;
+        double value=0;
+         while(it.hasNext()){
+            card=(Card)it.next();
+            value+=card.getValue();
+         }
+         return value;
+    }
+    public String getGamenInformation() {
+        Iterator it=this.cards.iterator();
+        Card card;
+        int count=0;
+        String information="";
+        String result;
+        double value=0;
+        while(it.hasNext()){
+            card=(Card)it.next();
+            count++;
+            information=information+card.getFigure()+card.getPalo()+" ";
+            value+=card.getValue();
+        }
+        result="You got "+count+" card,which are: "+information+".You got "+value+" points.";
+        return result;
+    }
     
     
     

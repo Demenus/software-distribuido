@@ -33,7 +33,7 @@ public class Game_con {
         double aux=0.0;
         this.controller.startNewGame_client();
         current_bet=this.controller.getCurrentBet();
-        menu(current_bet);
+        menu(current_bet, this.controller.getCurrentPoints());
         op=sc.next();
         while(!op.equals("4")){
             switch(op){
@@ -41,14 +41,14 @@ public class Game_con {
                         card=this.controller.newCard_client();
                         System.out.println(card.toString());
                         current_bet=this.controller.getCurrentBet();
-                        menu(current_bet);
+                        menu(current_bet,this.controller.getCurrentPoints());
                         break;
                 case "2":
                         System.out.println("Introduce the amount of bet(Integer Value):");
                         aux=sc.nextInt();
                         this.controller.betUp_client(aux);
                         current_bet=this.controller.getCurrentBet();
-                        menu(current_bet);
+                        menu(current_bet,this.controller.getCurrentPoints());
                         break;
                 case "3":
                         String result=this.controller.pass();
@@ -56,8 +56,9 @@ public class Game_con {
                         op="4";
                         break;
             }
-            
-           op=sc.next(); 
+            if(!op.equals("4")){
+                op=sc.next(); 
+            }   
         }
     }
 
@@ -65,8 +66,8 @@ public class Game_con {
         this.controller.startNewGame_client();
     }
 
-    private void menu(double betamount) {
-        System.out.println("Current bet amount: "+betamount);
+    private void menu(double betamount,double currentpoint) {
+        System.out.println("Current bet amount: "+betamount+ ". Current got points: "+currentpoint);
         System.out.println("------------------------------------------------------------");
         System.out.println("Choose one of the below options introducing integer number: ");
         System.out.println("1. New card");
