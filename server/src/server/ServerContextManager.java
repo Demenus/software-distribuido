@@ -43,7 +43,7 @@ public class ServerContextManager implements ContextManager {
                 while (mRun) {
                     try {
                         Socket socket = mServerSocket.accept();
-                        bindContextToSocket(socket);
+                        bindContextToSocket(socket);//Start new game.
                     } catch (SocketException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

@@ -27,7 +27,7 @@ public class Game_con {
 
     private void player_mode() {
         int current_bet;
-        Card card;
+        String cardinformation;
         String op;
         double betupAmount=0.0;
         double aux=0.0;
@@ -38,10 +38,15 @@ public class Game_con {
         while(!op.equals("4")){
             switch(op){
                 case "1":
-                        card=this.controller.newCard_client();
-                        System.out.println(card.toString());
-                        current_bet=this.controller.getCurrentBet();
-                        menu(current_bet,this.controller.getCurrentPoints());
+                        cardinformation=this.controller.newCard_client();
+                        System.out.println(cardinformation);
+                        if(cardinformation.length()>25 || cardinformation.equals("error")){
+                            op="4";
+                        }else{
+                            current_bet=this.controller.getCurrentBet();
+                            menu(current_bet,this.controller.getCurrentPoints());
+                        }
+                        
                         break;
                 case "2":
                         System.out.println("Introduce the amount of bet(Integer Value):");

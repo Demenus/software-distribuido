@@ -128,6 +128,11 @@ public class GameContext implements Context {
     public void closeConnection() {
         log.log(Level.INFO, "Clossing connection of: "+Thread.currentThread().getName());
         try {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GameContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
             mSocket.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -12,6 +12,12 @@ import java.util.Scanner;
  *
  * @author Huang
  */
+
+
+//COMENTS:
+//Problem 1: After client ask for BETUP, if he ask for PASS, then server dosen't know this problem. We have to think some method to trate this problem.
+//Problem 2: In case of BUSTING, server always send client the same game(the same cards and the same score).
+//Problem 3: Clent ask for SCORE, the value of gain is alway strange LIKE  "-541665165"(big value);
 public class Client_con {
     ComUtils comUtils;
     private static void menuGame(){
@@ -45,7 +51,7 @@ public class Client_con {
         switch(op){
             case "1":
                
-                Controlador controller=new Controlador("127.0.0.1",8000);
+                Controlador controller=new Controlador("127.0.0.1",1212);
                 if(controller.isConnected()){
                     System.out.println("We have just connected to the server.");
                     menuGame();

@@ -94,7 +94,7 @@ public class Controlador {
     }
     
 
-    public Card newCard_client() {
+    public String newCard_client() {
         Card carta=null;
         boolean estate;
         Palo palo;
@@ -113,10 +113,11 @@ public class Controlador {
             carta=Card.parseCard(d+""+p);
         }
         if(carta!=null){//We verify the estate of the game, we have to see if the sum of all the value passes over 7.5 o no.
+            addNewCard(carta);
             estate=verify_estate();
             if(estate){
                 //In case not passing over 7.5, we add this new card to the card list.
-                addNewCard(carta);
+                return carta.toString();
             }else{
                 //In case it passes over 7.5, we have to receive the message 'BUSTING' from the server.
                answer = comUtils.receiveMessageString(4);
@@ -124,15 +125,41 @@ public class Controlador {
                if (!this.answer.equals("bstg")){
                     System.out.println("This answer is: "+this.answer);
                     System.out.println("¡ERROR!Something has gone wrong. We are expecting the answer 'BUSTING'!");
+                    return "error";
                }else{
-                   System.out.print(pass());
+                   return carta.toString()+"\n"+getScore();
                }
+                
             }
+        }else{
+            return "";
         }
-        return carta;
+        
     }
 
     public String pass() {
+        this.comUtils.sendMessageString("PASS");
+        return getScore();
+        
+    }
+
+    public void betUp_client(double betupAmount) {
+        String ans=this.answer.toLowerCase();
+        if(!ans.equals("card")){
+            System.out.println("This option is not enable now. Please try it after asking for new card.");
+        }else{
+            this.comUtils.sendMessageString("ANTE"+" "+betupAmount);
+            this.current_bet+=betupAmount;
+        }
+    }
+    public int getCurrentBet(){     
+        return this.current_bet;
+    }
+    public double getCurrentPoints(){
+        return this.listcard.getCurrentPoints();
+    }
+
+    private String getScore() {
         String res="";
         int cardnumber;
         String cards="";
@@ -140,7 +167,6 @@ public class Controlador {
         char point;
         String scr;
         int gain;
-        this.comUtils.sendMessageString("PASS");
         answer = comUtils.receiveMessageString(4);
         charact=comUtils.receiveMessageChar();
         cardnumber=comUtils.receiveMessageInt();
@@ -170,24 +196,6 @@ public class Controlador {
             }
         }
         return res;
-        
-        
-    }
-
-    public void betUp_client(double betupAmount) {
-        String ans=this.answer.toLowerCase();
-        if(!ans.equals("card")){
-            System.out.println("This option is not enable now. Please try it after asking for new card.");
-        }else{
-            this.comUtils.sendMessageString("ANTE"+" "+betupAmount);
-            this.current_bet+=betupAmount;
-        }
-    }
-    public int getCurrentBet(){     
-        return this.current_bet;
-    }
-    public double getCurrentPoints(){
-        return this.listcard.getCurrentPoints();
     }
 
    
