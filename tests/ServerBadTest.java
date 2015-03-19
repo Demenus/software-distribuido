@@ -60,4 +60,16 @@ public class ServerBadTest {
         writer.write_int32(Integer.MAX_VALUE);
         assertEquals("ERRO", reader.read_string(4));
     }
+
+    @Test
+    public void testTwoStarts() throws Exception {
+        Socket socket = new Socket("127.0.0.1",8000);
+        ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
+        ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
+        writer.write_string("STRT");
+        assertEquals("STBT ", reader.read_string(5));
+        assertEquals(100,reader.read_int32());
+        writer.write_string("STRT");
+        assertEquals("ERRO ", reader.read_string(5));
+    }
 }

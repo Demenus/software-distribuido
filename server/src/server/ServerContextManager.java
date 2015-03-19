@@ -15,28 +15,24 @@ import java.util.HashMap;
 //TODO: Check exceptions
 public class ServerContextManager implements ContextManager {
 
-    public static int PORT = 8000;
-    public static int STARTING_BET = 100;
-    public static String DECK_FILE = "deck.txt";
-    private final HashMap<Socket, GameContext> mConnections;
+    private final HashMap<Socket, GameContext> mConnections = new HashMap<Socket, GameContext>();
+    public int mPort = 8000;
+    public int mStartingBet = 100;
+    public String mDeckFile = "deck.txt";
     private boolean mRun;
     private ServerSocket mServerSocket;
 
 
-    public ServerContextManager() {
+    public ServerContextManager(int port, int startingBet, String deckFile) {
+        mPort = port;
+        mStartingBet = startingBet;
+        mDeckFile = deckFile;
         mRun = true;
-        mConnections = new HashMap<Socket, GameContext>();
         try {
-            mServerSocket = new ServerSocket(PORT);
+            mServerSocket = new ServerSocket(mPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        //-p <port> -b <starting_bet> -f <deckfile>
-        ServerContextManager manager = new ServerContextManager();
-        manager.runServer();
     }
 
     @Override
@@ -68,7 +64,7 @@ public class ServerContextManager implements ContextManager {
     }
 
     private void bindContextToSocket(Socket socket) throws SocketException {
-        final GameContext context = new GameContext(socket, DECK_FILE, STARTING_BET);
+        final GameContext context = new GameContext(socket, mDeckFile, mStartingBet);
         context.initContext();
         Thread thread = new Thread(new Runnable() {
             @Override

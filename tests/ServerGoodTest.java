@@ -31,7 +31,7 @@ public class ServerGoodTest {
 
     @Test
     public void testGame1() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",1212);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -52,7 +52,7 @@ public class ServerGoodTest {
 
     @Test
     public void testFullGameAsPlayer() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",1212);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -70,7 +70,7 @@ public class ServerGoodTest {
 
     @Test
     public void testBet() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",1212);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -81,7 +81,7 @@ public class ServerGoodTest {
 
     @Test
     public void testDraw() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",1212);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -96,7 +96,7 @@ public class ServerGoodTest {
 
     @Test
     public void testAnte() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",1212);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
