@@ -54,6 +54,7 @@ public class DrawState implements StateNode {
             List<Card> cards = ctr.getServerCards();
             float score = ctr.getServerScore();
             int gain = ctr.getGain();
+            w.writeCard(card);
             w.writeBusting();
             w.writeBankScore(cards, score);
             w.writeGain(gain);

@@ -77,6 +77,5 @@ public class ServerContextManager implements ContextManager {
             }
         });
         thread.start();
-        System.out.println(Thread.activeCount());
     }
 }

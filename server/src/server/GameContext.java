@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by aaron on 24/02/2015.
@@ -32,6 +34,7 @@ public class GameContext implements Context {
     private static final int sTimeOut = 500;
     private static final int sMaxConnectionErrors = 5;
     private static final int sMaxErrors = 15;
+    private Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private Socket mSocket;
     private GameStateMachine mStateMachine;
     private GameController mGameController;
@@ -85,6 +88,8 @@ public class GameContext implements Context {
         StateNode node = null;
         String candateState;
         //ArrayList<BaseException> exceptions = new ArrayList<BaseException>();
+
+        log.log(Level.INFO, "Processing from "+Thread.currentThread().getName());
         //TODO: Ojo!! si hay un fallo de escritura no vuelves a intentarlo o que majete?!
         while (!mStateMachine.isInFinalState() && isValidContext()) {
             try {
@@ -92,6 +97,7 @@ public class GameContext implements Context {
                 node = mStateMachine.getNextCandidateStateNode(candateState);
                 mStateMachine.checkNextCandidateNode(node,candateState);
                 mStateMachine.processCurrentNode(readerManager, writerManager);
+                log.log(Level.INFO,"Thread: "+Thread.currentThread().getName()+ "Current State: "+candateState);
                 mErrCount = 0;
                 mConnectionErrCount = 0;
             }  catch (ApplicationException e) {
@@ -120,6 +126,7 @@ public class GameContext implements Context {
 
     @Override
     public void closeConnection() {
+        log.log(Level.INFO, "Clossing connection of: "+Thread.currentThread().getName());
         try {
             mSocket.close();
         } catch (IOException e) {
@@ -146,6 +153,11 @@ public class GameContext implements Context {
         try {
             ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
             if (errType == ErrType.TIMEOUT_ERROR) {
+                //log.log(Level.INFO, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
+                if (!isValidContext()) {
+                    closeConnection();
+                }
+                mConnectionErrCount++;
                 //w.writeError(errType, message);
                 //closeConnection();
             }
@@ -155,6 +167,7 @@ public class GameContext implements Context {
                 }
                 mConnectionErrCount++;
             } else if (errType == ErrType.COMMAND_ERROR) {
+                log.log(Level.INFO, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
                     w.writeError(errType, message);
                     mErrCount++;
@@ -163,6 +176,7 @@ public class GameContext implements Context {
                     closeConnection();
                 }
             } else {
+                log.log(Level.INFO, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
                     mStateMachine.getCurrentStateNode().onError(writerManager, errType, message);
                     mErrCount++;
