@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class ServerContextManager implements ContextManager {
 
     private final HashMap<Socket, GameContext> mConnections = new HashMap<Socket, GameContext>();
-    public int mPort = 8000;
+    public int mPort = 1212;
     public int mStartingBet = 100;
     public String mDeckFile = "deck.txt";
     private boolean mRun;
