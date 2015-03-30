@@ -1,7 +1,6 @@
 package server.states;
 
 import constants.States;
-import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
@@ -44,10 +43,5 @@ public class AnteState implements StateNode {
         Integer bet = (Integer) parsedMessage;
         GameController ctr = (GameController) controller;
         ctr.increaseBet(bet);
-    }
-
-    @Override
-    public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException, TimeOutException {
-        writerManager.writeError(errCode, message);
     }
 }

@@ -1,6 +1,5 @@
 package server.statemachine;
 
-import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
@@ -24,5 +23,4 @@ public interface StateNode {
 
     void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException;
 
-    public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException, TimeOutException;
 }

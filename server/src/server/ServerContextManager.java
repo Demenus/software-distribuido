@@ -1,13 +1,11 @@
 package server;
 
-import server.context.Context;
 import server.context.ContextManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +15,7 @@ import java.util.logging.Logger;
 //TODO: Check exceptions
 public class ServerContextManager implements ContextManager {
 
-    private final HashMap<Socket, GameContext> mConnections = new HashMap<Socket, GameContext>();
+    private static int sConnections = 0;
     private int mPort;
     private int mStartingBet;
     private String mDeckFile;
@@ -63,9 +61,6 @@ public class ServerContextManager implements ContextManager {
     @Override
     public synchronized void stopServer() {
         mRun = false;
-        for (Context context : mConnections.values()) {
-            context.disposeContext();
-        }
         try {
             mServerSocket.close();
         } catch (IOException e) {
@@ -81,7 +76,8 @@ public class ServerContextManager implements ContextManager {
             public void run() {
                 context.processInputData();
             }
-        });
+        },"ServerThread-"+sConnections);
+        sConnections++;
         thread.start();
     }
 }

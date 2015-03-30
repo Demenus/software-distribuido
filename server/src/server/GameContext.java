@@ -143,10 +143,10 @@ public class GameContext implements Context {
     @Override
     public void onError(WriterManager writerManager, ErrType errType, String message) {
         try {
-            ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
             if (errType == ErrType.TIMEOUT_ERROR) {
                 if (!isValidContext()) {
-                    w.writeError(errType, message);
+                    log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
+                    writerManager.writeError(errType, message);
                     disposeContext();
                 }
                 mConnectionErrCount++;
@@ -158,28 +158,29 @@ public class GameContext implements Context {
             } else if (errType == ErrType.COMMAND_ERROR) {
                 log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
-                    w.writeError(errType, message);
+                    writerManager.writeError(errType, message);
                     mErrCount++;
                 } else {
-                    w.writeExceededErrors();
+                    writerManager.writeExceededErrors();
                     disposeContext();
                 }
             } else if (errType == ErrType.PARSE_ERROR) {
                 log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
-                    w.writeError(errType, message);
+                    writerManager.writeError(errType, message);
                     mErrCount++;
                 } else {
-                    w.writeExceededErrors();
+                    writerManager.writeExceededErrors();
                     disposeContext();
                 }
             } else {
                 log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
-                    mStateMachine.getCurrentStateNode().onError(writerManager, errType, message);
+                    //mStateMachine.getCurrentStateNode().onError(writerManager, errType, message);
+                    writerManager.writeError(errType, message);
                     mErrCount++;
                 } else {
-                    w.writeExceededErrors();
+                    writerManager.writeExceededErrors();
                     disposeContext();
                 }
             }

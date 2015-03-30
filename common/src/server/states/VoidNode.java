@@ -1,7 +1,6 @@
 package server.states;
 
 import constants.States;
-import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
@@ -39,12 +38,6 @@ public class VoidNode implements StateNode {
 
     @Override
     public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
-
-    }
-
-
-    @Override
-    public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException {
 
     }
 }

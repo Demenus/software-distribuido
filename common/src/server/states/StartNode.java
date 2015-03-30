@@ -1,7 +1,6 @@
 package server.states;
 
 import constants.States;
-import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
@@ -44,10 +43,5 @@ public class StartNode implements StateNode {
         GameController gameController = (GameController) controller;
         int bet = gameController.getBet();
         writerManager.writeStartBet(bet);
-    }
-
-    @Override
-    public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException, TimeOutException {
-        writerManager.writeError(errCode, message);
     }
 }

@@ -44,6 +44,17 @@ public class ComUtilsReaderManager implements ReaderManager<ComUtils.Reader> {
     }
 
     @Override
+    public char readChar() throws ReadException, TimeOutException {
+        Object ch = runReadOperation(new ReadOperation<ComUtils.Reader>() {
+            @Override
+            public Object read(ComUtils.Reader reader) throws IOException, IndexOutOfBoundsException {
+                return reader.read_char();
+            }
+        });
+        return Character.toLowerCase((Character) ch);
+    }
+
+    @Override
     public int readBet() throws ReadException, TimeOutException {
         Object bet = runReadOperation(new ReadOperation<ComUtils.Reader>() {
             @Override

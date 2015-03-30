@@ -72,4 +72,42 @@ public class ServerBadTest extends BaseTest{
         writer.write_string("STRT");
         assertEquals("ERRO ", reader.read_string(5));
     }
+
+    @Test
+    public void testSSTART() throws Exception {
+        Socket socket = new Socket("127.0.0.1",PORT);
+        ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
+        ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
+        writer.write_string("SSTRT");
+        assertEquals("STBT ", reader.read_string(5));
+        assertEquals(100,reader.read_int32());
+        writer.write_string("DRAW");
+        assertEquals("CARD", reader.read_string(4));
+    }
+
+    @Test
+    public void testSendOneByte() throws Exception {
+        Socket socket = new Socket("127.0.0.1",PORT);
+        ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
+        ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
+        writer.write_char('S');
+        writer.write_string("STRT");
+        assertEquals("STBT ", reader.read_string(5));
+        assertEquals(100,reader.read_int32());
+        writer.write_string("DRAW");
+        assertEquals("CARD", reader.read_string(4));
+    }
+
+    @Test
+    public void testTwoInstructions() throws Exception {
+        Socket socket = new Socket("127.0.0.1",PORT);
+        ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
+        ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
+        writer.write_char('S');
+        writer.write_string("STRTDRAW");
+        assertEquals("STBT ", reader.read_string(5));
+        assertEquals(100,reader.read_int32());
+        assertEquals("CARD", reader.read_string(4));
+
+    }
 }

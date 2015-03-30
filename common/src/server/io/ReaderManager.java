@@ -13,6 +13,8 @@ public interface ReaderManager<R> {
 
     String readCommand() throws ReadException, TimeOutException;
 
+    char readChar() throws ReadException, TimeOutException;
+
     int readBet() throws ReadException, TimeOutException;
 
     public static interface ReadOperation<R> {
