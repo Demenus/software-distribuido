@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 public class GameContext implements Context {
 
     private static final int sTimeOut = 500;
-    private static final int sMaxConnectionErrors = 5;
+    private static final int sMaxConnectionErrors = 600;
     private static final int sMaxErrors = 15;
     private Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private Socket mSocket;
@@ -97,7 +97,7 @@ public class GameContext implements Context {
                 node = mStateMachine.getNextCandidateStateNode(candateState);
                 mStateMachine.checkNextCandidateNode(node,candateState);
                 mStateMachine.processCurrentNode(readerManager, writerManager);
-                log.log(Level.INFO,"Thread: "+Thread.currentThread().getName()+ "Current State: "+candateState);
+                log.log(Level.INFO, "Thread: " + Thread.currentThread().getName() + "Current State: " + candateState);
                 mErrCount = 0;
                 mConnectionErrCount = 0;
             }  catch (ApplicationException e) {
@@ -128,14 +128,17 @@ public class GameContext implements Context {
     public void closeConnection() {
         log.log(Level.INFO, "Clossing connection of: "+Thread.currentThread().getName());
         try {
-            try {
+            /*try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameContext.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
+            mSocket.getOutputStream().flush();
+            mSocket.getInputStream().close();
+            mSocket.getOutputStream().close();
             mSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -160,6 +163,7 @@ public class GameContext implements Context {
             if (errType == ErrType.TIMEOUT_ERROR) {
                 //log.log(Level.INFO, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (!isValidContext()) {
+                    w.writeError(errType, message);
                     closeConnection();
                 }
                 mConnectionErrCount++;
@@ -170,7 +174,7 @@ public class GameContext implements Context {
                 if (!isValidContext()) {
                     closeConnection();
                 }
-                mConnectionErrCount++;
+                //mConnectionErrCount++;
             } else if (errType == ErrType.COMMAND_ERROR) {
                 log.log(Level.INFO, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {

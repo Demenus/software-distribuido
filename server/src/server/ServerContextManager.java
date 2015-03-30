@@ -16,9 +16,9 @@ import java.util.HashMap;
 public class ServerContextManager implements ContextManager {
 
     private final HashMap<Socket, GameContext> mConnections = new HashMap<Socket, GameContext>();
-    public int mPort = 8000;
-    public int mStartingBet = 100;
-    public String mDeckFile = "deck.txt";
+    private int mPort;
+    private int mStartingBet;
+    private String mDeckFile;
     private boolean mRun;
     private ServerSocket mServerSocket;
 
@@ -73,5 +73,6 @@ public class ServerContextManager implements ContextManager {
             }
         });
         thread.start();
+        System.out.println(Thread.activeCount());
     }
 }
