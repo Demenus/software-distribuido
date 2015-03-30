@@ -1,4 +1,4 @@
-package io;
+package server.io;
 
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
@@ -18,5 +18,4 @@ public interface ReaderManager<R> {
     public static interface ReadOperation<R> {
         public Object read(R reader) throws IOException, IndexOutOfBoundsException;
     }
-
 }

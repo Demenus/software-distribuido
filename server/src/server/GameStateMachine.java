@@ -1,10 +1,10 @@
 package server;
 
 import constants.States;
-import gamelayer.GameController;
-import statemachine.StateMachine;
-import statemachine.StateNode;
-import states.*;
+import server.gamelayer.GameController;
+import server.statemachine.StateMachine;
+import server.statemachine.StateNode;
+import server.states.*;
 
 import java.util.Map;
 

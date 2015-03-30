@@ -3,6 +3,7 @@ package io;
 import comutils.ComUtils;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
+import server.io.ReaderManager;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;

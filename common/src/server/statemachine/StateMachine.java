@@ -1,4 +1,4 @@
-package statemachine;
+package server.statemachine;
 
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
@@ -7,8 +7,8 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import io.ReaderManager;
-import io.WriterManager;
+import server.io.ReaderManager;
+import server.io.WriterManager;
 
 import java.util.HashMap;
 import java.util.Map;

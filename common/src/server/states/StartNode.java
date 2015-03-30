@@ -1,4 +1,4 @@
-package states;
+package server.states;
 
 import constants.States;
 import exceptions.ErrType;
@@ -7,10 +7,10 @@ import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import gamelayer.GameController;
-import io.ReaderManager;
-import io.WriterManager;
-import statemachine.StateNode;
+import server.gamelayer.GameController;
+import server.io.ReaderManager;
+import server.io.WriterManager;
+import server.statemachine.StateNode;
 
 /**
  * Created by aaron on 24/02/2015.

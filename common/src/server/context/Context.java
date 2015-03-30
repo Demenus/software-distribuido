@@ -1,9 +1,9 @@
-package context;
+package server.context;
 
 import exceptions.ErrType;
-import io.ReaderManager;
-import io.WriterManager;
-import statemachine.StateMachine;
+import server.io.ReaderManager;
+import server.io.WriterManager;
+import server.statemachine.StateMachine;
 
 import java.io.IOException;
 import java.net.SocketException;

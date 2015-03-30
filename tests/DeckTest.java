@@ -1,7 +1,7 @@
 import exceptions.DeckException;
-import gamelayer.model.Card;
-import gamelayer.model.Deck;
 import org.junit.Test;
+import server.gamelayer.model.Card;
+import server.gamelayer.model.Deck;
 
 import static org.junit.Assert.assertEquals;
 

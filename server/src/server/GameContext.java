@@ -1,7 +1,6 @@
 package server;
 
 import comutils.ComUtils;
-import context.Context;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
@@ -10,13 +9,14 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import gamelayer.GameController;
 import io.ComUtilsReaderManager;
 import io.ComUtilsWriterManager;
-import io.ReaderManager;
-import io.WriterManager;
-import statemachine.StateMachine;
-import statemachine.StateNode;
+import server.context.Context;
+import server.gamelayer.GameController;
+import server.io.ReaderManager;
+import server.io.WriterManager;
+import server.statemachine.StateMachine;
+import server.statemachine.StateNode;
 
 import java.io.IOException;
 import java.io.InputStream;

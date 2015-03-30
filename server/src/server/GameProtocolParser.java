@@ -6,8 +6,8 @@ import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
 import exceptions.protocolexceptions.CommandException;
 import io.ComUtilsReaderManager;
-import io.ReaderManager;
-import statemachine.ProtocolParser;
+import server.io.ReaderManager;
+import server.statemachine.ProtocolParser;
 
 
 public class GameProtocolParser implements ProtocolParser {

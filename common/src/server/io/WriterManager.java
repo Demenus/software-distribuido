@@ -1,9 +1,9 @@
-package io;
+package server.io;
 
 import exceptions.ErrType;
 import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
-import gamelayer.model.Card;
+import server.gamelayer.model.Card;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,5 +31,4 @@ public interface WriterManager<W> {
     public static interface WriteOperation<W> {
         public void write(W writer) throws IOException;
     }
-
 }

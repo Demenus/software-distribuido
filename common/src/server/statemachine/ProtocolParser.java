@@ -1,9 +1,9 @@
-package statemachine;
+package server.statemachine;
 
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
 import exceptions.protocolexceptions.CommandException;
-import io.ReaderManager;
+import server.io.ReaderManager;
 
 /**
  * Created by aaron on 26/02/2015.

@@ -1,4 +1,4 @@
-package statemachine;
+package server.statemachine;
 
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
@@ -7,8 +7,8 @@ import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import io.ReaderManager;
-import io.WriterManager;
+import server.io.ReaderManager;
+import server.io.WriterManager;
 
 /**
  * Created by aaron on 24/02/2015.
