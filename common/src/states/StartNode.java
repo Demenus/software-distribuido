@@ -8,7 +8,6 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
 import gamelayer.GameController;
-import io.ComUtilsWriterManager;
 import io.ReaderManager;
 import io.WriterManager;
 import statemachine.StateNode;
@@ -44,13 +43,11 @@ public class StartNode implements StateNode {
     public void process(WriterManager writerManager, Object controller, Object request) throws ApplicationException, WriteException, TimeOutException {
         GameController gameController = (GameController) controller;
         int bet = gameController.getBet();
-        ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
-        w.writeStartBet(bet);
+        writerManager.writeStartBet(bet);
     }
 
     @Override
     public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException, TimeOutException {
-        ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
-        w.writeError(errCode, message);
+        writerManager.writeError(errCode, message);
     }
 }

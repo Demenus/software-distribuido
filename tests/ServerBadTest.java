@@ -8,10 +8,10 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by aaron on 13/03/2015.
  */
-public class ServerBadTest {
+public class ServerBadTest extends BaseTest{
     @Test
     public void testAnteState() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -29,7 +29,7 @@ public class ServerBadTest {
 
     @Test
     public void testAnteNegative() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -46,7 +46,7 @@ public class ServerBadTest {
 
     @Test
     public void testAnteOverflow() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -63,7 +63,7 @@ public class ServerBadTest {
 
     @Test
     public void testTwoStarts() throws Exception {
-        Socket socket = new Socket("127.0.0.1",8000);
+        Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");

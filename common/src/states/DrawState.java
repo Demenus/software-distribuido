@@ -9,46 +9,60 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
 import gamelayer.GameController;
-import io.ComUtilsWriterManager;
+import gamelayer.model.Card;
 import io.ReaderManager;
 import io.WriterManager;
 import statemachine.StateNode;
 
-public class PassState implements StateNode {
+import java.util.List;
+
+public class DrawState implements StateNode {
+
+    private boolean mFinalState = false;
+
     @Override
     public String getState() {
-        return States.PASS_STATE;
+        return States.DRAW_STATE;
     }
 
     @Override
     public boolean isFinalState() {
-        return true;
+        return mFinalState;
     }
 
     @Override
-    public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException, TimeOutException {
+    public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException {
         return null;
     }
 
     @Override
     public void checkPreviousState(String previousState) throws StateException {
-        if (!previousState.equalsIgnoreCase(States.DRAW_STATE)) {
+        if (!(previousState.equalsIgnoreCase(States.START_STATE) || previousState.equalsIgnoreCase(States.ANTE_STATE) || previousState.equalsIgnoreCase(States.DRAW_STATE))) {
             throw new StateException(previousState, getState());
         }
     }
 
     @Override
     public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
-        ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
         GameController ctr = (GameController) controller;
-        ctr.playServer();
-        w.writeBankScore(ctr.getServerCards(), ctr.getServerScore());
-        w.writeGain(ctr.getGain());
+        Card card = ctr.getUserNextCard();
+        if (ctr.userHasLost()) {
+            mFinalState = true;
+            ctr.playServer();
+            List<Card> cards = ctr.getServerCards();
+            float score = ctr.getServerScore();
+            int gain = ctr.getGain();
+            writerManager.writeCard(card);
+            writerManager.writeBusting();
+            writerManager.writeBankScore(cards, score);
+            writerManager.writeGain(gain);
+        } else {
+            writerManager.writeCard(card);
+        }
     }
 
     @Override
     public void onError(WriterManager writerManager, ErrType errCode, String message) throws WriteException, TimeOutException {
-        ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
-        w.writeError(errCode, message);
+        writerManager.writeError(errCode, message);
     }
 }

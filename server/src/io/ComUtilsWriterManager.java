@@ -34,6 +34,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         }
     }
 
+    @Override
     public void writeStartBet(final int bet) throws WriteException, TimeOutException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
@@ -45,6 +46,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
+    @Override
     public void writeError(final ErrType errCode, final String message) throws WriteException, TimeOutException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
@@ -63,6 +65,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
+    @Override
     public void writeExceededErrors() throws WriteException, TimeOutException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
@@ -81,6 +84,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
+    @Override
     public void writeCard(final Card card) throws WriteException, TimeOutException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
@@ -92,6 +96,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
+    @Override
     public void writeBusting() throws TimeOutException, WriteException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
@@ -101,6 +106,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
+    @Override
     public void writeBankScore(final List<Card> cards, final float score) throws TimeOutException, WriteException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override
@@ -124,6 +130,7 @@ public class ComUtilsWriterManager implements WriterManager<ComUtils.Writer> {
         });
     }
 
+    @Override
     public void writeGain(final int gain) throws TimeOutException, WriteException {
         runWriteOperation(new WriteOperation<ComUtils.Writer>() {
             @Override

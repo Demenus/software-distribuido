@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by aaron on 24/02/2015.
@@ -21,6 +23,7 @@ public class ServerContextManager implements ContextManager {
     private String mDeckFile;
     private boolean mRun;
     private ServerSocket mServerSocket;
+    private Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 
     public ServerContextManager(int port, int startingBet, String deckFile) {
@@ -30,6 +33,8 @@ public class ServerContextManager implements ContextManager {
         mRun = true;
         try {
             mServerSocket = new ServerSocket(mPort);
+            log.log(Level.INFO, "Server running on port "+mPort);
+            log.log(Level.INFO, "Server starting bet "+mStartingBet);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,6 +66,11 @@ public class ServerContextManager implements ContextManager {
         for (Context context : mConnections.values()) {
             context.disposeContext();
         }
+        try {
+            mServerSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void bindContextToSocket(Socket socket) throws SocketException {
@@ -73,6 +83,5 @@ public class ServerContextManager implements ContextManager {
             }
         });
         thread.start();
-        System.out.println(Thread.activeCount());
     }
 }

@@ -77,19 +77,17 @@ public class GameContext implements Context {
 
     @Override
     public void processInputData() {
+        log.log(Level.INFO, "New connection from " + mSocket.getInetAddress());
         try {
             innerProcessInputData(getReader(), getWriter());
         } catch (IOException e) {
-            onConnectionError();
+            disposeContext();
         }
     }
 
     private void innerProcessInputData(ReaderManager readerManager, WriterManager writerManager) {
         StateNode node = null;
         String candateState;
-        //ArrayList<BaseException> exceptions = new ArrayList<BaseException>();
-
-        log.log(Level.INFO, "Processing from "+Thread.currentThread().getName());
         //TODO: Ojo!! si hay un fallo de escritura no vuelves a intentarlo o que majete?!
         while (!mStateMachine.isInFinalState() && isValidContext()) {
             try {
@@ -97,7 +95,7 @@ public class GameContext implements Context {
                 node = mStateMachine.getNextCandidateStateNode(candateState);
                 mStateMachine.checkNextCandidateNode(node,candateState);
                 mStateMachine.processCurrentNode(readerManager, writerManager);
-                log.log(Level.INFO, "Thread: " + Thread.currentThread().getName() + "Current State: " + candateState);
+                log.log(Level.INFO, "Thread: " + Thread.currentThread().getName() + " Current State: " + candateState);
                 mErrCount = 0;
                 mConnectionErrCount = 0;
             }  catch (ApplicationException e) {
@@ -121,33 +119,19 @@ public class GameContext implements Context {
                 onError(writerManager, e.getErrType(), e.getMessage());
             }
         }
-        closeConnection();
+        disposeContext();
     }
 
     @Override
     public void closeConnection() {
-        log.log(Level.INFO, "Clossing connection of: "+Thread.currentThread().getName());
+        log.log(Level.OFF, "Clossing connection of: "+Thread.currentThread().getName());
         try {
-            /*try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GameContext.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
             mSocket.getOutputStream().flush();
             mSocket.getInputStream().close();
             mSocket.getOutputStream().close();
             mSocket.close();
         } catch (IOException e) {
 
-        }
-    }
-
-    @Override
-    public void onConnectionError() {
-        try {
-            mSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -161,49 +145,55 @@ public class GameContext implements Context {
         try {
             ComUtilsWriterManager w = (ComUtilsWriterManager) writerManager;
             if (errType == ErrType.TIMEOUT_ERROR) {
-                //log.log(Level.INFO, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (!isValidContext()) {
                     w.writeError(errType, message);
-                    closeConnection();
+                    disposeContext();
                 }
                 mConnectionErrCount++;
-                //w.writeError(errType, message);
-                //closeConnection();
             }
             else if (errType == ErrType.WRITE_ERROR || errType == ErrType.READ_ERROR) {
                 if (!isValidContext()) {
-                    closeConnection();
+                    disposeContext();
                 }
-                //mConnectionErrCount++;
             } else if (errType == ErrType.COMMAND_ERROR) {
-                log.log(Level.INFO, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
+                log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
                     w.writeError(errType, message);
                     mErrCount++;
                 } else {
                     w.writeExceededErrors();
-                    closeConnection();
+                    disposeContext();
+                }
+            } else if (errType == ErrType.PARSE_ERROR) {
+                log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
+                if (isValidContext()) {
+                    w.writeError(errType, message);
+                    mErrCount++;
+                } else {
+                    w.writeExceededErrors();
+                    disposeContext();
                 }
             } else {
-                log.log(Level.INFO, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
+                log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
                     mStateMachine.getCurrentStateNode().onError(writerManager, errType, message);
                     mErrCount++;
                 } else {
                     w.writeExceededErrors();
-                    closeConnection();
+                    disposeContext();
                 }
             }
         } catch (WriteException e) {
-            closeConnection();
+            disposeContext();
         } catch (TimeOutException e) {
-            closeConnection();
+            disposeContext();
         }
     }
 
     @Override
     public void disposeContext() {
         closeConnection();
+        mGameController.disposeGameController();
         //TODO: Dispose controller and state machine
     }
 }

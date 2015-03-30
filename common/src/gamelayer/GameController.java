@@ -103,4 +103,7 @@ public class GameController {
         return mServerGame.getScore();
     }
 
+    public void disposeGameController() {
+        mDeck.disposeDeck();
+    }
 }

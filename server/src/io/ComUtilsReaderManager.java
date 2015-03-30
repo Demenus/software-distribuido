@@ -31,6 +31,7 @@ public class ComUtilsReaderManager implements ReaderManager<ComUtils.Reader> {
         }
     }
 
+    @Override
     public String readCommand() throws ReadException, TimeOutException {
         Object command = runReadOperation(new ReadOperation<ComUtils.Reader>() {
             @Override
@@ -41,6 +42,7 @@ public class ComUtilsReaderManager implements ReaderManager<ComUtils.Reader> {
         return (String) command;
     }
 
+    @Override
     public int readBet() throws ReadException, TimeOutException {
         Object bet = runReadOperation(new ReadOperation<ComUtils.Reader>() {
             @Override

@@ -24,8 +24,6 @@ public interface Context {
 
     void closeConnection();
 
-    void onConnectionError();
-
     boolean isValidContext();
 
     void onError(WriterManager writerManager, ErrType errType, String message);

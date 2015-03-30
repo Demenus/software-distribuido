@@ -11,6 +11,10 @@ import java.io.IOException;
 public interface ReaderManager<R> {
     public Object runReadOperation(ReadOperation<R> operation) throws ReadException, TimeOutException;
 
+    String readCommand() throws ReadException, TimeOutException;
+
+    int readBet() throws ReadException, TimeOutException;
+
     public static interface ReadOperation<R> {
         public Object read(R reader) throws IOException, IndexOutOfBoundsException;
     }

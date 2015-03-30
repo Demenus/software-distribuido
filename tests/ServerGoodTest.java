@@ -5,33 +5,13 @@ import java.net.Socket;
 
 import static org.junit.Assert.assertEquals;
 
-public class ServerGoodTest {
-
-
-    public String host = "127.0.0.1";
-    public int port = 8000;
-
-    public ServerGoodTest() {
-        /*serverThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ServerContextManager manager = new ServerContextManager();
-                manager.runServer();
-            }
-        });
-        serverThread.start();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        //mServerContextManager = new ServerContextManager();
-        //mServerContextManager.runServer();
-    }
-
+/**
+ * Created by aaron on 30/03/2015.
+ */
+public class ServerGoodTest extends BaseTest {
     @Test
     public void testGame1() throws Exception {
-        Socket socket = new Socket("127.0.0.1",1212);
+        Socket socket = new Socket("127.0.0.1", PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -52,7 +32,7 @@ public class ServerGoodTest {
 
     @Test
     public void testFullGameAsPlayer() throws Exception {
-        Socket socket = new Socket("127.0.0.1",1212);
+        Socket socket = new Socket("127.0.0.1", PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -70,7 +50,7 @@ public class ServerGoodTest {
 
     @Test
     public void testBet() throws Exception {
-        Socket socket = new Socket("127.0.0.1",1212);
+        Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -81,7 +61,7 @@ public class ServerGoodTest {
 
     @Test
     public void testDraw() throws Exception {
-        Socket socket = new Socket("127.0.0.1",1212);
+        Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
@@ -96,7 +76,7 @@ public class ServerGoodTest {
 
     @Test
     public void testAnte() throws Exception {
-        Socket socket = new Socket("127.0.0.1",1212);
+        Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("STRT");
