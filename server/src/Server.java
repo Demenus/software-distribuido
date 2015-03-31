@@ -1,11 +1,9 @@
-package server;
+import server.ServerContextManager;
 
 import java.util.HashMap;
 
-/**
- * Created by aaron on 31/03/2015.
- */
 public class Server {
+
     public static final String DEFAULT_PORT = "1212";
     public static final String DEFAULT_BET = "100";
     public static final String DEFAULT_DECK = "deck.txt";
