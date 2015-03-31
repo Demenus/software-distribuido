@@ -1,5 +1,6 @@
-package server.states;
+package servershared.states;
 
+import constants.Commands;
 import constants.States;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
@@ -7,18 +8,21 @@ import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import server.io.ReaderManager;
-import server.io.WriterManager;
-import server.statemachine.StateNode;
+import servershared.gamelayer.GameController;
+import servershared.io.ReaderManager;
+import servershared.io.WriterManager;
+import servershared.statemachine.StateNode;
 
 /**
- * Created by aaron on 24/02/2015.
+ * Created by aaron on 12/03/2015.
  */
-public class VoidNode implements StateNode {
+public class AnteState implements StateNode {
+
+    private String mLastRequest;
 
     @Override
     public String getState() {
-        return States.VOID_STATE;
+        return States.ANTE_STATE;
     }
 
     @Override
@@ -27,23 +31,29 @@ public class VoidNode implements StateNode {
     }
 
     @Override
-    public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException {
-        return null;
+    public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException, TimeOutException {
+        int bet = readerManager.readBet();
+        mLastRequest = Commands.ANTE+" "+bet;
+        return bet;
     }
 
     @Override
     public void checkPreviousState(String previousState) throws StateException {
-
+        if (!(previousState.equalsIgnoreCase(States.DRAW_STATE))) {
+            throw new StateException(previousState, getState());
+        }
     }
 
     @Override
     public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
-
+        Integer bet = (Integer) parsedMessage;
+        GameController ctr = (GameController) controller;
+        ctr.increaseBet(bet);
     }
 
     @Override
     public String getLastRequest() {
-        return null;
+        return mLastRequest;
     }
 
     @Override

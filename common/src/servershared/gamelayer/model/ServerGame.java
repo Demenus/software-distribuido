@@ -1,4 +1,4 @@
-package server.gamelayer.model;
+package servershared.gamelayer.model;
 
 import java.util.ArrayList;
 import java.util.List;

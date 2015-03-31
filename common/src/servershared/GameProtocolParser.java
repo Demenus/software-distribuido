@@ -1,12 +1,12 @@
-package server;
+package servershared;
 
 import constants.Commands;
 import constants.States;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
 import exceptions.protocolexceptions.CommandException;
-import server.io.ReaderManager;
-import server.statemachine.ProtocolParser;
+import servershared.io.ReaderManager;
+import servershared.statemachine.ProtocolParser;
 
 
 public class GameProtocolParser implements ProtocolParser {

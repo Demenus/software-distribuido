@@ -1,4 +1,4 @@
-package server.gamelayer.model;
+package servershared.gamelayer.model;
 
 /**
  * Created by aaron on 08/03/2015.

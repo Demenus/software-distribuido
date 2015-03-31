@@ -1,10 +1,10 @@
-package server.gamelayer;
+package servershared.gamelayer;
 
 import exceptions.applicationexceptions.ApplicationException;
-import server.gamelayer.model.Card;
-import server.gamelayer.model.Deck;
-import server.gamelayer.model.ServerGame;
-import server.gamelayer.model.UserGame;
+import servershared.gamelayer.model.Card;
+import servershared.gamelayer.model.Deck;
+import servershared.gamelayer.model.ServerGame;
+import servershared.gamelayer.model.UserGame;
 
 import java.util.List;
 

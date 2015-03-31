@@ -1,9 +1,9 @@
-package server.io;
+package servershared.io;
 
 import exceptions.ErrType;
 import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
-import server.gamelayer.model.Card;
+import servershared.gamelayer.model.Card;
 
 import java.io.IOException;
 import java.util.List;

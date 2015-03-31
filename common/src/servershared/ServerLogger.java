@@ -1,7 +1,7 @@
-package server;
+package servershared;
 
 import constants.Commands;
-import server.gamelayer.model.Card;
+import servershared.gamelayer.model.Card;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

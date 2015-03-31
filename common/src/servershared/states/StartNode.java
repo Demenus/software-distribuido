@@ -1,4 +1,4 @@
-package server.states;
+package servershared.states;
 
 import constants.Commands;
 import constants.States;
@@ -7,10 +7,10 @@ import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import server.gamelayer.GameController;
-import server.io.ReaderManager;
-import server.io.WriterManager;
-import server.statemachine.StateNode;
+import servershared.gamelayer.GameController;
+import servershared.io.ReaderManager;
+import servershared.io.WriterManager;
+import servershared.statemachine.StateNode;
 
 /**
  * Created by aaron on 24/02/2015.

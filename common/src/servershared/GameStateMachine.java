@@ -1,15 +1,15 @@
-package server;
+package servershared;
 
 import constants.States;
-import server.gamelayer.GameController;
-import server.statemachine.StateMachine;
-import server.statemachine.StateNode;
-import server.states.*;
+import servershared.gamelayer.GameController;
+import servershared.statemachine.StateMachine;
+import servershared.statemachine.StateNode;
+import servershared.states.*;
 
 import java.util.Map;
 
 
-public class GameStateMachine extends StateMachine{
+public class GameStateMachine extends StateMachine {
 
     private GameController mGameController;
 

@@ -1,6 +1,6 @@
 package server;
 
-import server.context.ContextManager;
+import servershared.context.ContextManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;

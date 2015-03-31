@@ -1,4 +1,4 @@
-package server.statemachine;
+package servershared.statemachine;
 
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
@@ -7,9 +7,9 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
-import server.ServerLogger;
-import server.io.ReaderManager;
-import server.io.WriterManager;
+import servershared.ServerLogger;
+import servershared.io.ReaderManager;
+import servershared.io.WriterManager;
 
 import java.util.HashMap;
 import java.util.Map;

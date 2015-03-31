@@ -1,9 +1,9 @@
-package server.context;
+package servershared.context;
 
 import exceptions.ErrType;
-import server.io.ReaderManager;
-import server.io.WriterManager;
-import server.statemachine.StateMachine;
+import servershared.io.ReaderManager;
+import servershared.io.WriterManager;
+import servershared.statemachine.StateMachine;
 
 import java.io.IOException;
 import java.net.SocketException;

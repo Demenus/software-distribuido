@@ -1,4 +1,4 @@
-package server.io;
+package servershared.io;
 
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;

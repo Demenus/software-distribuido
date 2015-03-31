@@ -5,8 +5,8 @@ import constants.Commands;
 import exceptions.ErrType;
 import exceptions.connectionexceptions.TimeOutException;
 import exceptions.connectionexceptions.WriteException;
-import server.gamelayer.model.Card;
-import server.io.WriterManager;
+import servershared.gamelayer.model.Card;
+import servershared.io.WriterManager;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
