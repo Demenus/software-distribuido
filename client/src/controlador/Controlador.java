@@ -59,6 +59,9 @@ public class Controlador {
     public double getCardValue(Card card){
         return card.getValue();
     }
+    public int getCurrentCardsNumber(){
+        return this.listcard.currentCardsNumber();
+    }
 
     public boolean verify_estate() {
         boolean estate;
@@ -174,7 +177,6 @@ public class Controlador {
         charact=comUtils.receiveMessageChar();
         score=comUtils.receiveMessageString(4);
         
-        
         this.answer=answer.toLowerCase();
         if(!answer.equals("bksc") || this.answer.equals("erro") || this.charact!=' '){
             System.out.println("Error! The server hasn't sent us a correct protocol.");
@@ -197,7 +199,7 @@ public class Controlador {
         }
         return res;
     }
-
+    
    
 
 

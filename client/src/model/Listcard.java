@@ -79,7 +79,17 @@ public class Listcard {
         result="You got "+count+" card,which are: "+information+".You got "+value+" points.";
         return result;
     }
+
+    public int currentCardsNumber() {
+       Iterator it=this.cards.iterator();
+       int count=0;
+       Card card;
+       while(it.hasNext()){
+           count++;
+           card=(Card)it.next();
+       }
+       return count;
+    }
     
-    
-    
+     
 }

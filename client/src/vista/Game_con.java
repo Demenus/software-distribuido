@@ -5,8 +5,8 @@
 package vista;
 
 import controlador.Controlador;
+import java.util.Random;
 import java.util.Scanner;
-import model.Card;
 
 /**
  *
@@ -68,9 +68,62 @@ public class Game_con {
     }
 
     private void automatic_mode() {
+        int current_bet;
         this.controller.startNewGame_client();
+        int random;
+        String cardinformation;
+        boolean state=true;
+        boolean errorState=false;
+        current_bet=this.controller.getCurrentBet();
+        menuAutomaticMode(current_bet, this.controller.getCurrentPoints(),0);
+        String score;
+        //new card
+        cardinformation=this.controller.newCard_client();
+        System.out.println(cardinformation);
+        if(cardinformation.equals("error")){
+            System.out.println("Error on receiving new card!");
+        }else{
+            while(this.controller.getCurrentCardsNumber()>0 && this.controller.getCurrentPoints()<6.5 && state==true && errorState==false){
+                random = (int)(Math.random() * 1);//It has to be changed. We want 0 has probability 0.8 and 0.2 to 1.
+                if(random==0){
+                    cardinformation=this.controller.newCard_client();
+                    System.out.println(cardinformation);
+                    if(cardinformation.length()>25){
+                        state=false; //Change state to false if we got over 7.5 points.
+                    }else{
+                        if(cardinformation.equals("error")){//Verify if it received ERRO from server.
+                            errorState=true;
+                        }
+                    }
+                }else{
+                    this.controller.betUp_client(100);//Bet up to 100.
+                }
+                current_bet=this.controller.getCurrentBet();
+                menuAutomaticMode(current_bet,this.controller.getCurrentPoints(),random);
+            }
+            if(this.controller.getCurrentPoints()>=6.5 && this.controller.getCurrentPoints()<7.5){
+                score=this.controller.pass();
+                System.out.println(score);
+                
+            }
+        }
+        
+       
+        
     }
-
+    private void menuAutomaticMode(double betamount, double currentpoint, int opcion){
+        System.out.println("Current bet amount: "+betamount+ ". Current got points: "+currentpoint);
+        if(opcion==0){
+            System.out.println("I've asked to the server for a new card.");
+        }else{
+            if(opcion==1){
+                System.out.println("I've bet 100.0 up.");
+            }else{
+                System.out.println("I've passed this turn.");
+            }
+        }
+        System.out.println("------------------------------------------------------------");
+    }
     private void menu(double betamount,double currentpoint) {
         System.out.println("Current bet amount: "+betamount+ ". Current got points: "+currentpoint);
         System.out.println("------------------------------------------------------------");
