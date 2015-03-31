@@ -1,5 +1,6 @@
 package server.states;
 
+import constants.Commands;
 import constants.States;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.TimeOutException;
@@ -16,6 +17,9 @@ import server.statemachine.StateNode;
  */
 public class StartNode implements StateNode {
 
+    private String mLastRequest;
+    private String mLastResponse;
+
     @Override
     public String getState() {
         return States.START_STATE;
@@ -28,6 +32,7 @@ public class StartNode implements StateNode {
 
     @Override
     public Object parseRequestBody(ReaderManager readerManager) throws ParseException {
+        mLastRequest = Commands.START;
         return null;
     }
 
@@ -43,5 +48,16 @@ public class StartNode implements StateNode {
         GameController gameController = (GameController) controller;
         int bet = gameController.getBet();
         writerManager.writeStartBet(bet);
+        mLastResponse = Commands.START_BET + " " + bet;
+    }
+
+    @Override
+    public String getLastRequest() {
+        return mLastRequest;
+    }
+
+    @Override
+    public String getLastResponse() {
+        return mLastResponse;
     }
 }

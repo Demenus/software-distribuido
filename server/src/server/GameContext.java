@@ -1,6 +1,7 @@
 package server;
 
 import comutils.ComUtils;
+import constants.Commands;
 import exceptions.ErrType;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
@@ -35,6 +36,7 @@ public class GameContext implements Context {
     private static final int sMaxConnectionErrors = 600;
     private static final int sMaxErrors = 15;
     private Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private ServerLogger mLogger;
     private Socket mSocket;
     private GameStateMachine mStateMachine;
     private GameController mGameController;
@@ -74,9 +76,18 @@ public class GameContext implements Context {
         return new ComUtilsWriterManager(writer);
     }
 
+    private void createLogger() {
+        mLogger = new ServerLogger() {
+            @Override
+            public String getFileName() {
+                return Thread.currentThread().getName()+".log";
+            }
+        };
+    }
 
     @Override
     public void processInputData() {
+        createLogger();
         log.log(Level.INFO, "New connection from " + mSocket.getInetAddress());
         try {
             innerProcessInputData(getReader(), getWriter());
@@ -87,15 +98,16 @@ public class GameContext implements Context {
 
     private void innerProcessInputData(ReaderManager readerManager, WriterManager writerManager) {
         StateNode node = null;
-        String candateState;
+        String candidateState;
         //TODO: Ojo!! si hay un fallo de escritura no vuelves a intentarlo o que majete?!
         while (!mStateMachine.isInFinalState() && isValidContext()) {
             try {
-                candateState = mStateMachine.getNextCandidateState(readerManager);
-                node = mStateMachine.getNextCandidateStateNode(candateState);
-                mStateMachine.checkNextCandidateNode(node,candateState);
+                /*candidateState = mStateMachine.getNextCandidateState(readerManager);
+                node = mStateMachine.getNextCandidateStateNode(candidateState);
+                mStateMachine.checkNextCandidateNode(node,candidateState);
                 mStateMachine.processCurrentNode(readerManager, writerManager);
-                log.log(Level.INFO, "Thread: " + Thread.currentThread().getName() + " Current State: " + candateState);
+                log.log(Level.INFO, "Thread: " + Thread.currentThread().getName() + " Current State: " + candidateState);*/
+                mStateMachine.processNext(mLogger, readerManager, writerManager);
                 mErrCount = 0;
                 mConnectionErrCount = 0;
             }  catch (ApplicationException e) {
@@ -140,6 +152,30 @@ public class GameContext implements Context {
         return !mSocket.isClosed() && mConnectionErrCount <= sMaxConnectionErrors && mErrCount <= sMaxErrors;
     }
 
+    private void writeErrorToLog(ErrType errType, String message) {
+        String errLog = Commands.ERROR + " ";
+        String error = errType.toString() + ' ' + message;
+        if (error.length() < 10) {
+            errLog += "0" + String.valueOf(error.length());
+        } else {
+            errLog += String.valueOf(error.length());
+        }
+        errLog += error;
+        mLogger.writeServer(errLog);
+    }
+
+    private void writeExceededErrorToLog() {
+        String errLog = Commands.ERROR + " ";
+        String error = "Sorry your IQ is too low to play with me, GTFO!";
+        if (error.length() < 10) {
+            errLog += "0" + error.length();
+        } else {
+            errLog += error.length();
+        }
+        errLog += error;
+        mLogger.writeServer(errLog);
+    }
+
     @Override
     public void onError(WriterManager writerManager, ErrType errType, String message) {
         try {
@@ -147,6 +183,7 @@ public class GameContext implements Context {
                 if (!isValidContext()) {
                     log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                     writerManager.writeError(errType, message);
+                    writeErrorToLog(errType, message);
                     disposeContext();
                 }
                 mConnectionErrCount++;
@@ -159,18 +196,22 @@ public class GameContext implements Context {
                 log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
                     writerManager.writeError(errType, message);
+                    writeErrorToLog(errType, message);
                     mErrCount++;
                 } else {
                     writerManager.writeExceededErrors();
+                    writeExceededErrorToLog();
                     disposeContext();
                 }
             } else if (errType == ErrType.PARSE_ERROR) {
                 log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
                     writerManager.writeError(errType, message);
+                    writeErrorToLog(errType, message);
                     mErrCount++;
                 } else {
                     writerManager.writeExceededErrors();
+                    writeExceededErrorToLog();
                     disposeContext();
                 }
             } else {
@@ -178,9 +219,11 @@ public class GameContext implements Context {
                 if (isValidContext()) {
                     //mStateMachine.getCurrentStateNode().onError(writerManager, errType, message);
                     writerManager.writeError(errType, message);
+                    writeErrorToLog(errType, message);
                     mErrCount++;
                 } else {
                     writerManager.writeExceededErrors();
+                    writeExceededErrorToLog();
                     disposeContext();
                 }
             }
@@ -195,6 +238,7 @@ public class GameContext implements Context {
     public void disposeContext() {
         closeConnection();
         mGameController.disposeGameController();
+        mLogger.disposeLogger();
         //TODO: Dispose controller and state machine
     }
 }

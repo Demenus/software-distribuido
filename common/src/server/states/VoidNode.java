@@ -40,4 +40,14 @@ public class VoidNode implements StateNode {
     public void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException {
 
     }
+
+    @Override
+    public String getLastRequest() {
+        return null;
+    }
+
+    @Override
+    public String getLastResponse() {
+        return null;
+    }
 }

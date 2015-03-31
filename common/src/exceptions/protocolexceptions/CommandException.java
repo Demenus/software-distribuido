@@ -1,12 +1,12 @@
 package exceptions.protocolexceptions;
 
-import exceptions.BaseException;
 import exceptions.ErrType;
+import exceptions.ServerException;
 
 /**
  * Created by aaron on 24/02/2015.
  */
-public class CommandException extends BaseException {
+public class CommandException extends ServerException {
 
     public CommandException() {
         super(ErrType.COMMAND_ERROR, "The command is not recognized");

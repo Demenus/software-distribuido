@@ -86,7 +86,7 @@ public class ServerBadTest extends BaseTest{
     }
 
     @Test
-    public void testSendOneByte() throws Exception {
+    public void testSendOneByteMore() throws Exception {
         Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
@@ -105,6 +105,22 @@ public class ServerBadTest extends BaseTest{
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_char('S');
         writer.write_string("STRTDRAW");
+        assertEquals("STBT ", reader.read_string(5));
+        assertEquals(100,reader.read_int32());
+        assertEquals("CARD", reader.read_string(4));
+
+    }
+
+    //@Test
+    public void testSendByteByByte() throws Exception {
+        Socket socket = new Socket("127.0.0.1",PORT);
+        ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
+        ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
+        writer.write_char('S');
+        Thread.sleep(1000);
+        writer.write_char('T');
+        writer.write_char('R');
+        writer.write_char('T');
         assertEquals("STBT ", reader.read_string(5));
         assertEquals(100,reader.read_int32());
         assertEquals("CARD", reader.read_string(4));

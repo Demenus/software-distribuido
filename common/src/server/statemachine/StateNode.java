@@ -23,4 +23,7 @@ public interface StateNode {
 
     void process(WriterManager writerManager, Object controller, Object parsedMessage) throws ApplicationException, WriteException, TimeOutException;
 
+    String getLastRequest();
+
+    String getLastResponse();
 }

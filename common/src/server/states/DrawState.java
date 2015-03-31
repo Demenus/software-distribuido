@@ -1,5 +1,6 @@
 package server.states;
 
+import constants.Commands;
 import constants.States;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
@@ -18,6 +19,8 @@ import java.util.List;
 public class DrawState implements StateNode {
 
     private boolean mFinalState = false;
+    private String mLastRequest;
+    private String mLastResponse;
 
     @Override
     public String getState() {
@@ -31,6 +34,7 @@ public class DrawState implements StateNode {
 
     @Override
     public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException {
+        mLastRequest = Commands.DRAW;
         return null;
     }
 
@@ -55,8 +59,27 @@ public class DrawState implements StateNode {
             writerManager.writeBusting();
             writerManager.writeBankScore(cards, score);
             writerManager.writeGain(gain);
+            mLastResponse  = Commands.CARD+" "+card.toString() + "\n";
+            mLastResponse += Commands.BUSTING + "\n";
+            mLastResponse += Commands.BANK_SCORE + " " + cards.size();
+            for (Card c : cards) {
+                mLastResponse += c.toString();
+            }
+            mLastResponse += " " + score + "\n";
+            mLastResponse += Commands.GAINS + " " + gain;
         } else {
             writerManager.writeCard(card);
+            mLastResponse = Commands.CARD+" "+card.toString();
         }
+    }
+
+    @Override
+    public String getLastRequest() {
+        return mLastRequest;
+    }
+
+    @Override
+    public String getLastResponse() {
+        return mLastResponse;
     }
 }

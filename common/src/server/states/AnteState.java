@@ -1,5 +1,6 @@
 package server.states;
 
+import constants.Commands;
 import constants.States;
 import exceptions.applicationexceptions.ApplicationException;
 import exceptions.connectionexceptions.ReadException;
@@ -16,6 +17,9 @@ import server.statemachine.StateNode;
  * Created by aaron on 12/03/2015.
  */
 public class AnteState implements StateNode {
+
+    private String mLastRequest;
+
     @Override
     public String getState() {
         return States.ANTE_STATE;
@@ -28,7 +32,9 @@ public class AnteState implements StateNode {
 
     @Override
     public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException, TimeOutException {
-        return readerManager.readBet();
+        int bet = readerManager.readBet();
+        mLastRequest = Commands.ANTE+" "+bet;
+        return bet;
     }
 
     @Override
@@ -43,5 +49,15 @@ public class AnteState implements StateNode {
         Integer bet = (Integer) parsedMessage;
         GameController ctr = (GameController) controller;
         ctr.increaseBet(bet);
+    }
+
+    @Override
+    public String getLastRequest() {
+        return mLastRequest;
+    }
+
+    @Override
+    public String getLastResponse() {
+        return null;
     }
 }

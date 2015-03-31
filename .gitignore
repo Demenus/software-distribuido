@@ -2,6 +2,7 @@
 *.iml
 /.idea
 *.dat
+*.log
 /nbproject/private/
 /build/
 /nbproject

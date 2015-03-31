@@ -7,6 +7,7 @@ import exceptions.connectionexceptions.WriteException;
 import exceptions.protocolexceptions.CommandException;
 import exceptions.protocolexceptions.ParseException;
 import exceptions.protocolexceptions.StateException;
+import server.ServerLogger;
 import server.io.ReaderManager;
 import server.io.WriterManager;
 
@@ -57,7 +58,7 @@ public abstract class StateMachine {
         return mStateNodes.get(state);
     }
 
-    public StateNode getCurrentStateNode() {
+    /*public StateNode getCurrentStateNode() {
         return mCurrentStateNode;
     }
 
@@ -67,7 +68,7 @@ public abstract class StateMachine {
 
     public StateNode getNextCandidateStateNode(String candidateState) throws ReadException, CommandException {
         //Checks the command
-        return getStateNode(candidateState);
+        return mStateNodes.get(candidateState);
     }
 
     public StateNode checkNextCandidateNode(StateNode nodeCandidate, String candidateState) throws StateException {
@@ -85,6 +86,35 @@ public abstract class StateMachine {
         Object parsed = mCurrentStateNode.parseRequestBody(readerManager);
         Object controller = getControllerOf(mCurrentState);
         mCurrentStateNode.process(writerManager, controller, parsed);
+    }*/
+
+    private void setCurrentNode(StateNode newNode, String newState) {
+        mCurrentStateNode = newNode;
+        mPreviousState = mCurrentState;
+        mCurrentState = newState;
+    }
+
+    public void processNext(ServerLogger logger, ReaderManager readerManager, WriterManager writerManager) throws ReadException, TimeOutException, CommandException, ParseException, StateException, WriteException, ApplicationException {
+        String candidateState = mParser.getStateFromCommand(readerManager);
+        StateNode candidateNode = mStateNodes.get(candidateState);
+        Object parsed = candidateNode.parseRequestBody(readerManager);
+
+        String request = candidateNode.getLastRequest();
+        if (request != null) {
+            logger.writeClient(request);
+        }
+
+        candidateNode.checkPreviousState(mCurrentState);
+        setCurrentNode(candidateNode, candidateState);
+
+        Object controller = getControllerOf(mCurrentState);
+        mCurrentStateNode.process(writerManager, controller, parsed);
+        String response = candidateNode.getLastResponse();
+        if (response != null) {
+            for (String res : response.split("\n")) {
+                logger.writeServer(res);
+            }
+        }
     }
 
 }

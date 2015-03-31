@@ -10,11 +10,11 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by aaron on 30/03/2015.
  */
-public abstract class Logger {
+public abstract class ServerLogger {
 
     private PrintWriter mWriter;
 
-    public Logger() {
+    public ServerLogger() {
         try {
             mWriter = new PrintWriter(getFileName(), "UTF-8");
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
@@ -24,6 +24,16 @@ public abstract class Logger {
     }
 
     public abstract String getFileName();
+
+    public void writeServer(String m) {
+        mWriter.println("S: "+m);
+        mWriter.flush();
+    }
+
+    public void writeClient(String m) {
+        mWriter.println("C: "+m);
+        mWriter.flush();
+    }
 
     //Client logs
     private void writeClient() {
@@ -66,6 +76,7 @@ public abstract class Logger {
     }
 
     public void disposeLogger() {
+        mWriter.flush();
         mWriter.close();
     }
 }

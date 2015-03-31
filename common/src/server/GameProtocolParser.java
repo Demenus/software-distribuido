@@ -5,7 +5,6 @@ import constants.States;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
 import exceptions.protocolexceptions.CommandException;
-import io.ComUtilsReaderManager;
 import server.io.ReaderManager;
 import server.statemachine.ProtocolParser;
 
@@ -61,8 +60,7 @@ public class GameProtocolParser implements ProtocolParser {
 
     public String getStateFromCommand2(ReaderManager readerManager) throws CommandException, ReadException, TimeOutException {
         //We read the command
-        ComUtilsReaderManager re = (ComUtilsReaderManager) readerManager;
-        String command = re.readCommand();
+        String command = readerManager.readCommand();
 
         if (command.equalsIgnoreCase(Commands.START)) {
             return States.START_STATE;
