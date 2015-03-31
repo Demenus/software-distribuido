@@ -5,7 +5,7 @@
 package vista;
 
 import controlador.Controlador;
-import java.util.Random;
+
 import java.util.Scanner;
 
 /**

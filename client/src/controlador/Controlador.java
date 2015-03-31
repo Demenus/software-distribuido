@@ -5,14 +5,15 @@
 package controlador;
 
 import comutils.ComUtils;
+import model.Card;
+import model.Card.Palo;
+import model.Listcard;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Card;
-import model.Card.Palo;
-import model.Listcard;
 
 /**
  *
