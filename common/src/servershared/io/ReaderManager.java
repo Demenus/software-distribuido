@@ -15,6 +15,8 @@ public interface ReaderManager<R> {
 
     char readChar() throws ReadException, TimeOutException;
 
+    int readInt32() throws ReadException, TimeOutException;
+
     int readBet() throws ReadException, TimeOutException;
 
     public static interface ReadOperation<R> {

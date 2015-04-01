@@ -53,6 +53,17 @@ public class ChannelReaderManager implements ReaderManager<ChannelUtils.Reader> 
     }
 
     @Override
+    public int readInt32() throws ReadException, TimeOutException {
+        Object i = runReadOperation(new ReadOperation<ChannelUtils.Reader>() {
+            @Override
+            public Object read(ChannelUtils.Reader reader) throws IOException, IndexOutOfBoundsException {
+                return reader.read_int32();
+            }
+        });
+        return (Integer) i;
+    }
+
+    @Override
     public int readBet() throws ReadException, TimeOutException {
         Object bet = runReadOperation(new ReadOperation<ChannelUtils.Reader>() {
             @Override

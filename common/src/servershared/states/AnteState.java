@@ -19,6 +19,7 @@ import servershared.statemachine.StateNode;
 public class AnteState implements StateNode {
 
     private String mLastRequest;
+    private int mState = 0;
 
     @Override
     public String getState() {
@@ -31,9 +32,30 @@ public class AnteState implements StateNode {
     }
 
     @Override
-    public Object parseRequestBody(ReaderManager readerManager) throws ParseException, ReadException, TimeOutException {
-        int bet = readerManager.readBet();
-        mLastRequest = Commands.ANTE+" "+bet;
+    public Object parseRequestBody(ReaderManager readerManager) throws ParseException{
+        int bet = 0;
+        if (mState == 0) {
+            try {
+                char c = readerManager.readChar();
+                boolean b = c==' ';
+                mState = 1;
+            } catch (ReadException e) {
+                throw new ParseException();
+            } catch (TimeOutException e) {
+                throw new ParseException();
+            }
+        }
+        if (mState == 1) {
+            try {
+                bet = readerManager.readInt32();
+                mState = 0;
+            } catch (ReadException e) {
+                throw new ParseException();
+            } catch (TimeOutException e) {
+                throw new ParseException();
+            }
+            mLastRequest = Commands.ANTE+" "+bet;
+        }
         return bet;
     }
 

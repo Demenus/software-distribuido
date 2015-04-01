@@ -80,7 +80,7 @@ public class ServerBadTest extends BaseTest{
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("SSTRT");
         assertEquals("STBT ", reader.read_string(5));
-        assertEquals(100,reader.read_int32());
+        assertEquals(100, reader.read_int32());
         writer.write_string("DRAW");
         assertEquals("CARD", reader.read_string(4));
     }
@@ -93,7 +93,7 @@ public class ServerBadTest extends BaseTest{
         writer.write_char('S');
         writer.write_string("STRT");
         assertEquals("STBT ", reader.read_string(5));
-        assertEquals(100,reader.read_int32());
+        assertEquals(100, reader.read_int32());
         writer.write_string("DRAW");
         assertEquals("CARD", reader.read_string(4));
     }
@@ -123,7 +123,41 @@ public class ServerBadTest extends BaseTest{
         writer.write_char('T');
         assertEquals("STBT ", reader.read_string(5));
         assertEquals(100,reader.read_int32());
-        assertEquals("CARD", reader.read_string(4));
+    }
 
+    @Test
+    public void testAnteWait() throws Exception {
+        Socket socket = new Socket("127.0.0.1",PORT);
+        ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
+        ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
+        writer.write_string("STRT");
+        assertEquals("STBT ", reader.read_string(5));
+        assertEquals(100,reader.read_int32());
+        writer.write_string("DRAW");
+        assertEquals("CARD ", reader.read_string(5));
+        reader.read_string(2);
+
+        writer.write_string("ANTE ");
+        Thread.sleep(30000);
+        writer.write_int32(20);
+
+        writer.write_string("DRAW");
+        writer.write_string("PASS");
+
+        //System.out.println(reader.read_string(40));
+        String s;
+        //card
+        s = reader.read_string(7);
+        System.out.printf(s);
+        //bksc
+        s = reader.read_string(5);
+        System.out.println(s);
+        int n = reader.read_int32();
+        s = reader.read_string(n*2);
+        System.out.println(s);
+        reader.read_char();
+        reader.read_string(4);
+        assertEquals("GAIN ", reader.read_string(5));
+        assertEquals(-120, reader.read_int32());
     }
 }

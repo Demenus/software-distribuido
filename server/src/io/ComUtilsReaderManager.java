@@ -55,6 +55,17 @@ public class ComUtilsReaderManager implements ReaderManager<ComUtils.Reader> {
     }
 
     @Override
+    public int readInt32() throws ReadException, TimeOutException {
+        Object i = runReadOperation(new ReadOperation<ComUtils.Reader>() {
+            @Override
+            public Object read(ComUtils.Reader reader) throws IOException, IndexOutOfBoundsException {
+                return reader.read_int32();
+            }
+        });
+        return (Integer) i;
+    }
+
+    @Override
     public int readBet() throws ReadException, TimeOutException {
         Object bet = runReadOperation(new ReadOperation<ComUtils.Reader>() {
             @Override

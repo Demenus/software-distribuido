@@ -21,6 +21,7 @@ import servershared.io.WriterManager;
 import servershared.statemachine.StateMachine;
 import servershared.statemachine.StateNode;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,11 +45,13 @@ public class GameContext implements Context {
     private GameController mGameController;
     private int mConnectionErrCount = 0;
     private int mErrCount = 0;
+    private String mDeckFile;
 
     public GameContext(Socket socket, String fileDeck, int bet) {
         mSocket = socket;
+        mDeckFile = fileDeck;
         mStateMachine = new GameStateMachine();
-        mGameController = new GameController(fileDeck, bet);
+        mGameController = new GameController(mDeckFile, bet);
         mStateMachine.setGameController(mGameController);
         mStateMachine.initialize();
     }
@@ -82,7 +85,10 @@ public class GameContext implements Context {
         mLogger = new ServerLogger() {
             @Override
             public String getFileName() {
-                return Thread.currentThread().getName()+".log";
+                String folder = mDeckFile.replace('.','_');
+                File folderFile = new File(folder);
+                folderFile.mkdir();
+                return folder + "/" + Thread.currentThread().getName()+".log";
             }
         };
     }
@@ -197,9 +203,9 @@ public class GameContext implements Context {
             } else if (errType == ErrType.COMMAND_ERROR) {
                 log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
-                    writerManager.writeError(errType, message);
-                    writeErrorToLog(errType, message);
-                    mErrCount++;
+                    //writerManager.writeError(errType, message);
+                    //writeErrorToLog(errType, message);
+                    //mErrCount++;
                 } else {
                     writerManager.writeExceededErrors();
                     writeExceededErrorToLog();
