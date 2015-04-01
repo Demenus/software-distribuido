@@ -20,6 +20,7 @@ import servershared.io.ReaderManager;
 import servershared.io.WriterManager;
 import servershared.statemachine.StateMachine;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.logging.Level;
@@ -37,11 +38,13 @@ public class GameContext implements Context {
     private GameStateMachine mStateMachine;
     private GameController mGameController;
     private int mGameId;
+    private String mDeckFile;
     private int mConnectionErrCount = 0;
     private int mErrCount = 0;
 
     public GameContext(int gameId, SocketChannel socketChannel, String fileDeck, int bet) {
         mGameId = gameId;
+        mDeckFile = fileDeck;
         mSocketChannel = socketChannel;
         mStateMachine = new GameStateMachine();
         mGameController = new GameController(fileDeck, bet);
@@ -76,7 +79,10 @@ public class GameContext implements Context {
         mLogger = new ServerLogger() {
             @Override
             public String getFileName() {
-                return "ServerGame-"+mGameId+".log";
+                String folder = mDeckFile.replace('.','_');
+                File folderFile = new File(folder);
+                folderFile.mkdir();
+                return folder + "/" + "ServerGame-"+mGameId+".log";
             }
         };
     }

@@ -30,7 +30,7 @@ public class Game_con {
         String cardinformation;
         String op;
         double betupAmount=0.0;
-        double aux=0.0;
+        int aux=0;
         this.controller.startNewGame_client();
         current_bet=this.controller.getCurrentBet();
         menu(current_bet, this.controller.getCurrentPoints());

@@ -10,4 +10,8 @@ public class ParseException extends ServerException {
     public ParseException(String message) {
         super(ErrType.PARSE_ERROR, message);
     }
+
+    public ParseException() {
+        super(ErrType.PARSE_ERROR, "Can't parse the element");
+    }
 }

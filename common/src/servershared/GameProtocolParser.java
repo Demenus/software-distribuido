@@ -98,14 +98,16 @@ public class GameProtocolParser implements ProtocolParser {
 
     @Override
     public String getStateFromCommand(ReaderManager readerManager) throws CommandException, ReadException, TimeOutException {
-
-        while (true) {
+        int i = 0;
+        while (i < 4) {
             char c = readerManager.readChar();
             String state = stepState(c);
             if (state != null) {
                 return state;
             }
+            i++;
         }
+        throw new CommandException();
         /*char c0 = readerManager.readChar();
         char c1 = ' ';
         int i = 0;

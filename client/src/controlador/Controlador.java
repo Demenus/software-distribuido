@@ -147,12 +147,13 @@ public class Controlador {
         
     }
 
-    public void betUp_client(double betupAmount) {
+    public void betUp_client(int betupAmount) {
         String ans=this.answer.toLowerCase();
         if(!ans.equals("card")){
             System.out.println("This option is not enable now. Please try it after asking for new card.");
         }else{
-            this.comUtils.sendMessageString("ANTE"+" "+betupAmount);
+            comUtils.sendMessageString("ANTE ");
+            comUtils.sendMessageInt(betupAmount);
             this.current_bet+=betupAmount;
         }
     }

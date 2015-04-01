@@ -31,8 +31,7 @@ public class ServerContextManager implements ContextManager {
         mRun = true;
         try {
             mServerSocket = new ServerSocket(mPort);
-            log.log(Level.INFO, "Server running on port "+mPort);
-            log.log(Level.INFO, "Server starting bet "+mStartingBet);
+            log.log(Level.INFO, "Thread-Server running on port "+mPort);
         } catch (IOException e) {
             e.printStackTrace();
         }

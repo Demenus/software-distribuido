@@ -20,6 +20,7 @@ public class ServerContextManager implements ContextManager {
     private int mStartingBet;
     private String mDeckFile;
     private boolean mRun;
+    private ServerSocketChannel mServerSocketChannel;
     private Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public ServerContextManager(int port, int bet, String deck) {
@@ -31,17 +32,27 @@ public class ServerContextManager implements ContextManager {
 
     @Override
     public void runServer() {
-        ServerSocketChannel server;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                innerRunServer();
+            }
+        });
+        thread.start();
+    }
+
+
+    public void innerRunServer() {
         Selector selector;
         SocketChannel client;
         SelectionKey key, readKey;
         try {
-            server = ServerSocketChannel.open();
-            server.configureBlocking(false);
-            server.socket().bind(new InetSocketAddress(mPort));
-            log.log(Level.INFO, "Server listening on port " + mPort);
+            mServerSocketChannel = ServerSocketChannel.open();
+            mServerSocketChannel.configureBlocking(false);
+            mServerSocketChannel.socket().bind(new InetSocketAddress(mPort));
+            log.log(Level.INFO, "Nio-Server listening on port " + mPort);
             selector = Selector.open();
-            server.register(selector, SelectionKey.OP_ACCEPT);
+            mServerSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
             while (mRun) {
                 selector.selectNow();
@@ -55,7 +66,7 @@ public class ServerContextManager implements ContextManager {
                         continue;
                     }
                     if (key.isAcceptable()) {
-                        client = server.accept();
+                        client = mServerSocketChannel.accept();
                         //System.out.println("Accepted connection from " + client);
                         client.configureBlocking(false);
                         //ByteBuffer source = ByteBuffer.wrap(data);
@@ -82,7 +93,12 @@ public class ServerContextManager implements ContextManager {
     }
 
     @Override
-    public void stopServer() {
-
+    public synchronized void stopServer() {
+        mRun = false;
+        try {
+            mServerSocketChannel.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
