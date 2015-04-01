@@ -1,6 +1,5 @@
 package servershared;
 
-import constants.Commands;
 import constants.States;
 import exceptions.connectionexceptions.ReadException;
 import exceptions.connectionexceptions.TimeOutException;
@@ -11,10 +10,103 @@ import servershared.statemachine.ProtocolParser;
 
 public class GameProtocolParser implements ProtocolParser {
 
+    private State mCurrentState = State.OO;
+
+    private String stepState(char c) throws CommandException {
+        switch (mCurrentState) {
+            case ST_S:
+                if (c == 't') mCurrentState = State.ST_T1;
+                else mCurrentState = State.OO;
+                break;
+            case ST_T1:
+                if (c == 'r') mCurrentState = State.ST_R;
+                else mCurrentState = State.OO;
+                break;
+            case ST_R:
+                if (c == 't') {
+                    mCurrentState = State.OO;
+                    return States.START_STATE;
+                }
+                break;
+
+            case AN_A:
+                if (c == 'n') mCurrentState = State.AN_N;
+                else mCurrentState = State.OO;
+                break;
+            case AN_N:
+                if (c == 't') mCurrentState = State.AN_T;
+                else mCurrentState = State.OO;
+                break;
+            case AN_T:
+                if (c == 'e') {
+                    mCurrentState = State.OO;
+                    return States.ANTE_STATE;
+                }
+                break;
+
+
+            case DR_D:
+                if (c == 'r') mCurrentState = State.DR_R;
+                else  mCurrentState = State.OO;
+                break;
+            case DR_R:
+                if (c == 'a') mCurrentState = State.DR_A;
+                else mCurrentState = State.OO;
+                break;
+            case DR_A:
+                if (c == 'w') {
+                    mCurrentState = State.OO;
+                    return States.DRAW_STATE;
+                }
+                break;
+
+
+            case PS_P:
+                if (c == 'a') mCurrentState = State.PS_A;
+                else mCurrentState = State.OO;
+                break;
+            case PS_A:
+                if (c == 's') mCurrentState = State.PS_S1;
+                else mCurrentState = State.OO;
+                break;
+            case PS_S1:
+                if (c =='s') {
+                    mCurrentState = State.OO;
+                    return States.PASS_STATE;
+                }
+                break;
+
+        }
+        if (mCurrentState == State.OO) {
+            switch (c) {
+                case 's':
+                    mCurrentState = State.ST_S;
+                    break;
+                case 'a':
+                    mCurrentState = State.AN_A;
+                    break;
+                case 'd':
+                    mCurrentState = State.DR_D;
+                    break;
+                case 'p':
+                    mCurrentState = State.PS_P;
+                    break;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String getStateFromCommand(ReaderManager readerManager) throws CommandException, ReadException, TimeOutException {
 
-        char c0 = readerManager.readChar();
+        while (true) {
+            char c = readerManager.readChar();
+            String state = stepState(c);
+            if (state != null) {
+                return state;
+            }
+        }
+        /*char c0 = readerManager.readChar();
         char c1 = ' ';
         int i = 0;
         while (i<4) {
@@ -55,23 +147,16 @@ public class GameProtocolParser implements ProtocolParser {
             c0 = c1;
             i++;
         }
-        throw new ReadException();
+        throw new ReadException();*/
     }
 
-    public String getStateFromCommand2(ReaderManager readerManager) throws CommandException, ReadException, TimeOutException {
-        //We read the command
-        String command = readerManager.readCommand();
-
-        if (command.equalsIgnoreCase(Commands.START)) {
-            return States.START_STATE;
-        } else if (command.equalsIgnoreCase(Commands.DRAW)) {
-            return States.DRAW_STATE;
-        } else if (command.equalsIgnoreCase(Commands.ANTE)) {
-            return States.ANTE_STATE;
-        } else if (command.equalsIgnoreCase(Commands.PASS)) {
-            return States.PASS_STATE;
-        } else {
-            throw new CommandException(command);
-        }
+    private enum State {
+        OO,
+        ST_S, ST_T1, ST_R,
+        AN_A, AN_N, AN_T,
+        DR_D, DR_R, DR_A,
+        PS_P, PS_A, PS_S1,
     }
+
+
 }

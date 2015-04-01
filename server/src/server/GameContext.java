@@ -197,9 +197,9 @@ public class GameContext implements Context {
             } else if (errType == ErrType.COMMAND_ERROR) {
                 log.log(Level.SEVERE, "Thread: "+Thread.currentThread().getName()+" & Error found: "+errType.toString()+" & message: "+message);
                 if (isValidContext()) {
-                    writerManager.writeError(errType, message);
-                    writeErrorToLog(errType, message);
-                    mErrCount++;
+                    //writerManager.writeError(errType, message);
+                    //writeErrorToLog(errType, message);
+                    //mErrCount++;
                 } else {
                     writerManager.writeExceededErrors();
                     writeExceededErrorToLog();

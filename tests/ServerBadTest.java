@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
  * Created by aaron on 13/03/2015.
  */
 public class ServerBadTest extends BaseTest{
-    @Test
+    //@Test
     public void testAnteState() throws Exception {
         Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
@@ -27,7 +27,7 @@ public class ServerBadTest extends BaseTest{
         assertEquals("ERRO", reader.read_string(4));
     }
 
-    @Test
+    //@Test
     public void testAnteNegative() throws Exception {
         Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
@@ -61,7 +61,7 @@ public class ServerBadTest extends BaseTest{
         assertEquals("ERRO", reader.read_string(4));
     }
 
-    @Test
+    //@Test
     public void testTwoStarts() throws Exception {
         Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
@@ -80,12 +80,12 @@ public class ServerBadTest extends BaseTest{
         ComUtils.Reader reader = new ComUtils.Reader(socket.getInputStream());
         writer.write_string("SSTRT");
         assertEquals("STBT ", reader.read_string(5));
-        assertEquals(100,reader.read_int32());
+        assertEquals(100, reader.read_int32());
         writer.write_string("DRAW");
         assertEquals("CARD", reader.read_string(4));
     }
 
-    @Test
+    //@Test
     public void testSendOneByteMore() throws Exception {
         Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());
@@ -93,7 +93,7 @@ public class ServerBadTest extends BaseTest{
         writer.write_char('S');
         writer.write_string("STRT");
         assertEquals("STBT ", reader.read_string(5));
-        assertEquals(100,reader.read_int32());
+        assertEquals(100, reader.read_int32());
         writer.write_string("DRAW");
         assertEquals("CARD", reader.read_string(4));
     }
@@ -111,7 +111,7 @@ public class ServerBadTest extends BaseTest{
 
     }
 
-    //@Test
+    @Test
     public void testSendByteByByte() throws Exception {
         Socket socket = new Socket("127.0.0.1",PORT);
         ComUtils.Writer writer = new ComUtils.Writer(socket.getOutputStream());

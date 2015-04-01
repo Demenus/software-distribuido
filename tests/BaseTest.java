@@ -1,5 +1,5 @@
 import org.junit.Before;
-import servernio.ServerContextManager;
+import server.ServerContextManager;
 
 
 /**
@@ -15,11 +15,11 @@ public abstract class BaseTest {
 
     @Before
     public void setUp() throws Exception {
-        /*if (!start) {
+        if (!start) {
             manager = new ServerContextManager(PORT, BET, DECK);
             manager.runServer();
             start = true;
-        }*/
+        }
     }
 
 }
