@@ -15,16 +15,23 @@ import java.util.Scanner;
 public class Game {
     Controlador controller;
     Scanner sc;
-    public Game(Controlador controller, int i, Scanner sc) {
+    /**
+     * Contructor.
+     * @param controller
+     * @param i  the option to start a new game with player mode or automatic mode.
+     */
+    public Game(Controlador controller, int i) {
         this.controller=controller;
-        this.sc=sc;
+        this.sc=new Scanner(System.in);
         if(i==1){
             player_mode();
         }else{
             automatic_mode();
         }
     }
-
+    /**
+     * To start a new game with player mode.
+     */
     private void player_mode() {
         int current_bet;
         String cardinformation;
@@ -106,7 +113,9 @@ public class Game {
             }   
         }
     }
-
+    /**
+     * To start a new game with automatic mode. It's plays by machine and plays game until it gets 6.5 points.
+     */
     private void automatic_mode() {
         int current_bet;
         this.controller.startNewGame_client();
@@ -149,10 +158,14 @@ public class Game {
                 
             }
         }
-        
-       
-        
     }
+    /**
+     * Menu for automatic mode.
+     * @param betamount
+     * @param currentpoint
+     * @param opcion
+     * @param cardinformation 
+     */
     private void menuAutomaticMode(double betamount, double currentpoint, int opcion, String cardinformation){
         System.out.println("------------------------------------------------------------");
         System.out.println("Current bet amount: "+betamount+ ". Current got points: "+currentpoint);
@@ -168,6 +181,11 @@ public class Game {
         }
         System.out.println("------------------------------------------------------------");
     }
+    /**
+     * Menu for player mode.
+     * @param betamount
+     * @param currentpoint 
+     */
     private void menu(double betamount,double currentpoint) {
         System.out.println("Current bet amount: "+betamount+ ". Current got points: "+currentpoint);
         System.out.println("------------------------------------------------------------");

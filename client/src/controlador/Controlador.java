@@ -78,19 +78,32 @@ public class Controlador {
     public double getCardValue(Card card){
         return card.getValue();
     }
+    /**
+     * Get current cards number
+     * @return int
+     */
     public int getCurrentCardsNumber(){
         return this.listcard.currentCardsNumber();
     }
-    
+    /**
+     * It calls the method of verify_estate() of the class ListCard to check if player got over then 7.5 points.
+     * @return 
+     */
     public boolean verify_estate() {
         boolean estate;
         estate=this.listcard.verify_estate();
         return estate;
     }
-
+    /**
+     * To get the list of cards.
+     * @return 
+     */
     public Listcard getListCard() {
         return this.listcard;
     }
+    /**
+     * To disconnect the connection.
+     */
     public void disconnect() {
         try {
             this.socket.close();
@@ -118,7 +131,8 @@ public class Controlador {
     }
     
     /**
-     *It's the method to ask server for a new card. It returns a String value. 
+     * It's the method to ask server for a new card. It returns a String value. 
+     * @return 
      */
     public String newCard_client() {
         Card carta=null;
@@ -161,7 +175,11 @@ public class Controlador {
         }
         
     }
-
+    /**
+     * The method to pass the round.
+     * @return if the previous round, player bet up the amount then it returns a String value 'error'. Else, it returns score.
+     * 
+     */
     public String pass() {
         if(this.betUP==false){
             this.comUtils.sendMessageString("PASS");
@@ -169,10 +187,12 @@ public class Controlador {
         }else{
             return "error";
         }
-        
-        
     }
 
+    /**
+     * To bet up with amount got from the parameter.
+     * @param betupAmount 
+     */
     public void betUp_client(int betupAmount) {
         String ans=this.answer.toLowerCase();
         if(!ans.equals("card") || this.betUP){
@@ -185,13 +205,24 @@ public class Controlador {
             this.betUP=true;
         }
     }
+    /**
+     * Get current bet amount.
+     * @return int
+     */
     public int getCurrentBet(){     
         return this.current_bet;
     }
+    /**
+     * Get current got points.
+     * @return 
+     */
     public double getCurrentPoints(){
         return this.listcard.getCurrentPoints();
     }
-
+    /**
+     * To get score from server.
+     * @return 
+     */
     private String getScore() {
         String res="";
         int cardnumber;

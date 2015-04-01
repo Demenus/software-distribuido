@@ -4,10 +4,11 @@
  */
 package vista;
 
+
 import comutils.ComUtils;
 import controlador.Controlador;
+import java.util.HashMap;
 
-import java.util.Scanner;
 
 /**
  *
@@ -22,6 +23,8 @@ import java.util.Scanner;
 //Problem 4: If client doesn't ask anything to Server for 3 seconds, Server authomatically close the conexion.
 public class Client {
     ComUtils comUtils;
+    public static final String DEFAULT_PORT = "1212";
+    public static final String DEFAULT_IP="127.0.0.1";
     private static void menuGame(){
         System.out.println("Menu");
         System.out.println("---------------------------------------------------");
@@ -39,7 +42,7 @@ public class Client {
         System.out.println("---------------------------------------------------");
         System.out.println("Please enter a integer number to choosse one of the above options:");
     }
-    
+    /*
     public static void main(String args[]) {
         String op;
         Scanner sc = new Scanner(System.in);
@@ -52,7 +55,6 @@ public class Client {
         }        
         switch(op){
             case "1":
-               //"127.0.0.1"
                 Controlador controller=new Controlador("127.0.0.1",1212);
                 if(controller.isConnected()){
                     System.out.println("We have just connected to the server.");
@@ -78,81 +80,39 @@ public class Client {
                 break;
             case "2":
                 break;
+        }*/
+    public static void main(String args[]) {
+        boolean automaticMode=false;
+        if (args.length%2 != 0) {
+            System.exit(-1);
+        }
+        HashMap<String, String> arguments = new HashMap<String, String>();
+        arguments.put("-p",DEFAULT_PORT);
+        arguments.put("-s",DEFAULT_IP);
+        for (int i = 0; i < args.length; i=i+2) {
+            arguments.put(args[i], args[i+1]);
+            if(args[i].equals("-a")){
+                automaticMode=true;
+            }
+        }
+        int port = Integer.valueOf(arguments.get("-p"));
+        String ip = arguments.get("-s");
+        Controlador controller=new Controlador(ip,port);
+        if(controller.isConnected()){
+            System.out.println("We have just connected to the server.");
+            if(automaticMode){
+                Game game=new Game(controller,2);
+            }else{
+                Game game=new Game(controller,1);
+            }                  
+        }else{
+            System.out.println("Error! We didn't connect to the server.");
         }
         
-      
-        
-        
-        /*String nomMaquina="", str,val;
-        int numPort=0, value,i=0;
-        Socket socket=null;
-        InetAddress maquinaServidora;
-        ComUtils comUtils;
-        
-        while (i<=args.length ){
-            switch(args[i]){
-                    case "-h":
-                        
-                        System.out.println("Us: java Client <maquina_servidora> <port>");
-                        //System.exit(1);
-                        break;
-                    case "-s":
-                        nomMaquina = args[0];//get ip
-                        break;
-                    case "-p":
-                        numPort    = Integer.parseInt(args[1]); //get port
-                        break;
-            }     
-            i+=2;
-        }
-        
-        
-        try{
-          /* Obtenim la IP de la maquina servidora */
-      //    maquinaServidora = InetAddress.getByName(nomMaquina);
-          /* Obrim una connexio amb el servidor */
-       //   socket = new Socket(maquinaServidora, numPort);
-          /* Obrim un flux d'entrada/sortida amb el servidor */
-       //   comUtils = new ComUtils(socket); 
 
-          /* Enviem el valor 10 al servidor */
-      //   comUtils.sendMessage("STRT");
+        //case "h": System.out.println("Us: java Client <maquina_servidora> <port>");
 
-          /* Llegim la resposta del servidor */
-   /*      
- 
-          val = comUtils.receiveMessage(40);
 
-          System.out.println("He enviat un 10, la resposta del servidor es " + val);
-
-          /* Tornem a enviar un altre valor */
-    //      comUtils.sendMessage("12");
-
-          /* Ara hauriem de rebre un missatge d'error */
-      /*    val = comUtils.receiveMessage(10);
-
-          if (!val.equals("12")){
-            System.out.println("No he rebut un 99 de resposta, sino un " + val);
-            System.exit(1);
-          }else{
-            str = comUtils.receiveMessage(10);
-            System.out.println("He enviat un 12, la resposta és el següent missatge d'error: " + str);
-          }
-
-        }
-        catch (IOException e)
-        {
-          System.out.println("Els errors han de ser tractats correctament en el vostre programa.");
-        }
-        finally {
-            try {
-                    if(socket != null) socket.close();
-                }
-                catch (IOException ex) {
-                        System.out.println("Els errors han de ser tractats correctament pel vostre programa");
-                } // fi del catch    
-        }
-    }*/
     }
     
     
