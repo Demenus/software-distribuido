@@ -78,7 +78,10 @@ public class ChannelUtils {
         private byte[] read_bytes(int numBytes) throws IOException{
             byte[] bStr = new byte[numBytes];
             ByteBuffer buffer = ByteBuffer.wrap(bStr);
-            mChannel.read(buffer);
+            int b = mChannel.read(buffer);
+            if (b < numBytes) {
+                throw new IOException("Broken Pipe");
+            }
             return bStr;
         }
 

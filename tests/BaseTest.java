@@ -1,5 +1,5 @@
 import org.junit.Before;
-import server.ServerContextManager;
+import servernio.ServerContextManager;
 
 
 /**

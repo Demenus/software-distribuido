@@ -36,7 +36,8 @@ public class AnteState implements StateNode {
         int bet = 0;
         if (mState == 0) {
             try {
-                readerManager.readChar();
+                char c = readerManager.readChar();
+                boolean b = c==' ';
                 mState = 1;
             } catch (ReadException e) {
                 throw new ParseException();

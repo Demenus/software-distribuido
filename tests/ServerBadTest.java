@@ -138,14 +138,26 @@ public class ServerBadTest extends BaseTest{
         reader.read_string(2);
 
         writer.write_string("ANTE ");
-        Thread.sleep(39000);
+        Thread.sleep(30000);
         writer.write_int32(20);
 
         writer.write_string("DRAW");
         writer.write_string("PASS");
 
-        System.out.println(reader.read_string(40));
-        assertEquals("GAIN ",reader.read_string(5));
+        //System.out.println(reader.read_string(40));
+        String s;
+        //card
+        s = reader.read_string(7);
+        System.out.printf(s);
+        //bksc
+        s = reader.read_string(5);
+        System.out.println(s);
+        int n = reader.read_int32();
+        s = reader.read_string(n*2);
+        System.out.println(s);
+        reader.read_char();
+        reader.read_string(4);
+        assertEquals("GAIN ", reader.read_string(5));
         assertEquals(-120, reader.read_int32());
     }
 }
