@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vista;
 
 
 import comutils.ComUtils;
 import controlador.Controlador;
+import vista.Game;
+
 import java.util.HashMap;
 
 
@@ -22,9 +23,10 @@ import java.util.HashMap;
 //Problem 3: Client ask for SCORE, the value of gain is alway strange LIKE  "-541665165"(big value);
 //Problem 4: If client doesn't ask anything to Server for 3 seconds, Server authomatically close the conexion.
 public class Client {
-    ComUtils comUtils;
     public static final String DEFAULT_PORT = "1212";
     public static final String DEFAULT_IP="127.0.0.1";
+    ComUtils comUtils;
+
     private static void menuGame(){
         System.out.println("Menu");
         System.out.println("---------------------------------------------------");
