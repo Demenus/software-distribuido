@@ -1,0 +1,10 @@
+/out
+*.iml
+/.idea
+*.dat
+*.log
+/nbproject/private/
+/build/
+/nbproject
+build.xml
+manifest.mf
