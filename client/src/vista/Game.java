@@ -15,14 +15,16 @@ import java.util.Scanner;
 public class Game {
     Controlador controller;
     Scanner sc;
+    double maxPoint;
     /**
      * Contructor.
      * @param controller
      * @param i  the option to start a new game with player mode or automatic mode.
      */
-    public Game(Controlador controller, int i) {
+    public Game(Controlador controller, int i, double maxPoint) {
         this.controller=controller;
         this.sc=new Scanner(System.in);
+        this.maxPoint=maxPoint;
         if(i==1){
             player_mode();
         }else{
@@ -132,7 +134,7 @@ public class Game {
         if(cardinformation.equals("error")){
             System.out.println("Error on receiving new card!");
         }else{
-            while(this.controller.getCurrentCardsNumber()>0 && this.controller.getCurrentPoints()<6.5 && state==true && errorState==false){
+            while(this.controller.getCurrentCardsNumber()>0 && this.controller.getCurrentPoints()<this.maxPoint && state==true && errorState==false){
                 random =(Math.random()<0.8)?0:1;//It has to be changed. We want 0 has probability 0.8 and 0.2 to 1.
                 if(random==0){
                     cardinformation=this.controller.newCard_client();
@@ -150,7 +152,7 @@ public class Game {
                 current_bet=this.controller.getCurrentBet();
                 menuAutomaticMode(current_bet,this.controller.getCurrentPoints(),random, cardinformation);
             }
-            if(this.controller.getCurrentPoints()>=6.5 && this.controller.getCurrentPoints()<7.5){
+            if(this.controller.getCurrentPoints()>=this.maxPoint && this.controller.getCurrentPoints()<7.5){
                 score=this.controller.pass();
                 current_bet=this.controller.getCurrentBet();
                 menuAutomaticMode(current_bet,this.controller.getCurrentPoints(),2,"");

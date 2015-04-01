@@ -103,9 +103,10 @@ public class Client {
         if(controller.isConnected()){
             System.out.println("We have just connected to the server.");
             if(automaticMode){
-                Game game=new Game(controller,2);
+                double maxPoint=Double.parseDouble(arguments.get("-a"));
+                Game game=new Game(controller,2,maxPoint);
             }else{
-                Game game=new Game(controller,1);
+                Game game=new Game(controller,1,0.0);
             }                  
         }else{
             System.out.println("Error! We didn't connect to the server.");
