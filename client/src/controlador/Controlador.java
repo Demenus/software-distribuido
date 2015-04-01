@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *Controller class
  * @author Huang
  */
 public class Controlador {
@@ -26,8 +26,13 @@ public class Controlador {
     Listcard listcard;
     char charact;
     int current_bet;
+    boolean betUP;
  
-
+    /**
+     * Constructor, it's the method that in charge to establish the connection to the server.
+     * @param ip  it's String value which is the server IP adress
+     * @param port  
+     */
     public Controlador(String ip, int port) {
         try {
             this.socket=new Socket(ip, port);
@@ -41,29 +46,42 @@ public class Controlador {
         this.charact=' ';
         this.listcard=new Listcard();
         current_bet=0;
-        
+        betUP=false;
     }
+    /**
+     * This method verifies if the socket is connected.
+     * @return 
+     */
     public boolean isConnected(){
         return this.socket.isConnected();
     }
-    /*public Listcard getDeck(){
-        Listcard listcards=new Listcard();
-        listcards.setdeck();
-        return listcards;
-    }*/
+    /**
+     * To add the new card to the list of cards.
+     * @param card 
+     */
     public void addNewCard(Card card){
         this.listcard.addCard(card);
     } 
+    /**
+     * To remove one card from our list of cards.
+     * @param listcard
+     * @param card 
+     */
     public void removeCard(Listcard listcard,Card card){
         listcard.removeCard(card);
     }
+    /**
+     * To get the card value, which is a integer value from 1 to 7 or a double value 0.5 .
+     * @param card
+     * @return Card's value
+     */
     public double getCardValue(Card card){
         return card.getValue();
     }
     public int getCurrentCardsNumber(){
         return this.listcard.currentCardsNumber();
     }
-
+    
     public boolean verify_estate() {
         boolean estate;
         estate=this.listcard.verify_estate();
@@ -80,24 +98,28 @@ public class Controlador {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * It's the method to send command START to server and to get the answer from server, then to verify if it's a correct state.
+     */
     public void startNewGame_client() {
-
         comUtils.sendMessageString("STRT");
-
         /* Read an answer from the server */
         answer = comUtils.receiveMessageString(4);
         charact=comUtils.receiveMessageChar();
-        this.current_bet=comUtils.receiveMessageInt();
-        
+        this.current_bet=comUtils.receiveMessageInt();//To get the initial bet amount.
+    
         answer=answer.toLowerCase();
         if (!answer.equals("stbt") || this.answer.equals("erro") || charact!=' '){
-             System.out.println("No he rebut una bona resposta, sino un " + answer);
+             System.out.println("We've received " + this.answer +", which is not expected answer.");
              System.exit(1);
         }
+        this.betUP=false;
     }
     
-
+    /**
+     *It's the method to ask server for a new card. It returns a String value. 
+     */
     public String newCard_client() {
         Card carta=null;
         boolean estate;
@@ -105,20 +127,20 @@ public class Controlador {
         String d;
         String p;
         comUtils.sendMessageString("DRAW");
-
         answer = comUtils.receiveMessageString(4); 
         charact=comUtils.receiveMessageChar();
         d=comUtils.receiveMessageString(1);
         p=comUtils.receiveMessageString(1);
         this.answer=answer.toLowerCase();
         if (!this.answer.equals("card") || charact!=' ' || this.answer.equals("erro")){
-             System.out.println("No he rebut una bona resposta, sino un " + this.answer);
+             System.out.println("We've received " + this.answer +", which is not expected answer.");
         }else{
             carta=Card.parseCard(d+""+p);
         }
         if(carta!=null){//We verify the estate of the game, we have to see if the sum of all the value passes over 7.5 o no.
             addNewCard(carta);
             estate=verify_estate();
+            this.betUP=false;
             if(estate){
                 //In case not passing over 7.5, we add this new card to the card list.
                 return carta.toString();
@@ -127,8 +149,7 @@ public class Controlador {
                answer = comUtils.receiveMessageString(4);
                this.answer=answer.toLowerCase();
                if (!this.answer.equals("bstg")){
-                    System.out.println("This answer is: "+this.answer);
-                    System.out.println("¡ERROR!Something has gone wrong. We are expecting the answer 'BUSTING'!");
+                    System.out.println("We've received " + this.answer +", which is not expected answer.");
                     return "error";
                }else{
                    return carta.toString()+"\n"+getScore();
@@ -142,18 +163,26 @@ public class Controlador {
     }
 
     public String pass() {
-        this.comUtils.sendMessageString("PASS");
-        return getScore();
+        if(this.betUP==false){
+            this.comUtils.sendMessageString("PASS");
+            return getScore();
+        }else{
+            return "error";
+        }
+        
         
     }
 
-    public void betUp_client(double betupAmount) {
+    public void betUp_client(int betupAmount) {
         String ans=this.answer.toLowerCase();
-        if(!ans.equals("card")){
+        if(!ans.equals("card") || this.betUP){
             System.out.println("This option is not enable now. Please try it after asking for new card.");
         }else{
-            this.comUtils.sendMessageString("ANTE"+" "+betupAmount);
+            this.comUtils.sendMessageString("ANTE");
+            this.comUtils.sendMessageChar(' ');
+            this.comUtils.sendMessageInt(betupAmount);
             this.current_bet+=betupAmount;
+            this.betUP=true;
         }
     }
     public int getCurrentBet(){     
@@ -180,7 +209,7 @@ public class Controlador {
         
         this.answer=answer.toLowerCase();
         if(!answer.equals("bksc") || this.answer.equals("erro") || this.charact!=' '){
-            System.out.println("Error! The server hasn't sent us a correct protocol.");
+            System.out.println("We've received " + this.answer +", which is not expected answer.");
         }else{
             res=res+this.listcard.getGamenInformation()+"\n";
             res=res+"The server has got "+cardnumber+" cards which are: "+cards+".\n The server score is: "+score+"\n";
@@ -189,7 +218,7 @@ public class Controlador {
             charact=comUtils.receiveMessageChar();
             gain=comUtils.receiveMessageInt();
             if(!this.answer.equals("gain") || this.answer.equals("erro") || charact!=' '){
-                System.out.println("Error! The server hasn't sent to us a correct protocol.");
+                System.out.println("We've received " + this.answer +", which is not expected answer.");
             }else{
                 if(gain>=0){
                     res=res+" You win the game. Your gain is: "+gain;

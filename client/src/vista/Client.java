@@ -20,7 +20,7 @@ import java.util.Scanner;
 //Problem 2: In case of BUSTING, server always send client the same game(the same cards and the same score).
 //Problem 3: Client ask for SCORE, the value of gain is alway strange LIKE  "-541665165"(big value);
 //Problem 4: If client doesn't ask anything to Server for 3 seconds, Server authomatically close the conexion.
-public class Client_con {
+public class Client {
     ComUtils comUtils;
     private static void menuGame(){
         System.out.println("Menu");
@@ -46,7 +46,7 @@ public class Client_con {
         menuStartNewGame();
         op=sc.next();
         while(!op.equals("1") && !op.equals("2")){
-            System.out.println("Input ERROR! ");
+            System.out.println("Input ERROR! Please try again.");
             menuStartNewGame();
             op=sc.next();
         }        
@@ -59,7 +59,7 @@ public class Client_con {
                     menuGame();
                     op=sc.next();
                     while(!op.equals("1") && !op.equals("2") && !op.equals("3")){
-                        System.out.println("Input ERROR! ");
+                        System.out.println("Input ERROR! Please try again.");
                         menuGame();
                         op=sc.next();
                     }      
@@ -67,9 +67,9 @@ public class Client_con {
                         controller.disconnect();
                     }else{
                         if(op.equals("1")){
-                            Game_con game=new Game_con(controller,1,sc);
+                            Game game=new Game(controller,1,sc);
                         }else{
-                            Game_con game=new Game_con(controller,2,sc);
+                            Game game=new Game(controller,2,sc);
                         }
                     }
                 }else{
