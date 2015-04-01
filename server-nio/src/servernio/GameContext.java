@@ -82,7 +82,7 @@ public class GameContext implements Context {
                 String folder = mDeckFile.replace('.','_');
                 File folderFile = new File(folder);
                 folderFile.mkdir();
-                return folder + "/" + "ServerGame-"+mGameId+".log";
+                return "ServerGame-"+mGameId+".log";
             }
         };
     }

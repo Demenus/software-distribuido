@@ -88,7 +88,7 @@ public class GameContext implements Context {
                 String folder = mDeckFile.replace('.','_');
                 File folderFile = new File(folder);
                 folderFile.mkdir();
-                return folder + "/" + Thread.currentThread().getName()+".log";
+                return Thread.currentThread().getName()+".log";
             }
         };
     }
