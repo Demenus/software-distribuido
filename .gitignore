@@ -10,3 +10,6 @@ build.xml
 manifest.mf
 SrcP2/.idea
 SrcP2/out
+/SrcP2/nbproject/private/
+/SrcP2/build/
+/SrcP2/nbproject
