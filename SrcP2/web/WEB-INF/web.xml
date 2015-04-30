@@ -5,7 +5,7 @@
 <web-app>
 
    <security-constraint>
-      <display-name>Exemple AutentificaciÃ³</display-name>
+      <display-name>Exemple Autentificació</display-name>
       <web-resource-collection>
          <web-resource-name>Protected Area</web-resource-name>
 
@@ -20,8 +20,7 @@
       </web-resource-collection>
       <auth-constraint>
          <!-- Anyone with one of the listed roles may access this area -->
-         <role-name>Alumne</role-name>
-         <role-name>Professor</role-name>
+         <role-name>LoggedUser</role-name>
       </auth-constraint>
     </security-constraint>
 
@@ -37,11 +36,17 @@
 
     <!-- Security roles referenced by this web application -->
     <security-role>
-      <role-name>Alumne</role-name>
-    </security-role>
-    <security-role>
-      <role-name>Professor</role-name>
+      <role-name>LoggedUser</role-name>
     </security-role>
 
+    <servlet>
+        <servlet-name>LlibreriaServlet</servlet-name>
+        <servlet-class>LlibreriaServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LlibreriaServlet</servlet-name>
+        <url-pattern>/llibreria</url-pattern>
+    </servlet-mapping>
 
 </web-app>
