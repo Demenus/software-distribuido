@@ -6,16 +6,16 @@
 
 <html>
 <head>
-<title>Pàgina pública</title>
+<title>Pï¿½gina pï¿½blica</title>
 </head>
 <body bgcolor="white">
 
-Pàgina pública per a la que no es necessita autentificació.
+Pï¿½gina pï¿½blica per a la que no es necessita autentificaciï¿½.
 
 <br/>
 <br/>
 
-Tornar a la pàgina <a href="../index.html">inicial</a> de l'exemple.
+Tornar a la pï¿½gina <a href="../index.jsp">inicial</a> de l'exemple.
 
 </body>
 </html>
