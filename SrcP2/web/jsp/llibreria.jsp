@@ -1,3 +1,4 @@
+<%@ page import="ub.chennegrin.controllers.LlibreriaController" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Shop Homepage - Start Bootstrap Template</title>
+  <title>UB Media</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -63,6 +64,15 @@
 
 <!-- Page Content -->
 <div class="container">
+
+  <div class="row">
+    <%
+      LlibreriaController ctr = (LlibreriaController) request.getAttribute("Controller");
+    %>
+    <p><b><%
+      out.write(ctr.prueba());
+    %></b></p>
+  </div>
 
   <div class="row">
 

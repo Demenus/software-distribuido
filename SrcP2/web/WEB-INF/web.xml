@@ -4,16 +4,6 @@
 
 <web-app>
 
-    <servlet>
-        <servlet-name>Llibreria</servlet-name>
-        <servlet-class>LlibreriaServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Llibreria</servlet-name>
-        <url-pattern>/llibreria</url-pattern>
-    </servlet-mapping>
-
    <security-constraint>
 
       <web-resource-collection>
@@ -48,5 +38,20 @@
     <security-role>
       <role-name>LoggedUser</role-name>
     </security-role>
+
+    <servlet>
+        <servlet-name>ServletDispatcher</servlet-name>
+        <servlet-class>ub.chennegrin.ServletDispatcher</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ServletDispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/static/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>
