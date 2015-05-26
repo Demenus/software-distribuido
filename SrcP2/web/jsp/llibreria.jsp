@@ -1,272 +1,109 @@
-<%@ page import="ub.chennegrin.controllers.LlibreriaController" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="en">
+<%@ page import="ub.chennegrin.model.users.User" %>
+<%@include file="header.jsp" %>
 
-<head>
+<header>
+  <div class="header-content">
+    <div class="header-content-inner">
+      <h1>All the media you want in one place</h1>
+      <hr>
+      <p>Start using Media Cloud for high quality media just in one place</p>
+      <% User user = (User) request.getAttribute("User"); %>
+      <% if (user == null) { %>
+        <a href="/login" class="btn btn-primary btn-xl page-scroll">Log in now</a>
+      <% } %>
+    </div>
+  </div>
+</header>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>UB Media</title>
-
-  <!-- Bootstrap Core CSS -->
-  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom CSS -->
-  <link href="/static/css/shop-homepage.css" rel="stylesheet">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-</head>
-
-<body>
-
-<!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<section class="bg-primary" id="about">
   <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
-    </div>
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="#">About</a>
-        </li>
-        <li>
-          <a href="#">Services</a>
-        </li>
-        <li>
-          <a href="#">Contact</a>
-        </li>
-      </ul>
-    </div>
-    <!-- /.navbar-collapse -->
-  </div>
-  <!-- /.container -->
-</nav>
-
-<!-- Page Content -->
-<div class="container">
-
-  <div class="row">
-    <%
-      LlibreriaController ctr = (LlibreriaController) request.getAttribute("Controller");
-    %>
-    <p><b><%
-      out.write(ctr.prueba());
-    %></b></p>
-  </div>
-
-  <div class="row">
-
-    <div class="col-md-3">
-      <p class="lead">Shop Name</p>
-      <div class="list-group">
-        <a href="#" class="list-group-item">Category 1</a>
-        <a href="#" class="list-group-item">Category 2</a>
-        <a href="#" class="list-group-item">Category 3</a>
-      </div>
-    </div>
-
-    <div class="col-md-9">
-
-      <div class="row carousel-holder">
-
-        <div class="col-md-12">
-          <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-              <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-              <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-              <div class="item active">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-              </div>
-              <div class="item">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-              </div>
-              <div class="item">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-              </div>
-            </div>
-            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-              <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-              <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="row">
-
-        <div class="col-sm-4 col-lg-4 col-md-4">
-          <div class="thumbnail">
-            <img src="http://placehold.it/320x150" alt="">
-            <div class="caption">
-              <h4 class="pull-right">$24.99</h4>
-              <h4><a href="#">First Product</a>
-              </h4>
-              <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-            </div>
-            <div class="ratings">
-              <p class="pull-right">15 reviews</p>
-              <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4 col-lg-4 col-md-4">
-          <div class="thumbnail">
-            <img src="http://placehold.it/320x150" alt="">
-            <div class="caption">
-              <h4 class="pull-right">$64.99</h4>
-              <h4><a href="#">Second Product</a>
-              </h4>
-              <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="ratings">
-              <p class="pull-right">12 reviews</p>
-              <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4 col-lg-4 col-md-4">
-          <div class="thumbnail">
-            <img src="http://placehold.it/320x150" alt="">
-            <div class="caption">
-              <h4 class="pull-right">$74.99</h4>
-              <h4><a href="#">Third Product</a>
-              </h4>
-              <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="ratings">
-              <p class="pull-right">31 reviews</p>
-              <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4 col-lg-4 col-md-4">
-          <div class="thumbnail">
-            <img src="http://placehold.it/320x150" alt="">
-            <div class="caption">
-              <h4 class="pull-right">$84.99</h4>
-              <h4><a href="#">Fourth Product</a>
-              </h4>
-              <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="ratings">
-              <p class="pull-right">6 reviews</p>
-              <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4 col-lg-4 col-md-4">
-          <div class="thumbnail">
-            <img src="http://placehold.it/320x150" alt="">
-            <div class="caption">
-              <h4 class="pull-right">$94.99</h4>
-              <h4><a href="#">Fifth Product</a>
-              </h4>
-              <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="ratings">
-              <p class="pull-right">18 reviews</p>
-              <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4 col-lg-4 col-md-4">
-          <h4><a href="#">Like this template?</a>
-          </h4>
-          <p>If you like this template, then check out <a target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this tutorial</a> on how to build a working review system for your online store!</p>
-          <a class="btn btn-primary" target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">View Tutorial</a>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-<!-- /.container -->
-
-<div class="container">
-
-  <hr>
-
-  <!-- Footer -->
-  <footer>
     <div class="row">
-      <div class="col-lg-12">
-        <p>Copyright &copy; Your Website 2014</p>
+      <div class="col-lg-8 col-lg-offset-2 text-center">
+        <h2 class="section-heading">We've got what you need!</h2>
+        <hr class="light">
+        <p class="text-faded">Check out our cataleg and find what you love and discover new things to love</p>
+        <a href="/llibreria/cataleg" class="btn btn-default btn-xl">Go to catalog!</a>
       </div>
     </div>
-  </footer>
+  </div>
+</section>
 
-</div>
-<!-- /.container -->
+<section id="services" class="bg-info">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-heading">At Your Service</h2>
+        <hr class="primary">
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 text-center">
+        <div class="service-box">
+          <i class="fa fa-4x fa-diamond wow bounceIn text-primary"></i>
+          <h3>Amazing collection</h3>
+          <p class="text-muted">Our media collection will shock you!</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 text-center">
+        <div class="service-box">
+          <i class="fa fa-4x fa-paper-plane wow bounceIn text-primary" data-wow-delay=".1s"></i>
+          <h3>Ready to download</h3>
+          <p class="text-muted">Fast and secure</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 text-center">
+        <div class="service-box">
+          <i class="fa fa-4x fa-newspaper-o wow bounceIn text-primary" data-wow-delay=".2s"></i>
+          <h3>Up to Date</h3>
+          <p class="text-muted">Fresh content every week</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 text-center">
+        <div class="service-box">
+          <i class="fa fa-4x fa-heart wow bounceIn text-primary" data-wow-delay=".3s"></i>
+          <h3>Made with Love</h3>
+          <p class="text-muted">Our team develops this service with love!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="bg-info">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 text-center">
+        <h2 class="section-heading">Let's Get In Touch!</h2>
+        <hr class="primary">
+        <p>Do you have some request or have you found some problem? Give us a call or send us an email and we will get back to you as soon as possible!</p>
+      </div>
+      <div class="col-lg-4 col-lg-offset-2 text-center">
+        <i class="fa fa-phone fa-3x wow bounceIn"></i>
+        <p>123-456-678</p>
+      </div>
+      <div class="col-lg-4 text-center">
+        <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
+        <p><a href="mailto:support@mediacloud.com">support@mediacloud.com</a></p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- jQuery -->
 <script src="/static/js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/static/js/jquery.easing.min.js"></script>
+<script src="/static/js/jquery.fittext.js"></script>
+<script src="/static/js/wow.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/creative.js"></script>
 
 </body>
 

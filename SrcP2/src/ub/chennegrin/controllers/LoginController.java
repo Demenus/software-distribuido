@@ -8,16 +8,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LlibreriaController extends PageController {
-
+/**
+ * Created by aaron on 24/05/2015.
+ */
+public class LoginController extends PageController {
     @Override
     public void doGet(ServletDispatcher context, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //req.setAttribute("Controller", this);
-        req.getRequestDispatcher("/jsp/llibreria.jsp").forward(req, resp);
+
+        //req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
+        resp.sendRedirect("/llibreria");
     }
 
     @Override
     public void doPost(ServletDispatcher context, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String user = req.getParameter("username");
+        String pwd = req.getParameter("password");
 
+        resp.sendRedirect("/llibreria");
     }
 }
