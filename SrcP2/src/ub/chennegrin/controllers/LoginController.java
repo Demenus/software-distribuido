@@ -1,12 +1,14 @@
 package ub.chennegrin.controllers;
 
 import ub.chennegrin.ServletDispatcher;
+import ub.chennegrin.model.shop.CartList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by aaron on 24/05/2015.
@@ -14,9 +16,8 @@ import java.io.IOException;
 public class LoginController extends PageController {
     @Override
     public void doGet(ServletDispatcher context, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        //req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
-        resp.sendRedirect("/llibreria");
+        req.getSession().setAttribute("CartList", new CartList());
+        resp.sendRedirect("/llibreria/cataleg");
     }
 
     @Override

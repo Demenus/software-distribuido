@@ -1,7 +1,23 @@
-<%@ page import="ub.chennegrin.controllers.CatalegController" %>
-<%@ page import="ub.chennegrin.model.shop.Product" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="header.jsp" %>
+<%@include file="../common/header2.jsp"%>
+<body>
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+<%@include file="../common/main-nav.jsp" %>
+
+<!-- Page Title -->
+<section class="bg-black">
+  <div class="my-section my-section-breadcrumb">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Shopping Cart</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="bg-info">
   <div class="row">
@@ -61,6 +77,8 @@
 
   <!-- Bootstrap Core JavaScript -->
   <script src="/static/js/bootstrap.min.js"></script>
+
+  <script src="/static/js/cataleg.js"></script>
 
   </body>
 

@@ -1,5 +1,5 @@
 <%@ page import="ub.chennegrin.model.users.User" %>
-<%@include file="header.jsp" %>
+<%@include file="../common/header.jsp" %>
 
 <header>
   <div class="header-content">

@@ -70,7 +70,7 @@ p {
 }
 
 section {
-    padding: 100px 0;
+    padding: 50px 0;
 }
 
 aside {
@@ -124,6 +124,37 @@ aside {
 .navbar-default .nav > li.active>a:hover,
 .navbar-default .nav>li.active>a:focus:hover {
     background-color: transparent;
+}
+
+div.my-section-breadcrumb {
+    background: #222;
+    background: rgba(34, 34, 34, 0.8);
+    margin-bottom: 10px;
+}
+
+.my-section-breadcrumb h1 {
+    color: #FAFAFA;
+    font-size: 1.6em;
+    margin-bottom: 0;
+    text-transform: none;
+}
+
+.my-section {
+    padding: 30px 0;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+.my-section-white {
+    background: #FFF;
+}
+.my-section .container:first-child h1,
+.my-section .container:first-child h2,
+.my-section .container:first-child h3 {
+    margin-top: 0;
+    font-weight: 700;
 }
 
 @media(min-width:768px) {

@@ -1,7 +1,6 @@
 package ub.chennegrin.model.shop;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,6 +13,7 @@ public class ShopManager {
 
     private final ConcurrentHashMap<Integer, Product> mMapProducts = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, List<Product>> mByType = new ConcurrentHashMap<>();
+    private CopyOnWriteArrayList<Product> mSortedProducts;
 
     protected ShopManager() {
         init();
@@ -29,6 +29,17 @@ public class ShopManager {
         return sInstance;
     }
 
+    public void initialize() {
+        ArrayList<Product> sorted = new ArrayList<>(mMapProducts.values());
+        Collections.sort(sorted, new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+        mSortedProducts = new CopyOnWriteArrayList<>(sorted);
+    }
+
     public void addProduct(Product product) {
         mMapProducts.put(product.getId(), product);
         List<Product> l = mByType.get(product.getType());
@@ -36,7 +47,7 @@ public class ShopManager {
     }
 
     public Collection<Product> getAllProducts() {
-        return mMapProducts.values();
+        return mSortedProducts;
     }
 
     public Product findProductById(int id) {

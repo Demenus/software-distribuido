@@ -1,5 +1,6 @@
 package ub.chennegrin;
 
+import ub.chennegrin.controllers.CartListController;
 import ub.chennegrin.controllers.CatalegController;
 import ub.chennegrin.controllers.LlibreriaController;
 import ub.chennegrin.controllers.LoginController;
@@ -27,6 +28,7 @@ public class ServletDispatcher extends HttpServlet {
         try {
             InputStream productsStream = getServletContext().getResourceAsStream("WEB-INF/media/products.json");
             JSONLoader.loadProductsFromJson(productsStream, ShopManager.getInstance());
+            ShopManager.getInstance().initialize();
 
             InputStream usersStream = getServletContext().getResourceAsStream("WEB-INF/users/users.json");
             JSONLoader.loadUsersFromJson(usersStream, UsersManager.getInstance());
@@ -59,25 +61,40 @@ public class ServletDispatcher extends HttpServlet {
             case "/llibreria/cataleg":
                 llibreriaCatalegRequest(req, resp);
                 break;
+            case "/cartlist":
+                cartListRequest(req, resp);
+                break;
             case "/login":
                 loginRequest(req, resp);
                 break;
+            case "/logout":
+                logoutRequest(req, resp);
+                break;
         }
-    }
-
-    private void loginRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        new LoginController().processRequest(this, req, resp);
-    }
-
-    private void llibreriaCatalegRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        new CatalegController().processRequest(this, req, resp);
     }
 
     private void homeRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.sendRedirect("/llibreria");
     }
 
+    private void loginRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        new LoginController().processRequest(this, req, resp);
+    }
+
+    private void logoutRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.getSession().invalidate();
+        resp.sendRedirect("/llibreria");
+    }
+
+    private void llibreriaCatalegRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        new CatalegController().processRequest(this, req, resp);
+    }
+
     private void llibreriaRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new LlibreriaController().processRequest(this, req, resp);
+    }
+
+    private void cartListRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        new CartListController().processRequest(this, req, resp);
     }
 }

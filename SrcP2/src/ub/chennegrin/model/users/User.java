@@ -14,11 +14,11 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class User {
     private int id;
     private String username;
-    private CopyOnWriteArraySet<Integer> purchased;
+    private CopyOnWriteArrayList<Integer> purchased;
     private float currency;
 
     public User() {
-        purchased = new CopyOnWriteArraySet<>();
+        purchased = new CopyOnWriteArrayList<>();
     }
 
     public int getId() {
@@ -29,7 +29,7 @@ public class User {
         return username;
     }
 
-    public Set<Integer> getPurchased() {
+    public List<Integer> getPurchased() {
         return purchased;
     }
 

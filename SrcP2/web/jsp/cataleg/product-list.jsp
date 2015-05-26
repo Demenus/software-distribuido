@@ -1,8 +1,11 @@
 <%@ page import="ub.chennegrin.controllers.CatalegController" %>
 <%@ page import="ub.chennegrin.model.shop.Product" %>
+<%@ page import="ub.chennegrin.model.shop.CartList" %>
+<%@ page import="ub.chennegrin.model.users.User" %>
 <div class="row">
 
   <% CatalegController controller = (CatalegController) request.getAttribute("Controller"); %>
+  <% CartList cartList = (CartList) request.getSession().getAttribute("CartList"); %>
   <% User user_product_list = (User) request.getAttribute("User"); %>
   <% for (Product p : controller.getAllProducts()) { %>
   <div class="col-sm-4 col-lg-4 col-md-4">
@@ -32,9 +35,11 @@
         <% if (user_product_list != null) { %>
           <% if (user_product_list.hasPurchased(p.getId())) { %>
           <button class="btn-info">Go to resource</button>
+          <% } else if (!cartList.isInCart(p.getId())) { %>
+          <button class="btn-success" id="<% out.print(p.getId()); %>"><i class="fa fa-cart-plus"></i> Add to cart</button>
           <% } else { %>
-          <button class="btn-success">Add to cart</button>
-          <% } %>
+          <button class="btn-danger" id="<% out.print(p.getId()); %>"><i class="fa fa-cart-arrow-down"></i> Remove from cart</button>
+          <% }%>
         <% } %>
       </div>
     </div>
