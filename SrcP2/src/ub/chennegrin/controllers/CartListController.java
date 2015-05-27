@@ -13,7 +13,7 @@ import java.io.IOException;
 public class CartListController extends PageController {
     @Override
     public void doGet(ServletDispatcher context, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsp/cartlist/cart-list.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/protected/cart-list.jsp").forward(req, resp);
     }
 
     @Override

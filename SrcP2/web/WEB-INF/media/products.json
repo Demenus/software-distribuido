@@ -2,7 +2,7 @@
     {
       "id": 1,
       "name": "p1",
-      "price": "1",
+      "price": 1,
       "desc": "product 1",
       "type": "Video",
       "reviews": 15,
@@ -11,7 +11,7 @@
     {
       "id": 2,
       "name": "p2",
-      "price": "2",
+      "price": 2,
       "desc": "product 2",
       "type": "Book",
       "reviews": 6,
@@ -20,7 +20,7 @@
     {
       "id": 3,
       "name": "p3",
-      "price": "3",
+      "price": 3,
       "desc": "product 3",
       "type": "Audio",
       "reviews": 20,
@@ -29,7 +29,7 @@
     {
       "id": 4,
       "name": "p4",
-      "price": "4",
+      "price": 4,
       "desc": "product 4",
       "type": "Audio",
       "reviews": 20,
@@ -38,7 +38,7 @@
     {
       "id": 5,
       "name": "p5",
-      "price": "3",
+      "price": 3,
       "desc": "product 5",
       "type": "Audio",
       "reviews": 20,
@@ -47,7 +47,7 @@
     {
       "id": 6,
       "name": "p6",
-      "price": "6",
+      "price": 6,
       "desc": "product 6",
       "type": "Audio",
       "reviews": 20,
@@ -56,7 +56,7 @@
     {
       "id": 7,
       "name": "p7",
-      "price": "7",
+      "price": 70,
       "desc": "product 7",
       "type": "Audio",
       "reviews": 20,

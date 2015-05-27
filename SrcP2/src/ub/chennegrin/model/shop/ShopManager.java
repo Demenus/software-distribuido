@@ -46,6 +46,10 @@ public class ShopManager {
         l.add(product);
     }
 
+    public int getNumProducts() {
+        return mMapProducts.size();
+    }
+
     public Collection<Product> getAllProducts() {
         return mSortedProducts;
     }

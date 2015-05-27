@@ -1,6 +1,7 @@
 package ub.chennegrin.controllers;
 
 import ub.chennegrin.ServletDispatcher;
+import ub.chennegrin.model.shop.CartList;
 import ub.chennegrin.model.users.User;
 import ub.chennegrin.model.users.UsersManager;
 
@@ -24,8 +25,13 @@ public abstract class PageController {
 
     private void setUser(HttpServletRequest req) {
         String username = req.getRemoteUser();
-        User user = UsersManager.getInstance().findUserByName(username);
-        req.setAttribute("User", user);
+        if (req.getAttribute("User") == null) {
+            User user = UsersManager.getInstance().findUserByName(username);
+            req.setAttribute("User", user);
+            if (user != null && req.getSession().getAttribute("CartList") == null) {
+                req.getSession().setAttribute("CartList", new CartList());
+            }
+        }
     }
 
     public abstract void doGet(ServletDispatcher context, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;

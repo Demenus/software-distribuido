@@ -7,12 +7,12 @@
 <%@include file="../common/main-nav.jsp" %>
 
 <!-- Page Title -->
-<section class="bg-black">
+<section class="bg-info">
   <div class="my-section my-section-breadcrumb">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1>Shopping Cart</h1>
+          <h1>Catalog</h1>
         </div>
       </div>
     </div>
