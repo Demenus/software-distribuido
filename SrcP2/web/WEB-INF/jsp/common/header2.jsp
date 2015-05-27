@@ -9,15 +9,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
-  <link rel="stylesheet" href="static/css/bootstrap.min.css">
-  <link rel="stylesheet" href="static/css/icomoon-social.css">
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600,800' rel='stylesheet' type='text/css'>
 
-  <link rel="stylesheet" href="static/css/leaflet.css" />
-  <!--[if lte IE 8]>
-  <link rel="stylesheet" href="static/css/leaflet.ie.css" />
-  <![endif]-->
-  <link rel="stylesheet" href="static/css/main.css">
 
 
   <title>Media Cloud</title>

@@ -11,15 +11,14 @@
   <div class="my-section my-section-breadcrumb">
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
           <h1>Catalog</h1>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="bg-info">
+<!--<section class="bg-info">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="row text-center">
@@ -55,12 +54,25 @@
       </div>
     </div>
   </div>
-</section>
+</section>-->
 
 <section class="bg-info">
   <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-
+    <div class="col-md-2">
+      <!--<div class="btn-group-vertical" role="group" aria-label="...">
+        <button class="btn btn-default">All content</button>
+        <button class="btn btn-default">Video</button>
+        <button class="btn btn-default">Audio</button>
+        <button class="btn btn-default">Books</button>
+      </div>-->
+      <ul id="select-list" class="list-group">
+        <li id="select-all" class="list-group-item active"><a>All content</a></li>
+        <li id="select-video" class="list-group-item"><a>Video</a></li>
+        <li id="select-audio" class="list-group-item"><a>Audio</a></li>
+        <li id="select-books" class="list-group-item"><a>Book</a></li>
+      </ul>
+    </div>
+    <div class="col-md-8">
       <%@include file="product-list.jsp" %>
     </div>
 

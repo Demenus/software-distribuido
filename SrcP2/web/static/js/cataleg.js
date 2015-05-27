@@ -48,3 +48,15 @@ var removeClick = function() {
 $(".btn-success").click(addClick);
 
 $(".btn-danger").click(removeClick);
+
+$(".list-group-item").on("click", function(){
+    $(".list-group-item.active").removeClass("active");
+    $(this).addClass("active");
+    if ($(this).attr("id") != "select-all") {
+        var cl = "."+$(this).text();
+        $(".product").not(cl).hide("slow");
+        $(".product"+cl).show("slow");
+    } else {
+        $(".product").show("slow");
+    }
+});

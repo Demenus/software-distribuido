@@ -30,7 +30,7 @@
           <a class="page-scroll" href="/cartlist"><span id="numCartItems"><% out.print(cartList_header.getNumCartsElements()); %></span> <i class="fa fa-shopping-cart"></i></a>
         </li>
         <li>
-          <a class="page-scroll" href="/mycloud">My Cloud</a>
+          <a class="page-scroll" href="/llibreria/protegit/llista">My Cloud</a>
         </li>
         <li>
           <a class="page-scroll" href="/profile"><% out.print(user_header.getUsername()); %></a>

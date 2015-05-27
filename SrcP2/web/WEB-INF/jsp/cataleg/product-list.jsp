@@ -8,20 +8,20 @@
   <% CartList cartList = (CartList) request.getSession().getAttribute("CartList"); %>
   <% User user_product_list = (User) request.getAttribute("User"); %>
   <% for (Product p : controller.getAllProducts()) { %>
-  <div class="col-sm-4 col-lg-4 col-md-4">
+  <div class="col-sm-4 col-lg-4 col-md-4 product <% out.print(p.getType()); %>">
     <div class="thumbnail">
       <img src="http://placehold.it/320x150" alt="">
       <div class="caption">
-        <h4 class="pull-right"><% out.write(String.valueOf(p.getPrice())); %>EUR</h4>
-        <h4><a href="#"><% out.write(p.getName()); %></a>
+        <h4 class="pull-right"><% out.print(String.valueOf(p.getPrice())); %>EUR</h4>
+        <h4><a href="#"><% out.print(p.getName()); %></a>
         </h4>
-        <p><% out.write(p.getDesc()); %></p>
+        <p><% out.print(p.getDesc()); %></p>
       </div>
       <div class="ratings">
         <% if (p.getReviews() == 1) { %>
-        <p class="pull-right"><% out.write(String.valueOf(p.getReviews())); %> review</p>
+        <p class="pull-right"><% out.print(String.valueOf(p.getReviews())); %> review</p>
         <% } else { %>
-        <p class="pull-right"><% out.write(String.valueOf(p.getReviews())); %> reviews</p>
+        <p class="pull-right"><% out.print(String.valueOf(p.getReviews())); %> reviews</p>
         <% } %>
         <p>
           <%int n = p.getStarsInt();

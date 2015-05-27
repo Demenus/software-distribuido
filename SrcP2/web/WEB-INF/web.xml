@@ -27,6 +27,7 @@
          <!--<url-pattern>/WEB-INF/jsp/protected/*</url-pattern>-->
           <url-pattern>/login/*</url-pattern>
           <url-pattern>/cartlist</url-pattern>
+          <url-pattern>/llibreria/protegit/llista</url-pattern>
 
          <!-- If you list http methods, only those methods are protected -->
          <http-method>DELETE</http-method>

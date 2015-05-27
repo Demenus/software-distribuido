@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by aaron on 26/05/2015.
+ * Created by aaron on 27/05/2015.
  */
-public class CartListController extends PageController {
+public class ProductsController extends PageController {
     @Override
     public void doGet(ServletDispatcher context, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/jsp/protected/cartlist/cart-list.jsp").forward(req, resp);
+
     }
 
     @Override
