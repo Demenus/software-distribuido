@@ -33,7 +33,7 @@
           <a class="page-scroll" href="/llibreria/protegit/llista">My Cloud</a>
         </li>
         <li>
-          <a class="page-scroll" href="/profile"><% out.print(user_header.getUsername()); %></a>
+          <a class="page-scroll" href="/profile"><% out.print(user_header.getUsername()); %> (<span id="user-currency-nav"><% out.print(user_header.getCurrency()); %></span>EUR)</a>
         </li>
         <li>
           <a class="page-scroll" href="/logout">Logout</a>

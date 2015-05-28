@@ -11,6 +11,7 @@ public class Product {
     private String type;
     private int reviews;
     private float stars;
+    private String filename;
 
     public Product() {
 
@@ -78,5 +79,23 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", desc='" + desc + '\'' +
+                ", type='" + type + '\'' +
+                ", reviews=" + reviews +
+                ", stars=" + stars +
+                ", filename='" + filename + '\'' +
+                '}';
     }
 }

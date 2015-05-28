@@ -26,7 +26,7 @@ var removeCartFunction = function (data) {
 var addClick = function() {
     btnId = this.id;
     $.ajax({
-        url: "/llibreria/cataleg",
+        url: "/cartlist",
         method: "post",
         data: {"action": "add", "productId": btnId},
         dataType: "json",
@@ -37,7 +37,7 @@ var addClick = function() {
 var removeClick = function() {
     btnId = this.id;
     $.ajax({
-        url: "/llibreria/cataleg",
+        url: "/cartlist",
         method: "post",
         data: {"action": "remove", "productId": btnId},
         dataType: "json",

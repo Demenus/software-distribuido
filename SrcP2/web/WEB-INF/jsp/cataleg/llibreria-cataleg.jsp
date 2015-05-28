@@ -59,12 +59,6 @@
 <section class="bg-info">
   <div class="row">
     <div class="col-md-2">
-      <!--<div class="btn-group-vertical" role="group" aria-label="...">
-        <button class="btn btn-default">All content</button>
-        <button class="btn btn-default">Video</button>
-        <button class="btn btn-default">Audio</button>
-        <button class="btn btn-default">Books</button>
-      </div>-->
       <ul id="select-list" class="list-group">
         <li id="select-all" class="list-group-item active"><a>All content</a></li>
         <li id="select-video" class="list-group-item"><a>Video</a></li>

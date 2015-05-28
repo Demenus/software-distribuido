@@ -24,8 +24,9 @@ public class ServletDispatcher extends HttpServlet {
     public void init() throws ServletException {
         try {
             InputStream productsStream = getServletContext().getResourceAsStream("WEB-INF/media/products.json");
-            JSONLoader.loadProductsFromJson(productsStream, ShopManager.getInstance());
-            ShopManager.getInstance().initialize();
+            ShopManager shopManager = ShopManager.getInstance();
+            JSONLoader.loadProductsFromJson(productsStream, shopManager);
+            shopManager.initialize();
 
             InputStream usersStream = getServletContext().getResourceAsStream("WEB-INF/users/users.json");
             JSONLoader.loadUsersFromJson(usersStream, UsersManager.getInstance());
@@ -70,6 +71,10 @@ public class ServletDispatcher extends HttpServlet {
             case "/llibreria/protegit/llista": //Ver la lista de productos comprados y un botón que realiza descarga.
                 mycloudRequest(req, resp);
                 break;
+            case "/products":
+            case "/products/":
+                productsRequest(req, resp);
+                break;
         }
     }
 
@@ -100,5 +105,9 @@ public class ServletDispatcher extends HttpServlet {
 
     private void mycloudRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new MyCloudController().processRequest(this,req,resp);
+    }
+
+    private void productsRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        new ProductsController().processRequest(this,req,resp);
     }
 }

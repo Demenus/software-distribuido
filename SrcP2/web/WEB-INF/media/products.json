@@ -1,12 +1,13 @@
 [
     {
       "id": 1,
-      "name": "p1",
+      "name": "Chasing Pavements",
       "price": 1,
-      "desc": "product 1",
-      "type": "Video",
+      "desc": "Chasing Pavements by Adele",
+      "type": "Audio",
       "reviews": 15,
-      "stars": 4
+      "stars": 4,
+      "filename": "Adele - Chasing Pavements.mp3"
     },
     {
       "id": 2,
@@ -15,7 +16,8 @@
       "desc": "product 2",
       "type": "Book",
       "reviews": 6,
-      "stars": 5
+      "stars": 5,
+      "filename": "Adele - Chasing Pavements.mp3"
     },
     {
       "id": 3,
@@ -24,7 +26,8 @@
       "desc": "product 3",
       "type": "Audio",
       "reviews": 20,
-      "stars": 4
+      "stars": 4,
+      "filename": "Adele - Chasing Pavements.mp3"
     },
     {
       "id": 4,
@@ -33,16 +36,18 @@
       "desc": "product 4",
       "type": "Audio",
       "reviews": 20,
-      "stars": 4
+      "stars": 4,
+      "filename": "Adele - Chasing Pavements.mp3"
     },
     {
       "id": 5,
       "name": "p5",
       "price": 3,
       "desc": "product 5",
-      "type": "Audio",
+      "type": "Video",
       "reviews": 20,
-      "stars": 4
+      "stars": 4,
+      "filename": "Adele - Chasing Pavements.mp3"
     },
     {
       "id": 6,
@@ -51,15 +56,17 @@
       "desc": "product 6",
       "type": "Audio",
       "reviews": 20,
-      "stars": 4
+      "stars": 4,
+      "filename": "Adele - Chasing Pavements.mp3"
     },
     {
       "id": 7,
       "name": "p7",
       "price": 70,
       "desc": "product 7",
-      "type": "Audio",
+      "type": "Video",
       "reviews": 20,
-      "stars": 4
+      "stars": 4,
+      "filename": "Adele - Chasing Pavements.mp3"
     }
 ]

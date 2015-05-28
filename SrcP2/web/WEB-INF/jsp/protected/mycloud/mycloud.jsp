@@ -12,24 +12,47 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1>Shopping Cart</h1>
+          <h1>My Cloud</h1>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<div id="purchase-success" class="row" style="display: none;">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="row alert alert-success text-center" role="alert"><h4>Product purchased!</h4></div>
+  </div>
+</div>
+
+
 <div class="section">
-  <div class="container">
-    <%@include file="mycloud-purchased-items.jsp"%>
+  <div class="row">
+    <div class="col-md-2">
+      <ul id="select-list" class="list-group" style="padding-top: 20px;">
+        <li id="select-purchased" class="list-group-item active"><a>Purchased</a></li>
+        <li id="select-cartlist" class="list-group-item"><a>Cartlist</a></li>
+      </ul>
+    </div>
+    <div class="col-md-9">
+        <div id="purchased-div">
+          <%@include file="mycloud-purchased-items.jsp"%>
+        </div>
+        <div id="cartlist-div">
+          <%@include file="mycloud-cartlist-items.jsp"%>
+        </div>
+    </div>
   </div>
 </div>
 
 <!-- Javascripts -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="static/js/bootstrap.min.js"></script>
-<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+<!-- jQuery -->
+<script src="/static/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<script src="/static/js/mycloud.js"></script>
 
 </body>
 </html>

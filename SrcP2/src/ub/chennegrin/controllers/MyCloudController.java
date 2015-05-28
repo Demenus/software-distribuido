@@ -46,7 +46,7 @@ public class MyCloudController extends PageController {
         ArrayList<Product> products = new ArrayList<>();
         for (int productId : user.getPurchased()) {
             Product p = manager.findProductById(productId);
-            products.add(p);
+            products.add(0, p);
         }
         return products;
     }

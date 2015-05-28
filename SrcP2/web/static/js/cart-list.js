@@ -17,17 +17,18 @@ var updateTotal = function() {
     var products = 0.0;
     $(".price").each(function(){
         var priceStr = $(this).text();
-        var price = parseFloat(priceStr.substring(0, priceStr.length - 3));
+        var price = parseFloat(priceStr);
         products = products + price;
     }).promise().done(function() {
-        $("#total-products").text("-"+products.toFixed(2)+"EUR");
+        $("#total-products").text("-"+products.toFixed(2));
         var creditStr = $("#user-credit").text();
-        var credit = parseFloat(creditStr.substring(0, creditStr.length - 3));
+        var credit = parseFloat(creditStr);
         var total = credit - products;
         if (total < 0) {
-            $("#form-buy").hide();
+            $("#buy-button").hide();
             $("#total-eur").text("Not enough credit");
         } else {
+            $("#buy-button").show();
             $("#total-eur").text(total+"EUR");
         }
     });
@@ -38,7 +39,7 @@ var btnId;
 var removeClick = function() {
     btnId = this.id.split("_")[1];
     $.ajax({
-        url: "/llibreria/cataleg",
+        url: "/cartlist",
         method: "post",
         data: {"action": "remove", "productId": btnId},
         dataType: "json",
@@ -51,15 +52,47 @@ var removeCartFunction = function (data) {
         $("#numCartItems").text(data["numElems"]);
         $("#prod_"+btnId).hide("slow", function () {
             this.remove();
+            noElements();
+            updateTotal();
         });
-        noElements();
-        updateTotal();
     }
+};
+
+var buyCartFunction = function(data) {
+    if (data["result"] == "ok") {
+        var productId = data["productId"];
+        $("#numCartItems").text(data["numElems"]);
+        $("#prod_"+productId).hide("slow", function () {
+            this.remove();
+            noElements();
+            updateTotal();
+            var currency_nav = $("#user-currency-nav");
+            var creditStr = currency_nav.text();
+            var credit = parseFloat(creditStr);
+            credit = credit - parseFloat(data["productPrice"]);
+            currency_nav.text(credit.toFixed(2));
+        });
+    }
+};
+
+var buyClick = function() {
+    $(".cartlist-item").each(function() {
+        var productId = $(this).attr("id").split("_")[1];
+        $.ajax({
+            url: "/cartlist",
+            method: "post",
+            data: {"action": "buy", "productId": productId},
+            dataType: "json",
+            success: buyCartFunction
+        });
+    });
 };
 
 $(document).ready(function(){
     noElements();
     updateTotal();
+    $(".btn-grey").click(removeClick);
+    $("#buy-button").click(buyClick);
 });
 
-$(".btn-grey").click(removeClick);
+

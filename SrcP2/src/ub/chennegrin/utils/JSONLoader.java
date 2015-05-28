@@ -44,7 +44,7 @@ public class JSONLoader {
         Scanner sc = new Scanner(inputStream);
         StringBuilder buffer = new StringBuilder();
         while (sc.hasNextLine()) {
-            buffer.append(sc.next());
+            buffer.append(sc.nextLine());
         }
         return buffer.toString();
     }

@@ -223,7 +223,7 @@ div.my-section-breadcrumb {
     text-align: center;
 }
 .shopping-cart .actions {
-    width: 80px;
+    width: 120px;
 }
 .shopping-cart .actions .btn {
     margin-bottom: 5px;
@@ -264,6 +264,7 @@ li > a {
     -moz-transition: all .35s;
     transition: all .35s;
     cursor: pointer;
+    padding-left: 10px;
 }
 
 li.active > a {

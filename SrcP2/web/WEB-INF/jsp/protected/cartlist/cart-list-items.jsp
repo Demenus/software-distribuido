@@ -19,12 +19,15 @@
 
 <section id="content-section" class="bg-info" style="display: none;">
 <% for (Product p : cart_list_items.getSelectedProducts()) { %>
-<div id="prod_<% out.print(p.getId()); %>" class="row">
+<div id="prod_<% out.print(p.getId()); %>" class="row cartlist-item">
     <div class="col-md-12">
         <!-- Shopping Cart Items -->
         <table class="shopping-cart">
             <!-- Shopping Cart Item -->
             <tr>
+                <td class="image">
+                    <img src="http://placehold.it/320x150" alt=""/>
+                </td>
                 <td class="cart-item-title"><b><% out.print(p.getName()); %></b></td>
                 <td>
                     <div class="feature">Description: <b><% out.print(p.getDesc()); %></b></div>
@@ -48,22 +51,20 @@
         <table class="cart-totals">
             <tr>
                 <td><b>Your credit</b></td>
-                <td id="user-credit"><% out.print(user_list_items.getCurrency()); %>EUR</td>
+                <td><span id="user-credit"><% out.print(user_list_items.getCurrency()); %></span>EUR</td>
             </tr>
             <tr>
                 <td><b>Selected products</b></td>
-                <td id="total-products"></td>
+                <td><span id="total-products"></span>EUR</td>
             </tr>
             <tr class="cart-grand-total">
-                <td><b>Your credit after shopping</b></td>
+                <td><b>Credit after shop</b></td>
                 <td><b id="total-eur"></b></td>
             </tr>
         </table>
         <!-- Action Buttons -->
         <div class="pull-right">
-            <form method="post" id="form-buy">
-                <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> BUY</button>
-            </form>
+            <button id="buy-button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> BUY</button>
         </div>
     </div>
 </div>

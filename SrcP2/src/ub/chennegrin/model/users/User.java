@@ -15,7 +15,7 @@ public class User {
     private int id;
     private String username;
     private CopyOnWriteArrayList<Integer> purchased;
-    private float currency;
+    private double currency;
 
     public User() {
         purchased = new CopyOnWriteArrayList<>();
@@ -33,8 +33,16 @@ public class User {
         return purchased;
     }
 
-    public float getCurrency() {
+    public double getCurrency() {
         return currency;
+    }
+
+    public void decreaseCurrency(double price) {
+        currency = currency - price;
+    }
+
+    public void increaseCurrency(double price) {
+        currency = currency + price;
     }
 
     public void addPurchase(int productId) {
