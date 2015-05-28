@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class LoginController extends PageController {
     @Override
     public void doGet(ServletDispatcher context, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getSession().setAttribute("CartList", new CartList());
         resp.sendRedirect("/llibreria/cataleg");
     }
 

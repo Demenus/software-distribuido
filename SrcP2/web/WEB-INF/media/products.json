@@ -68,5 +68,15 @@
       "reviews": 20,
       "stars": 4,
       "filename": "Adele - Chasing Pavements.mp3"
+    },
+    {
+      "id": 8,
+      "name": "Distributed _Systems",
+      "price": 6,
+      "desc": "Testing session product",
+      "type": "Book",
+      "reviews": 49,
+      "stars": 0,
+      "filename": "SistemesDistribuits.pdf"
     }
 ]

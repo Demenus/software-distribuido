@@ -47,8 +47,19 @@ var removeClick = function() {
     });
 };
 
+var removeAjax = function(productId) {
+    $.ajax({
+        url: "/cartlist",
+        method: "post",
+        data: {"action": "remove", "productId": productId},
+        dataType: "json",
+        success: removeCartFunction
+    });
+};
+
 var removeCartFunction = function (data) {
     if (data["result"] == "ok") {
+        console.log(data);
         $("#numCartItems").text(data["numElems"]);
         $("#prod_"+btnId).hide("slow", function () {
             this.remove();
@@ -72,6 +83,9 @@ var buyCartFunction = function(data) {
             credit = credit - parseFloat(data["productPrice"]);
             currency_nav.text(credit.toFixed(2));
         });
+    } else if (data["result"] == "purchased") {
+        btnId = data["productId"];
+        removeAjax(data["productId"])
     }
 };
 

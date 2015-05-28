@@ -6,5 +6,11 @@
     "purchased": [
       1, 2
     ]
+  },
+  {
+    "id": 2,
+    "username": "f1",
+    "currency": 70,
+    "purchased": []
   }
 ]

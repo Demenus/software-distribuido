@@ -2,6 +2,7 @@ package ub.chennegrin;
 
 import ub.chennegrin.controllers.*;
 import ub.chennegrin.model.shop.ShopManager;
+import ub.chennegrin.model.users.User;
 import ub.chennegrin.model.users.UsersManager;
 import ub.chennegrin.utils.JSONLoader;
 
@@ -87,7 +88,12 @@ public class ServletDispatcher extends HttpServlet {
     }
 
     private void logoutRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        req.getSession().invalidate();
+        String userName = req.getRemoteUser();
+        if (userName != null) {
+            User user = UsersManager.getInstance().findUserByName(userName);
+            user.removeCartList(req.getSession().getId());
+            req.getSession().invalidate();
+        }
         resp.sendRedirect("/llibreria");
     }
 

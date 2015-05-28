@@ -34,11 +34,11 @@
         </p>
         <% if (user_product_list != null) { %>
           <% if (user_product_list.hasPurchased(p.getId())) { %>
-          <button class="btn-info">Go to resource</button>
+          <a class="btn btn-info" href="/llibreria/protegit/llista">Go to Cloud</a>
           <% } else if (!cartList.isInCart(p.getId())) { %>
-          <button class="btn-success" id="<% out.print(p.getId()); %>"><i class="fa fa-cart-plus"></i> Add to cart</button>
+          <button class="btn btn-success" id="<% out.print(p.getId()); %>"><i class="fa fa-cart-plus"></i> Add to cart</button>
           <% } else { %>
-          <button class="btn-danger" id="<% out.print(p.getId()); %>"><i class="fa fa-cart-arrow-down"></i> Remove from cart</button>
+          <button class="btn btn-danger" id="<% out.print(p.getId()); %>"><i class="fa fa-cart-arrow-down"></i> Remove from cart</button>
           <% }%>
         <% } %>
       </div>

@@ -72,6 +72,7 @@ public class CartListController extends PageController {
             Product product = ShopManager.getInstance().findProductById(productId);
             User user = (User) req.getAttribute("User");
             if (user.hasPurchased(productId)) {
+                mPurchasedMap.put("productId", productStr);
                 resp.getWriter().write(mGson.toJson(mPurchasedMap));
             } else if (user.getCurrency() < product.getPrice()) {
                 resp.getWriter().write(mGson.toJson(mErrMap));
@@ -105,6 +106,7 @@ public class CartListController extends PageController {
             if (cart.isInCart(productId)) {
                 resp.getWriter().write(mGson.toJson(mErrMap));
             } else if (user.hasPurchased(productId)) {
+                mPurchasedMap.put("productId", product);
                 resp.getWriter().write(mGson.toJson(mPurchasedMap));
             } else {
                 cart.addToCart(productId);
@@ -127,6 +129,7 @@ public class CartListController extends PageController {
             if (!cart.isInCart(productId)) {
                 resp.getWriter().write(mGson.toJson(mErrMap));
             } else if (user.hasPurchased(productId)) {
+                mPurchasedMap.put("productId", product);
                 resp.getWriter().write(mGson.toJson(mPurchasedMap));
             } else {
                 cart.removeFromCart(productId);

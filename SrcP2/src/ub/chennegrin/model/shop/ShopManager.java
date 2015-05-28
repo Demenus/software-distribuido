@@ -12,6 +12,7 @@ public class ShopManager {
     private static final ShopManager sInstance = new ShopManager();
 
     private final ConcurrentHashMap<Integer, Product> mMapProducts = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Product> mByName = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, List<Product>> mByType = new ConcurrentHashMap<>();
     private CopyOnWriteArrayList<Product> mSortedProducts;
 
@@ -42,6 +43,7 @@ public class ShopManager {
 
     public void addProduct(Product product) {
         mMapProducts.put(product.getId(), product);
+        mByName.put(product.getName(), product);
         List<Product> l = mByType.get(product.getType());
         l.add(product);
     }
@@ -56,6 +58,10 @@ public class ShopManager {
 
     public Product findProductById(int id) {
         return mMapProducts.get(id);
+    }
+
+    public Product findProductByName(String name) {
+        return mByName.get(name);
     }
 
     public List<Product> getProductsByType(String type) {

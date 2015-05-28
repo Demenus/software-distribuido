@@ -17,13 +17,11 @@
   </div>
 </section>
 
-<% if (request.getParameter("result") != null && request.getParameter("result").equalsIgnoreCase("fail")) { %>
 <div id="purchase-success" class="row" style="display: none;">
   <div class="col-md-10 col-md-offset-1">
     <div class="row alert alert-danger text-center" role="alert"><h4>Product purchased!</h4></div>
   </div>
 </div>
-<% } %>
 
 
 <div class="container">
