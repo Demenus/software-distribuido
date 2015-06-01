@@ -1,0 +1,17 @@
+/out
+*.iml
+/.idea
+*.dat
+*.log
+/nbproject/private/
+/build/
+/nbproject
+build.xml
+manifest.mf
+SrcP2/.idea
+SrcP2/out
+/SrcP2/nbproject/private/
+/SrcP2/build/
+/SrcP2/nbproject
+/SrcP2/src/nbproject/private/
+/SrcP2/src/build/
