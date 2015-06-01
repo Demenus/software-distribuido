@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by aaron on 28/05/2015.
+ * The second part of delivery.
  */
 public class WebServiceDispatcher extends HttpServlet {
 

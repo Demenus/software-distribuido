@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * Created by aaron on 21/05/2015.
+ * /*The controller which process the request and response in the Cataleg webpage.
  */
 public class CatalegController extends PageController {
     private String err = "{\"result\":\"error\"}";
@@ -72,6 +72,7 @@ public class CatalegController extends PageController {
         mPurchasedMap.put("numElems", numElems);
     }
 
+    /*It handles the action of add product to cart in the cataleg page. */
     private void addToCart(String product, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CartList cart = (CartList) req.getSession().getAttribute("CartList");
         String numElems = String.valueOf(cart.getNumCartsElements());
@@ -92,7 +93,7 @@ public class CatalegController extends PageController {
             resp.getWriter().write(mGson.toJson(mErrMap));
         }
     }
-
+    /*It handles the action of remove products from the cart in the cataleg page. */
     private void removeFromCart(String product, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CartList cart = (CartList) req.getSession().getAttribute("CartList");
         String numElems = String.valueOf(cart.getNumCartsElements());

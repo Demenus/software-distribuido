@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by aaron on 01/06/2015.
+ *The controller which processes the request and response of the web service.
  */
 public class ConsulteController extends PageController {
     @Override

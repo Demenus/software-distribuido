@@ -48,6 +48,7 @@ public class ServletDispatcher extends HttpServlet {
         handleRequest(req, resp);
     }
 
+    /*Method to asign the request to the corresponce controller.*/
     private void handleRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String endPoint = req.getRequestURI();
         switch (endPoint) {
@@ -82,7 +83,7 @@ public class ServletDispatcher extends HttpServlet {
     private void homeRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.sendRedirect("/llibreria");
     }
-
+    /*Create a new controller to process login request*/
     private void loginRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new LoginController().processRequest(this, req, resp);
     }
@@ -96,19 +97,20 @@ public class ServletDispatcher extends HttpServlet {
         }
         resp.sendRedirect("/llibreria");
     }
-
+    /*Create a new controller to process the Cataleg page's request*/
     private void llibreriaCatalegRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new CatalegController().processRequest(this, req, resp);
     }
-
+    /*Create a new controller to process the Llireria page's request*/
     private void llibreriaRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new LlibreriaController().processRequest(this, req, resp);
     }
-
+    
+    /*Create a new controller to process the request of buying products*/
     private void cartListRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new CartListController().processRequest(this, req, resp);
     }
-
+    
     private void mycloudRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new MyCloudController().processRequest(this,req,resp);
     }

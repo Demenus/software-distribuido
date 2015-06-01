@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
-/**
- * Created by aaron on 26/05/2015.
- */
+/*The controller which processes the action of buying products.*/
 public class CartListController extends PageController {
     private HashMap<String, String> mErrMap;
     private HashMap<String, String> mOkMap;
@@ -62,6 +60,7 @@ public class CartListController extends PageController {
             resp.getWriter().write(mGson.toJson(mErrMap));
         }
     }
+    
 
     private void buyProduct(String productStr, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CartList cart = (CartList) req.getSession().getAttribute("CartList");
