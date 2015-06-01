@@ -1,13 +1,13 @@
 [
     {
       "id": 1,
-      "name": "Chasing Pavements",
+      "name": "Piano",
       "price": 1,
-      "desc": "Chasing Pavements by Adele",
+      "desc": "Piano song",
       "type": "Audio",
       "reviews": 15,
       "stars": 4,
-      "filename": "Adele - Chasing Pavements.mp3"
+      "filename": "piano.mp3"
     },
     {
       "id": 2,
@@ -17,7 +17,7 @@
       "type": "Book",
       "reviews": 6,
       "stars": 5,
-      "filename": "Adele - Chasing Pavements.mp3"
+      "filename": "SistemesDistribuits.pdf"
     },
     {
       "id": 3,
@@ -27,7 +27,7 @@
       "type": "Audio",
       "reviews": 20,
       "stars": 4,
-      "filename": "Adele - Chasing Pavements.mp3"
+      "filename": "piano.mp3"
     },
     {
       "id": 4,
@@ -37,7 +37,7 @@
       "type": "Audio",
       "reviews": 20,
       "stars": 4,
-      "filename": "Adele - Chasing Pavements.mp3"
+      "filename": "piano.mp3"
     },
     {
       "id": 5,
@@ -47,7 +47,7 @@
       "type": "Video",
       "reviews": 20,
       "stars": 4,
-      "filename": "Adele - Chasing Pavements.mp3"
+      "filename": "v1.wmv"
     },
     {
       "id": 6,
@@ -57,7 +57,7 @@
       "type": "Audio",
       "reviews": 20,
       "stars": 4,
-      "filename": "Adele - Chasing Pavements.mp3"
+      "filename": "piano.mp3"
     },
     {
       "id": 7,
@@ -67,7 +67,7 @@
       "type": "Video",
       "reviews": 20,
       "stars": 4,
-      "filename": "Adele - Chasing Pavements.mp3"
+      "filename": "v2.wmv"
     },
     {
       "id": 8,
