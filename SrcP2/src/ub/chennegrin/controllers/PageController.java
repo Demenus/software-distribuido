@@ -29,7 +29,10 @@ public abstract class PageController {
             User user = UsersManager.getInstance().findUserByName(username);
             req.setAttribute("User", user);
             if (user != null && req.getSession().getAttribute("CartList") == null) {
-                req.getSession().setAttribute("CartList", new CartList());
+                CartList cartList = new CartList();
+                req.getSession().setAttribute("CartList", cartList);
+                cartList.assignUser(user);
+                user.addCartList(req.getSession().getId(), cartList);
             }
         }
     }

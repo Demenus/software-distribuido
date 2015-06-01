@@ -31,15 +31,6 @@ public class MyCloudController extends PageController {
 
     }
 
-    public Collection<Product> getAllProducts() {
-        return ShopManager.getInstance().getAllProducts();
-    }
-    public String getProductTypeById(int id){
-        Product pro=ShopManager.getInstance().findProductById(id);
-        return pro.getType();
-
-    }
-
     public List<Product> getPurchasedProducts(HttpServletRequest req) {
         User user = (User) req.getAttribute("User");
         ShopManager manager = ShopManager.getInstance();

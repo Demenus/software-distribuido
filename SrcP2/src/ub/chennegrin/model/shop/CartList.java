@@ -1,5 +1,7 @@
 package ub.chennegrin.model.shop;
 
+import ub.chennegrin.model.users.User;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -9,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class CartList {
     private CopyOnWriteArrayList<Integer> selectedProducts;
+    private User user;
 
     public CartList() {
         selectedProducts = new CopyOnWriteArrayList<>();
@@ -21,6 +24,10 @@ public class CartList {
             products.add(manager.findProductById(productId));
         }
         return products;
+    }
+
+    public void assignUser(User user) {
+        this.user = user;
     }
 
     public boolean isInCart(int productId) {
