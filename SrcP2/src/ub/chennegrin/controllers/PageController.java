@@ -23,7 +23,7 @@ public abstract class PageController {
         }
     }
 
-    private void setUser(HttpServletRequest req) {
+    protected void setUser(HttpServletRequest req) {
         String username = req.getRemoteUser();
         if (req.getAttribute("User") == null) {
             User user = UsersManager.getInstance().findUserByName(username);

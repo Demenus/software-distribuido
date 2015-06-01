@@ -21,8 +21,14 @@
 
 <div class="row">
   <div class="col-md-12">
-    <button id="update-btn" class="btn btn-info pull-right">Search web-apis</button>
+    <button id="update-btn" class="btn btn-info pull-right">Search in web-apis</button>
     <input id="search-product" class="pull-right" type="text">
+  </div>
+</div>
+
+<div class="row">
+  <div id="search-result" class="col-md-8 col-md-offset-2">
+
   </div>
 </div>
 

@@ -29,6 +29,10 @@ public class ProductsController extends PageController {
     private void processFileResponse(ServletDispatcher context, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String productidStr = req.getParameter("productid");
         User user = (User) req.getAttribute("User");
+        if (user == null) {
+            resp.sendRedirect("/login");
+            return;
+        }
         ShopManager manager = ShopManager.getInstance();
         try {
             int productId = Integer.valueOf(productidStr);

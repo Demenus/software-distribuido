@@ -1,14 +1,10 @@
 package ub.chennegrin.model.users;
 
 import ub.chennegrin.model.shop.CartList;
-import ub.chennegrin.model.shop.Product;
-import ub.chennegrin.model.shop.Purchase;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Created by aaron on 21/05/2015.
@@ -20,7 +16,18 @@ public class User {
     private ConcurrentHashMap<String, CartList> cartLists;
     private double currency;
 
+    public User(int id, String username, double currency) {
+        this.id = id;
+        this.username = username;
+        this.currency = currency;
+        init();
+    }
+
     public User() {
+        init();
+    }
+
+    private void init() {
         purchased = new CopyOnWriteArrayList<>();
         cartLists = new ConcurrentHashMap<>();
     }
