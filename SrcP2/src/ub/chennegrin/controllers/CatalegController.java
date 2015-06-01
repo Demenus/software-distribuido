@@ -88,7 +88,7 @@ public class CatalegController extends PageController {
                 mOkMap.put("numElems", String.valueOf(cart.getNumCartsElements()));
                 resp.getWriter().write(mGson.toJson(mOkMap));
             }
-        } catch (ClassCastException | NumberFormatException e) {
+        }catch (ClassCastException | NumberFormatException e) {
             resp.getWriter().write(mGson.toJson(mErrMap));
         }
     }
